@@ -1,0 +1,1481 @@
+{
+  "remapped_fof_etf": [
+    {
+      "disclosure": "Aditya Birla Sun Life Gold Fund",
+      "kind": "gold_fund_to_gold_etf",
+      "lev": 4,
+      "old_sid": "5400",
+      "old_parent": "Aditya Birla Sun Life Gold ETF",
+      "new_sid": "6123",
+      "new_parent": "Aditya Birla Sun Life Gold Fund",
+      "short": "GOLDFOF"
+    },
+    {
+      "disclosure": "Axis Gold Fund",
+      "kind": "gold_fund_to_gold_etf",
+      "lev": 4,
+      "old_sid": "4864",
+      "old_parent": "Axis Gold ETF",
+      "new_sid": "5741",
+      "new_parent": "Axis Gold Fund",
+      "short": "AXISGLD"
+    },
+    {
+      "disclosure": "Axis Silver Fund of Fund",
+      "kind": "fof_to_etf",
+      "lev": 9,
+      "old_sid": "13146",
+      "old_parent": "Axis Silver ETF",
+      "new_sid": "13148",
+      "new_parent": "Axis Silver Fund of Fund",
+      "short": "AXISSIL"
+    },
+    {
+      "disclosure": "Baroda BNP Paribas Gold ETF Fund of Funds",
+      "kind": "fof_to_etf",
+      "lev": 11,
+      "old_sid": "13814",
+      "old_parent": "Baroda BNP Paribas Gold ETF",
+      "new_sid": "14284",
+      "new_parent": "Baroda BNP Paribas Gold ETF Fund of Fund",
+      "short": "T0ME46"
+    },
+    {
+      "disclosure": "DSP Gold ETF Fund of Fund",
+      "kind": "fof_to_etf",
+      "lev": 10,
+      "old_sid": "13643",
+      "old_parent": "DSP Gold ETF",
+      "new_sid": "13801",
+      "new_parent": "DSP Gold ETF Fund of Fund",
+      "short": "GOLDETFFOF"
+    },
+    {
+      "disclosure": "DSP Silver ETF Fund of Fund",
+      "kind": "fof_to_etf",
+      "lev": 10,
+      "old_sid": "13123",
+      "old_parent": "DSP Silver ETF",
+      "new_sid": "14186",
+      "new_parent": "DSP Silver ETF Fund of Fund",
+      "short": "SILVERETFFOF"
+    },
+    {
+      "disclosure": "Edelweiss Gold ETF Fund of Fund",
+      "kind": "fof_to_etf",
+      "lev": 10,
+      "old_sid": "13804",
+      "old_parent": "Edelweiss Gold ETF",
+      "new_sid": "14426",
+      "new_parent": "Edelweiss Gold ETF Fund of Fund",
+      "short": "EGEFOF"
+    },
+    {
+      "disclosure": "Edelweiss Silver ETF Fund of Fund",
+      "kind": "fof_to_etf",
+      "lev": 10,
+      "old_sid": "13808",
+      "old_parent": "Edelweiss Silver ETF",
+      "new_sid": "14379",
+      "new_parent": "Edelweiss Silver ETF Fund of Fund",
+      "short": "ESEFOF"
+    },
+    {
+      "disclosure": "HDFC Gold ETF Fund of Fund",
+      "kind": "fof_to_etf",
+      "lev": 10,
+      "old_sid": "4716",
+      "old_parent": "HDFC Gold ETF",
+      "new_sid": "5758",
+      "new_parent": "HDFC Gold ETF Fund of Fund",
+      "short": "HDFCGOLD"
+    },
+    {
+      "disclosure": "HDFC Silver ETF Fund of Fund",
+      "kind": "fof_to_etf",
+      "lev": 10,
+      "old_sid": "13132",
+      "old_parent": "HDFC Silver ETF",
+      "new_sid": "13183",
+      "new_parent": "HDFC Silver ETF Fund of Fund",
+      "short": "HSILVERFOF"
+    },
+    {
+      "disclosure": "HSBC Gold ETF Fund of fund",
+      "kind": "fof_to_etf",
+      "lev": 10,
+      "old_sid": "14453",
+      "old_parent": "HSBC Gold ETF",
+      "new_sid": "14454",
+      "new_parent": "HSBC Gold ETF Fund of Fund",
+      "short": "HOGFOF"
+    },
+    {
+      "disclosure": "Kotak Gold Fund",
+      "kind": "gold_fund_to_gold_etf",
+      "lev": 4,
+      "old_sid": "2695",
+      "old_parent": "KOTAK GOLD ETF",
+      "new_sid": "5241",
+      "new_parent": "Kotak Gold Fund",
+      "short": "GOF"
+    },
+    {
+      "disclosure": "Kotak Silver ETF Fund of Fund",
+      "kind": "fof_to_etf",
+      "lev": 10,
+      "old_sid": "13237",
+      "old_parent": "Kotak Silver ETF",
+      "new_sid": "13605",
+      "new_parent": "Kotak Silver ETF Fund of Fund",
+      "short": "SOF"
+    },
+    {
+      "disclosure": "Mirae Asset BSE 200 Equal Weight ETF Fund of Fund",
+      "kind": "fof_to_etf",
+      "lev": 10,
+      "old_sid": "14149",
+      "old_parent": "Mirae Asset BSE 200 Equal Weight ETF",
+      "new_sid": "14150",
+      "new_parent": "Mirae Asset BSE 200 Equal Weight ETF Fund of Fund",
+      "short": "200EWFOF"
+    },
+    {
+      "disclosure": "Mirae Asset BSE Select IPO ETF Fund of Fund",
+      "kind": "fof_to_etf",
+      "lev": 10,
+      "old_sid": "14151",
+      "old_parent": "Mirae Asset BSE Select IPO ETF",
+      "new_sid": "14152",
+      "new_parent": "Mirae Asset BSE Select IPO ETF Fund of Fund",
+      "short": "IPOFOF"
+    },
+    {
+      "disclosure": "Mirae Asset Gold ETF Fund of Fund",
+      "kind": "fof_to_etf",
+      "lev": 10,
+      "old_sid": "13556",
+      "old_parent": "Mirae Asset Gold ETF",
+      "new_sid": "14039",
+      "new_parent": "Mirae Asset Gold ETF Fund of Fund",
+      "short": "MGOLDFOF"
+    },
+    {
+      "disclosure": "Mirae Asset Hang Seng TECH ETF Fund of Fund",
+      "kind": "fof_to_etf",
+      "lev": 10,
+      "old_sid": "12350",
+      "old_parent": "Mirae Asset Hang Seng TECH ETF",
+      "new_sid": "12351",
+      "new_parent": "Mirae Asset Hang Seng TECH ETF Fund of Fund",
+      "short": "MAHSF"
+    },
+    {
+      "disclosure": "Mirae Asset Nifty 100 ESG Sector Leaders Fund of Fund",
+      "kind": "fof_to_etf",
+      "lev": 9,
+      "old_sid": "12163",
+      "old_parent": "Mirae Asset Nifty 100 ESG Sector Leaders ETF",
+      "new_sid": "12164",
+      "new_parent": "Mirae Asset Nifty 100 ESG Sector Leaders Fund of Fund",
+      "short": "MASLF"
+    },
+    {
+      "disclosure": "Mirae Asset Nifty India New Age Consumption ETF Fund of Fund",
+      "kind": "fof_to_etf",
+      "lev": 10,
+      "old_sid": "14092",
+      "old_parent": "Mirae Asset Nifty India New Age Consumption ETF",
+      "new_sid": "14093",
+      "new_parent": "Mirae Asset Nifty India New Age Consumption ETF Fund of Fund",
+      "short": "B2CETFOF"
+    },
+    {
+      "disclosure": "Mirae Asset Nifty MidSmallcap400 Momentum Quality 100 ETF Fund of Fund",
+      "kind": "fof_to_etf",
+      "lev": 10,
+      "old_sid": "13922",
+      "old_parent": "Mirae Asset Nifty MidSmallcap400 Momentum Quality 100 ETF",
+      "new_sid": "13926",
+      "new_parent": "Mirae Asset Nifty MidSmallcap400 Momentum Quality 100 ETF Fund of Fund",
+      "short": "MNSFOF"
+    },
+    {
+      "disclosure": "Mirae Asset Nifty Smallcap 250 Momentum Quality 100 ETF Fund of Fund",
+      "kind": "fof_to_etf",
+      "lev": 10,
+      "old_sid": "13875",
+      "old_parent": "Mirae Asset Nifty Smallcap 250 Momentum Quality 100 ETF",
+      "new_sid": "13876",
+      "new_parent": "Mirae Asset Nifty Smallcap 250 Momentum Quality 100 ETF Fund of Fund",
+      "short": "SMQFOF"
+    },
+    {
+      "disclosure": "Mirae Asset Nifty200 Alpha 30 ETF Fund of Fund",
+      "kind": "fof_to_etf",
+      "lev": 10,
+      "old_sid": "13787",
+      "old_parent": "Mirae Asset Nifty 200 Alpha 30 ETF",
+      "new_sid": "13949",
+      "new_parent": "Mirae Asset Nifty200 Alpha 30 ETF Fund of Fund",
+      "short": "ALPHAFOF"
+    },
+    {
+      "disclosure": "Mirae Asset NYSE FANG + ETF",
+      "kind": "etf_to_fof",
+      "lev": 10,
+      "old_sid": "12237",
+      "old_parent": "Mirae Asset NYSE FANG + ETF Fund of Fund",
+      "new_sid": "12236",
+      "new_parent": "Mirae Asset NYSE FANG+ ETF",
+      "short": "MAFTF"
+    },
+    {
+      "disclosure": "Mirae Asset S&P 500 Top 50 ETF Fund of Fund",
+      "kind": "fof_to_etf",
+      "lev": 10,
+      "old_sid": "12297",
+      "old_parent": "Mirae Asset S&P 500 Top 50 ETF",
+      "new_sid": "12298",
+      "new_parent": "Mirae Asset S&P 500 Top 50 ETF Fund of Fund",
+      "short": "MASPF"
+    },
+    {
+      "disclosure": "Motilal Oswal Nasdaq 100 Fund of Fund",
+      "kind": "fof_to_etf",
+      "lev": 9,
+      "old_sid": "5337",
+      "old_parent": "Motilal Oswal Nasdaq 100 ETF",
+      "new_sid": "11628",
+      "new_parent": "Motilal Oswal Nasdaq 100 Fund of Fund",
+      "short": "YO13"
+    },
+    {
+      "disclosure": "Nippon India Nifty Next 50 Junior BeES FoF",
+      "kind": "fof_to_etf",
+      "lev": 6,
+      "old_sid": "10567",
+      "old_parent": "Nippon India ETF Nifty Next 50 Junior BeES",
+      "new_sid": "11819",
+      "new_parent": "Nippon India Nifty Next 50 Junior BeES FoF",
+      "short": "RJ"
+    },
+    {
+      "disclosure": "SBI GOLD FUND",
+      "kind": "gold_fund_to_gold_etf",
+      "lev": 4,
+      "old_sid": "4352",
+      "old_parent": "SBI Gold ETF",
+      "new_sid": "5636",
+      "new_parent": "SBI GOLD FUND",
+      "short": "SGF"
+    },
+    {
+      "disclosure": "SBI Silver ETF Fund of Fund",
+      "kind": "fof_to_etf",
+      "lev": 10,
+      "old_sid": "13950",
+      "old_parent": "SBI Silver ETF",
+      "new_sid": "13954",
+      "new_parent": "SBI Silver ETF Fund of Fund",
+      "short": null
+    },
+    {
+      "disclosure": "Union Gold ETF Fund of Fund",
+      "kind": "fof_to_etf",
+      "lev": 10,
+      "old_sid": "14135",
+      "old_parent": "Union Gold ETF",
+      "new_sid": "14136",
+      "new_parent": "Union Gold ETF Fund of Fund",
+      "short": "GOLDFOF"
+    }
+  ],
+  "unmapped_fof_etf": [
+    {
+      "disclosure": "BHARAT Bond ETF FOF",
+      "kind": "fof_to_etf",
+      "lev": 9,
+      "old_sid": "12058",
+      "old_parent": "Bharat Bond ETF - April 2030"
+    },
+    {
+      "disclosure": "HDFC Gold ETF Fund of Fund - Growth",
+      "kind": "fof_to_etf",
+      "lev": 16,
+      "old_sid": "4716",
+      "old_parent": "HDFC Gold ETF"
+    },
+    {
+      "disclosure": "HDFC Multi - Asset Fund",
+      "kind": "etf_to_fof",
+      "lev": 9,
+      "old_sid": "12231",
+      "old_parent": "HDFC Multi-Asset Active FOF"
+    },
+    {
+      "disclosure": "HDFC Silver ETF Fund of Fund - Growth",
+      "kind": "fof_to_etf",
+      "lev": 16,
+      "old_sid": "13132",
+      "old_parent": "HDFC Silver ETF"
+    },
+    {
+      "disclosure": "ICICI Prudential BSE 500 ETF FOF - Growth",
+      "kind": "fof_to_etf",
+      "lev": 9,
+      "old_sid": "11183",
+      "old_parent": "ICICI Prudential BSE 500 ETF"
+    },
+    {
+      "disclosure": "ICICI Prudential BSE 500 ETF FOF - IDCW",
+      "kind": "fof_to_etf",
+      "lev": 7,
+      "old_sid": "11183",
+      "old_parent": "ICICI Prudential BSE 500 ETF"
+    },
+    {
+      "disclosure": "ICICI Prudential Gold ETF FOF - Growth",
+      "kind": "fof_to_etf",
+      "lev": 9,
+      "old_sid": "4728",
+      "old_parent": "ICICI Prudential Gold ETF"
+    },
+    {
+      "disclosure": "ICICI Prudential Gold ETF FOF - IDCW",
+      "kind": "fof_to_etf",
+      "lev": 7,
+      "old_sid": "4728",
+      "old_parent": "ICICI Prudential Gold ETF"
+    },
+    {
+      "disclosure": "ICICI Prudential Nifty 100 Low Volatility 30 ETF FOF - Growth",
+      "kind": "fof_to_etf",
+      "lev": 9,
+      "old_sid": "10883",
+      "old_parent": "ICICI Prudential Nifty 100 Low Volatility 30 ETF"
+    },
+    {
+      "disclosure": "ICICI Prudential Nifty 100 Low Volatility 30 ETF FOF - IDCW",
+      "kind": "fof_to_etf",
+      "lev": 7,
+      "old_sid": "10883",
+      "old_parent": "ICICI Prudential Nifty 100 Low Volatility 30 ETF"
+    },
+    {
+      "disclosure": "ICICI Prudential Nifty EV & New Age Automotive ETF FOF - Growth",
+      "kind": "fof_to_etf",
+      "lev": 9,
+      "old_sid": "14155",
+      "old_parent": "ICICI Prudential Nifty EV & New Age Automotive ETF"
+    },
+    {
+      "disclosure": "ICICI Prudential Nifty EV & New Age Automotive ETF FOF - IDCW",
+      "kind": "fof_to_etf",
+      "lev": 7,
+      "old_sid": "14155",
+      "old_parent": "ICICI Prudential Nifty EV & New Age Automotive ETF"
+    },
+    {
+      "disclosure": "ICICI Prudential Silver ETF FOF - Growth",
+      "kind": "fof_to_etf",
+      "lev": 9,
+      "old_sid": "12372",
+      "old_parent": "ICICI PRUDENTIAL SILVER ETF"
+    },
+    {
+      "disclosure": "ICICI Prudential Silver ETF FOF - IDCW",
+      "kind": "fof_to_etf",
+      "lev": 7,
+      "old_sid": "12372",
+      "old_parent": "ICICI PRUDENTIAL SILVER ETF"
+    },
+    {
+      "disclosure": "Kotak Gold Fund Payout of",
+      "kind": "gold_fund_to_gold_etf",
+      "lev": 10,
+      "old_sid": "2695",
+      "old_parent": "KOTAK GOLD ETF"
+    }
+  ],
+  "remaining_non_exact": 379,
+  "reasons_all": {
+    "other_wording": 107,
+    "unclaimed_wrapper": 47,
+    "option_suffix": 56,
+    "missing_plan_token": 48,
+    "retail_suffix": 33,
+    "lockin_suffix": 2,
+    "segregated": 20,
+    "payout_suffix": 24,
+    "unclaimed_tenure_option": 4,
+    "disc_plus_fund": 3,
+    "parent_formerly_suffix": 20,
+    "and_vs_ampersand": 3,
+    "parent_plus_fund": 11,
+    "fof_etf_or_gold_still_fof_to_etf": 1
+  },
+  "reasons_lev_6_10": {
+    "other_wording": 33,
+    "retail_suffix": 18,
+    "lockin_suffix": 2,
+    "payout_suffix": 9,
+    "option_suffix": 26,
+    "unclaimed_tenure_option": 1,
+    "fof_etf_or_gold_still_fof_to_etf": 1,
+    "unclaimed_wrapper": 1
+  },
+  "lev_6_10": [
+    {
+      "lev": 10,
+      "d": "Mirae AssetHang Seng TECH ETF Fund of Fund",
+      "p": "Mirae Asset Hang Seng TECH ETF",
+      "short": null,
+      "reason": "fof_etf_or_gold_still_fof_to_etf",
+      "only_d": [
+        "assethang",
+        "fund",
+        "of",
+        "fund"
+      ],
+      "only_p": [
+        "asset",
+        "hang"
+      ]
+    },
+    {
+      "lev": 6,
+      "d": "Axis Children's Fund - Lock in",
+      "p": "Axis Children's Fund",
+      "short": null,
+      "reason": "lockin_suffix",
+      "only_d": [
+        "lock",
+        "in"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 8,
+      "d": "Axis Children's Fund - No Lock in",
+      "p": "Axis Children's Fund",
+      "short": "AXISCGF",
+      "reason": "lockin_suffix",
+      "only_d": [
+        "no",
+        "lock",
+        "in"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "Edelweiss BSE Capital Markets & Insurance ETF - Growth",
+      "p": "Edelweiss BSE Capital Markets & Insurance ETF",
+      "short": "EEBCIE",
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "Edelweiss BSE Sensex ETF - Growth",
+      "p": "Edelweiss BSE Sensex ETF",
+      "short": "EES30E",
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "Edelweiss Nifty 50 ETF - Growth",
+      "p": "Edelweiss Nifty 50 ETF",
+      "short": "EEN50E",
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "Edelweiss Nifty Bank ETF - Growth",
+      "p": "Edelweiss Nifty Bank ETF",
+      "short": "EENBEF",
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "Edelweiss Nifty LargeMidcap 250 ETF - Growth",
+      "p": "Edelweiss Nifty LargeMidcap 250 ETF",
+      "short": "EELMFE",
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "Edelweiss Nifty500 Multicap Momentum Quality 50 ETF - Growth",
+      "p": "Edelweiss Nifty500 Multicap Momentum Quality 50 ETF",
+      "short": "EEMMQE",
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "HDFC BSE 500 ETF - Growth",
+      "p": "HDFC BSE 500 ETF",
+      "short": "HDFC500ETF",
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "HDFC BSE Sensex ETF - Growth",
+      "p": "HDFC BSE Sensex ETF",
+      "short": "HDFCSXEXTF",
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "HDFC Gold ETF - Growth",
+      "p": "HDFC Gold ETF",
+      "short": "HDGETF",
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "HDFC NIFTY 100 ETF - Growth",
+      "p": "HDFC NIFTY 100 ETF",
+      "short": "HDFCN100ET",
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "HDFC NIFTY 1D RATE LIQUID ETF - Growth",
+      "p": "HDFC NIFTY 1D Rate Liquid ETF",
+      "short": "HDFC1DLETF",
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "HDFC NIFTY 50 ETF - Growth",
+      "p": "HDFC NIFTY 50 ETF",
+      "short": "HDFCNYEXTF",
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "HDFC NIFTY Bank ETF - Growth",
+      "p": "HDFC NIFTY BANK ETF",
+      "short": "HDFCBKEXTF",
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "HDFC NIFTY IT ETF - Growth",
+      "p": "HDFC NIFTY IT ETF",
+      "short": "HDFCNITETF",
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "HDFC Nifty Metal ETF - Growth",
+      "p": "HDFC Nifty Metal ETF",
+      "short": "HDFCMETETF",
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "HDFC NIFTY Midcap 150 ETF - Growth",
+      "p": "HDFC NIFTY Midcap 150 ETF",
+      "short": "HDFCMIDETF",
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "HDFC NIFTY NEXT 50 ETF - Growth",
+      "p": "HDFC NIFTY NEXT 50 ETF",
+      "short": "HDFCNY50ET",
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "HDFC NIFTY Private Bank ETF - Growth",
+      "p": "HDFC NIFTY Private Bank ETF",
+      "short": "HDFCNPBETF",
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "HDFC NIFTY Smallcap 250 ETF - Growth",
+      "p": "HDFC NIFTY Smallcap 250 ETF",
+      "short": "HDFCSMAETF",
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "HDFC NIFTY100 Low Volatility 30 ETF - Growth",
+      "p": "HDFC NIFTY100 Low Volatility 30 ETF",
+      "short": "HDFCL30ETF",
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "HDFC NIFTY100 QUALITY 30 ETF - Growth",
+      "p": "HDFC NIFTY100 QUALITY 30 ETF",
+      "short": "HDFCQ30ETF",
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "HDFC NIFTY200 MOMENTUM 30 ETF - Growth",
+      "p": "HDFC NIFTY200 MOMENTUM 30 ETF",
+      "short": "HDFCM30ETF",
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "HDFC Silver ETF - Growth",
+      "p": "HDFC Silver ETF",
+      "short": "HSILVERETF",
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "ICICI Prudential Nifty Alpha Low - Volatility 30 ETF FOF - Growth",
+      "p": "ICICI Prudential Nifty Alpha Low - Volatility 30 ETF FOF",
+      "short": null,
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "Shriram Nifty 1D Rate Liquid ETF - Growth",
+      "p": "Shriram Nifty 1D Rate Liquid ETF",
+      "short": "SHRIRAMNIFTY1DRATELIQUIDETF",
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "Zerodha Nifty 1D Rate Liquid ETF - Growth",
+      "p": "Zerodha Nifty 1D Rate Liquid ETF",
+      "short": "ZLIQD",
+      "reason": "option_suffix",
+      "only_d": [
+        "growth"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "HDFC NIFTY 50 VALUE 20 ETF - Growth",
+      "p": "HDFC NIFTY50 VALUE 20 ETF",
+      "short": "HDFCV20ETF",
+      "reason": "other_wording",
+      "only_d": [
+        "nifty",
+        "50",
+        "growth"
+      ],
+      "only_p": [
+        "nifty50"
+      ]
+    },
+    {
+      "lev": 6,
+      "d": "Sundaram Large Cap Fund",
+      "p": "Sundaram Large and Midcap Fund",
+      "short": "SUNBCF",
+      "reason": "other_wording",
+      "only_d": [
+        "cap"
+      ],
+      "only_p": [
+        "and",
+        "midcap"
+      ]
+    },
+    {
+      "lev": 7,
+      "d": "Baroda BNP Paribas Aggressive Hybrid Fund - REGULAT",
+      "p": "BARODA BNP PARIBAS AGGRESSIVE HYBRID FUND",
+      "short": null,
+      "reason": "other_wording",
+      "only_d": [
+        "regulat"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 7,
+      "d": "BARODA BNP PARIBAS Corporate Bond Fund - Defunct",
+      "p": "BARODA BNP PARIBAS CORPORATE BOND FUND",
+      "short": null,
+      "reason": "other_wording",
+      "only_d": [
+        "defunct"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 7,
+      "d": "Baroda BNP Paribas Dynamic Bond Fund - Defunct",
+      "p": "Baroda BNP Paribas Dynamic Bond Fund",
+      "short": null,
+      "reason": "other_wording",
+      "only_d": [
+        "defunct"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 7,
+      "d": "Baroda BNP Paribas LIQUID FUND - Defunct",
+      "p": "BARODA BNP PARIBAS LIQUID FUND",
+      "short": null,
+      "reason": "other_wording",
+      "only_d": [
+        "defunct"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 7,
+      "d": "BARODA BNP PARIBAS LOW DURATION Fund - Defunct",
+      "p": "BARODA BNP PARIBAS LOW DURATION FUND",
+      "short": null,
+      "reason": "other_wording",
+      "only_d": [
+        "defunct"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 7,
+      "d": "Mirae Asset Nifty India Manufacturing ETF FOF",
+      "p": "Mirae Asset Nifty India Manufacturing ETF Fund of Fund",
+      "short": "MAMFOF",
+      "reason": "other_wording",
+      "only_d": [
+        "fof"
+      ],
+      "only_p": [
+        "fund",
+        "of",
+        "fund"
+      ]
+    },
+    {
+      "lev": 7,
+      "d": "Motilal Oswal Nasdaq 100 ETF (MOFN100",
+      "p": "Motilal Oswal Nasdaq 100 ETF",
+      "short": "YO03",
+      "reason": "other_wording",
+      "only_d": [
+        "mofn100"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 7,
+      "d": "Motilal Oswal Ultra Short Term Fund (MOFUSTF",
+      "p": "Motilal Oswal Ultra Short Term Fund",
+      "short": null,
+      "reason": "other_wording",
+      "only_d": [
+        "mofustf"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 7,
+      "d": "SBI Silver ETF FOF",
+      "p": "SBI Silver ETF Fund of Fund",
+      "short": "SETFSILVERFOF",
+      "reason": "other_wording",
+      "only_d": [
+        "fof"
+      ],
+      "only_p": [
+        "fund",
+        "of",
+        "fund"
+      ]
+    },
+    {
+      "lev": 7,
+      "d": "UTI Conservative Hybrid Fund Payment",
+      "p": "UTI Conservative Hybrid Fund",
+      "short": null,
+      "reason": "other_wording",
+      "only_d": [
+        "payment"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 8,
+      "d": "360 ONE Focused Fund - Dividend",
+      "p": "360 ONE Focused Fund",
+      "short": null,
+      "reason": "other_wording",
+      "only_d": [
+        "dividend"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 8,
+      "d": "BANDHAN CRISIL IBX 90:10 SDL PLUS GILT - SEP27 INDEX FUND",
+      "p": "BANDHAN CRISIL IBX 90:10 SDL PLUS GILT - SEPTEMBER 2027 INDEX FUND",
+      "short": "IDF288",
+      "reason": "other_wording",
+      "only_d": [
+        "sep27"
+      ],
+      "only_p": [
+        "september",
+        "2027"
+      ]
+    },
+    {
+      "lev": 8,
+      "d": "Bank of India Business Cycle Fund - Dividend",
+      "p": "Bank of India Business Cycle Fund",
+      "short": null,
+      "reason": "other_wording",
+      "only_d": [
+        "dividend"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 8,
+      "d": "Baroda BNP Paribas Income Plus Arbitrage Active FOF",
+      "p": "Baroda BNP Paribas Income Plus Arbitrage Active Fund of Funds",
+      "short": "T0ME43",
+      "reason": "other_wording",
+      "only_d": [
+        "fof"
+      ],
+      "only_p": [
+        "fund",
+        "of",
+        "funds"
+      ]
+    },
+    {
+      "lev": 8,
+      "d": "Baroda BNP Paribas Multi Asset Active FOF",
+      "p": "Baroda BNP Paribas Multi Asset Active Fund of Funds",
+      "short": "T0ME44",
+      "reason": "other_wording",
+      "only_d": [
+        "fof"
+      ],
+      "only_p": [
+        "fund",
+        "of",
+        "funds"
+      ]
+    },
+    {
+      "lev": 8,
+      "d": "DSP Banking & PSU Debt Fund Reinvest",
+      "p": "DSP Banking & PSU Debt Fund",
+      "short": null,
+      "reason": "other_wording",
+      "only_d": [
+        "reinvest"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 8,
+      "d": "DSP Ultra Short Fund Reinvest",
+      "p": "DSP Ultra Short Fund",
+      "short": null,
+      "reason": "other_wording",
+      "only_d": [
+        "reinvest"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 8,
+      "d": "PGIM India Aggressive Hybrid Equity Fund - Dividend",
+      "p": "PGIM India Aggressive Hybrid Equity Fund",
+      "short": null,
+      "reason": "other_wording",
+      "only_d": [
+        "dividend"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 8,
+      "d": "PGIM India Large Cap Fund - Dividend",
+      "p": "PGIM India Large Cap Fund",
+      "short": null,
+      "reason": "other_wording",
+      "only_d": [
+        "dividend"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 8,
+      "d": "UTI Conservative Hybrd Fund Payment",
+      "p": "UTI Conservative Hybrid Fund",
+      "short": null,
+      "reason": "other_wording",
+      "only_d": [
+        "hybrd",
+        "payment"
+      ],
+      "only_p": [
+        "hybrid"
+      ]
+    },
+    {
+      "lev": 9,
+      "d": "HSBC Aggressive Hybrid Active FOF",
+      "p": "HSBC Aggressive Hybrid Fund",
+      "short": "HOMSGS",
+      "reason": "other_wording",
+      "only_d": [
+        "active",
+        "fof"
+      ],
+      "only_p": [
+        "fund"
+      ]
+    },
+    {
+      "lev": 10,
+      "d": "ICICI Prudential BHARAT 22 FOF - Cumulative",
+      "p": "ICICI Prudential BHARAT 22 FOF",
+      "short": null,
+      "reason": "other_wording",
+      "only_d": [
+        "cumulative"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 10,
+      "d": "ICICI Prudential BSE Sensex Index Fund - Cumulative",
+      "p": "ICICI Prudential BSE Sensex Index Fund",
+      "short": null,
+      "reason": "other_wording",
+      "only_d": [
+        "cumulative"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 10,
+      "d": "ICICI Prudential Equity Savings Fund - Cumulative",
+      "p": "ICICI Prudential Equity Savings Fund",
+      "short": null,
+      "reason": "other_wording",
+      "only_d": [
+        "cumulative"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 10,
+      "d": "ICICI Prudential India Opportunities Fund - Cumulative",
+      "p": "ICICI Prudential India Opportunities Fund",
+      "short": null,
+      "reason": "other_wording",
+      "only_d": [
+        "cumulative"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 10,
+      "d": "ICICI Prudential Long Term Wealth Enhancement Fund - Cumulative",
+      "p": "ICICI Prudential Long Term Wealth Enhancement Fund",
+      "short": null,
+      "reason": "other_wording",
+      "only_d": [
+        "cumulative"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 10,
+      "d": "ICICI Prudential Manufacturing Fund - Cumulative",
+      "p": "ICICI Prudential Manufacturing Fund",
+      "short": null,
+      "reason": "other_wording",
+      "only_d": [
+        "cumulative"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 10,
+      "d": "ICICI Prudential Nifty 50 Index Fund - Cumulative",
+      "p": "ICICI Prudential Nifty 50 Index Fund",
+      "short": null,
+      "reason": "other_wording",
+      "only_d": [
+        "cumulative"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 10,
+      "d": "ICICI Prudential Pharma Healthcare and Diagnostics (P.H.D) Fund - Cumulative",
+      "p": "ICICI Prudential Pharma Healthcare and Diagnostics (P.H.D) Fund",
+      "short": null,
+      "reason": "other_wording",
+      "only_d": [
+        "cumulative"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 10,
+      "d": "Motilal Oswal Balanced Advantage Fund (MOFDYNAMIC",
+      "p": "Motilal Oswal Balanced Advantage Fund",
+      "short": null,
+      "reason": "other_wording",
+      "only_d": [
+        "mofdynamic"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 10,
+      "d": "Nippon India Interval Fund Interval Fund Series - II",
+      "p": "Nippon India Interval Fund-Quarterly Interval Fund Serie-II",
+      "short": null,
+      "reason": "other_wording",
+      "only_d": [
+        "series"
+      ],
+      "only_p": [
+        "quarterly",
+        "serie"
+      ]
+    },
+    {
+      "lev": 6,
+      "d": "DSP Ultra Short Fund - Payout",
+      "p": "DSP Ultra Short Fund",
+      "short": null,
+      "reason": "payout_suffix",
+      "only_d": [
+        "payout"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "Edelweiss Consumption Fund - Payout",
+      "p": "Edelweiss Consumption Fund",
+      "short": null,
+      "reason": "payout_suffix",
+      "only_d": [
+        "payout"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "Edelweiss Nifty500 Multicap Momentum Quality 50 Index Fund - Payout",
+      "p": "Edelweiss Nifty500 Multicap Momentum Quality 50 Index Fund",
+      "short": null,
+      "reason": "payout_suffix",
+      "only_d": [
+        "payout"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "Navi Liquid Fund - Payout",
+      "p": "Navi Liquid Fund",
+      "short": null,
+      "reason": "payout_suffix",
+      "only_d": [
+        "payout"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "PGIM India Midcap Fund - Payout",
+      "p": "PGIM India Midcap Fund",
+      "short": null,
+      "reason": "payout_suffix",
+      "only_d": [
+        "payout"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "Tata Nifty500 Multicap India Manufacturing 50:30:20 Index Fund - Payout",
+      "p": "Tata Nifty500 Multicap India Manufacturing 50:30:20 Index Fund",
+      "short": null,
+      "reason": "payout_suffix",
+      "only_d": [
+        "payout"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 8,
+      "d": "Kotak Arbitrage Fund - Payout & Re",
+      "p": "Kotak Arbitrage Fund",
+      "short": null,
+      "reason": "payout_suffix",
+      "only_d": [
+        "payout",
+        "re"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 8,
+      "d": "Kotak Contra Fund - Payout & Re",
+      "p": "Kotak Contra Fund",
+      "short": null,
+      "reason": "payout_suffix",
+      "only_d": [
+        "payout",
+        "re"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 8,
+      "d": "Kotak Midcap Fund - Payout & Re",
+      "p": "Kotak Midcap Fund",
+      "short": null,
+      "reason": "payout_suffix",
+      "only_d": [
+        "payout",
+        "re"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "Aditya Birla Sun Life Global Excellence Equity Fund Of Fund - Retail",
+      "p": "Aditya Birla Sun Life Global Excellence Equity Fund Of Fund",
+      "short": "BSLGRE",
+      "reason": "retail_suffix",
+      "only_d": [
+        "retail"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "Axis Liquid Fund - Retail",
+      "p": "Axis Liquid Fund",
+      "short": null,
+      "reason": "retail_suffix",
+      "only_d": [
+        "retail"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "Axis Short Duration Fund - Retail",
+      "p": "Axis Short Duration Fund",
+      "short": null,
+      "reason": "retail_suffix",
+      "only_d": [
+        "retail"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "Axis Treasury Advantage Fund - Retail",
+      "p": "Axis Treasury Advantage Fund",
+      "short": null,
+      "reason": "retail_suffix",
+      "only_d": [
+        "retail"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "Bajaj Finserv Nifty 1D Rate Liquid ETF",
+      "p": "Bajaj Finserv Nifty 1D Rate Liquid ETF - Growth",
+      "short": "BFL1ETF",
+      "reason": "retail_suffix",
+      "only_d": [],
+      "only_p": [
+        "growth"
+      ]
+    },
+    {
+      "lev": 6,
+      "d": "Edelweiss Liquid Fund - Retail",
+      "p": "Edelweiss Liquid Fund",
+      "short": null,
+      "reason": "retail_suffix",
+      "only_d": [
+        "retail"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "Franklin India Money Market Fund Retail",
+      "p": "Franklin India Money Market Fund",
+      "short": null,
+      "reason": "retail_suffix",
+      "only_d": [
+        "retail"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "Nippon India Liquid Fund - Retail",
+      "p": "Nippon India Liquid Fund",
+      "short": null,
+      "reason": "retail_suffix",
+      "only_d": [
+        "retail"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "Nippon India Low Duration Fund - Retail",
+      "p": "Nippon India Low Duration Fund",
+      "short": null,
+      "reason": "retail_suffix",
+      "only_d": [
+        "retail"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 6,
+      "d": "Nippon India Medium Duration Fund",
+      "p": "Nippon India Medium to Long Duration Fund",
+      "short": "CB",
+      "reason": "retail_suffix",
+      "only_d": [],
+      "only_p": [
+        "to",
+        "long"
+      ]
+    },
+    {
+      "lev": 6,
+      "d": "NIPPON INDIA MID CAP FUND",
+      "p": "Nippon India Growth Mid Cap Fund",
+      "short": "GF",
+      "reason": "retail_suffix",
+      "only_d": [],
+      "only_p": [
+        "growth"
+      ]
+    },
+    {
+      "lev": 6,
+      "d": "UTI Interval Fund - I",
+      "p": "UTI Annual Interval Fund - I",
+      "short": "247|253|262|307",
+      "reason": "retail_suffix",
+      "only_d": [],
+      "only_p": [
+        "annual"
+      ]
+    },
+    {
+      "lev": 7,
+      "d": "Aditya Birla Sun Life Savings Fund",
+      "p": "Aditya Birla Sun Life Regular Savings Fund",
+      "short": "BBP|MIP25",
+      "reason": "retail_suffix",
+      "only_d": [],
+      "only_p": [
+        "regular"
+      ]
+    },
+    {
+      "lev": 7,
+      "d": "DSP Savings Fund",
+      "p": "DSP Regular Savings Fund",
+      "short": "REGULARSAVINGS|SAVINGS",
+      "reason": "retail_suffix",
+      "only_d": [],
+      "only_p": [
+        "regular"
+      ]
+    },
+    {
+      "lev": 7,
+      "d": "ICICI Prudential Savings Fund",
+      "p": "ICICI Prudential Regular Savings Fund",
+      "short": "RSF|SAVING",
+      "reason": "retail_suffix",
+      "only_d": [],
+      "only_p": [
+        "regular"
+      ]
+    },
+    {
+      "lev": 8,
+      "d": "ICICI Prudential Fixed Maturity - Series 85 - 10 Years I",
+      "p": "ICICI Prudential Fixed Maturity Plan - Series 85 - 10 Years Plan I",
+      "short": "F8510I",
+      "reason": "retail_suffix",
+      "only_d": [],
+      "only_p": [
+        "plan",
+        "plan"
+      ]
+    },
+    {
+      "lev": 8,
+      "d": "ICICI Prudential Fixed Maturity - Series 88 - 1303 Days S",
+      "p": "ICICI Prudential Fixed Maturity Plan - Series 88 - 1303 Days Plan S",
+      "short": "F881303S",
+      "reason": "retail_suffix",
+      "only_d": [],
+      "only_p": [
+        "plan",
+        "plan"
+      ]
+    },
+    {
+      "lev": 9,
+      "d": "Franklin India INDEX FUND - NSE NIFTY 50 INDEX FUND",
+      "p": "Franklin India NSE Nifty 50 Index Fund",
+      "short": "FIIFNSE",
+      "reason": "retail_suffix",
+      "only_d": [],
+      "only_p": []
+    },
+    {
+      "lev": 10,
+      "d": "Edelweiss Overnight Fund - Upto 3 years",
+      "p": "Edelweiss Overnight Fund",
+      "short": null,
+      "reason": "unclaimed_tenure_option",
+      "only_d": [
+        "upto",
+        "3",
+        "years"
+      ],
+      "only_p": []
+    },
+    {
+      "lev": 9,
+      "d": "Shriram Unclaimed Liquid Fund",
+      "p": "Shriram Liquid Fund",
+      "short": null,
+      "reason": "unclaimed_wrapper",
+      "only_d": [
+        "unclaimed"
+      ],
+      "only_p": []
+    }
+  ]
+}

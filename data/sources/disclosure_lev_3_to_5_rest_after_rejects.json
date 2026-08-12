@@ -1,0 +1,1807 @@
+{
+  "rejected_fof_etf": [
+    {
+      "disclosure": "Aditya Birla Sun Life Silver ETF FOF",
+      "was_parent": "Aditya Birla Sun Life Silver ETF",
+      "sid": "12699",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "ANGEL ONE GOLD ETF FOF",
+      "was_parent": "ANGEL ONE GOLD ETF",
+      "sid": "14296",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "ANGEL ONE SILVER ETF FOF",
+      "was_parent": "ANGEL ONE SILVER ETF",
+      "sid": "14424",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "Bandhan Gold ETF FOF",
+      "was_parent": "Bandhan Gold ETF",
+      "sid": "14331",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "Bandhan Silver ETF FOF",
+      "was_parent": "Bandhan Silver ETF",
+      "sid": "14330",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "BHARAT Bond ETF FOF - April 2033",
+      "was_parent": "BHARAT Bond ETF - April 2033",
+      "sid": "13245",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "Groww BSE Hospitals ETF FOF",
+      "was_parent": "Groww BSE Hospitals ETF",
+      "sid": "14421",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "Groww BSE Power ETF FOF",
+      "was_parent": "Groww BSE Power ETF",
+      "sid": "14265",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "Groww Gold ETF FOF",
+      "was_parent": "Groww Gold ETF",
+      "sid": "14024",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "Groww Nifty 200 ETF FOF",
+      "was_parent": "Groww Nifty 200 ETF",
+      "sid": "14131",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "Groww Nifty 500 Momentum 50 ETF FOF",
+      "was_parent": "Groww Nifty 500 Momentum 50 ETF",
+      "sid": "14176",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "Groww Nifty Capital Markets ETF FOF",
+      "was_parent": "Groww Nifty Capital Markets ETF",
+      "sid": "14321",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "Groww Nifty EV & New Age Automotive ETF FOF",
+      "was_parent": "Groww Nifty EV & New Age Automotive ETF",
+      "sid": "13964",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "Groww Nifty India Defence ETF FOF",
+      "was_parent": "Groww Nifty India Defence ETF",
+      "sid": "13989",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "Groww Nifty India Internet ETF FOF",
+      "was_parent": "Groww Nifty India Internet ETF",
+      "sid": "14228",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "Groww Nifty PSE ETF FOF",
+      "was_parent": "Groww Nifty PSE ETF",
+      "sid": "14408",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "Groww Silver ETF FOF",
+      "was_parent": "Groww Silver ETF",
+      "sid": "14195",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "ICICI Prudential BSE 500 ETF FOF",
+      "was_parent": "ICICI Prudential BSE 500 ETF",
+      "sid": "11183",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "ICICI Prudential Gold ETF FOF",
+      "was_parent": "ICICI Prudential Gold ETF",
+      "sid": "4728",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "ICICI Prudential Nifty 100 Low Volatility 30 ETF FOF",
+      "was_parent": "ICICI Prudential Nifty 100 Low Volatility 30 ETF",
+      "sid": "10883",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "ICICI Prudential Nifty Alpha Low - Volatility 30 ETF",
+      "was_parent": "ICICI Prudential Nifty Alpha Low - Volatility 30 ETF FOF",
+      "sid": "12294",
+      "reason": "etf_to_fof"
+    },
+    {
+      "disclosure": "ICICI Prudential Nifty EV & New Age Automotive ETF FOF",
+      "was_parent": "ICICI Prudential Nifty EV & New Age Automotive ETF",
+      "sid": "14155",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "ICICI Prudential Silver ETF FOF",
+      "was_parent": "ICICI PRUDENTIAL SILVER ETF",
+      "sid": "12372",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "Mirae Asset BSE India Defence ETF FOF",
+      "was_parent": "Mirae Asset BSE India Defence ETF",
+      "sid": "14416",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "Mirae Asset BSE Midcap 150 Momentum 30 ETF FOF",
+      "was_parent": "Mirae Asset BSE Midcap 150 Momentum 30 ETF",
+      "sid": "14507",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "Mirae Asset Nifty India Manufacturing ETF FOF",
+      "was_parent": "Mirae Asset Nifty India Manufacturing ETF",
+      "sid": "12701",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "Mirae Asset Nifty Metal ETF FOF",
+      "was_parent": "Mirae Asset Nifty Metal ETF",
+      "sid": "14013",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "Mirae Asset Silver ETF FOF",
+      "was_parent": "Mirae Asset Silver ETF",
+      "sid": "13657",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "Nippon India Silver ETF FOF",
+      "was_parent": "Nippon India Silver ETF",
+      "sid": "12693",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "Quantum Gold ETF FOF",
+      "was_parent": "Quantum Gold ETF",
+      "sid": "3215",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "Quantum Nifty 50 ETF FOF",
+      "was_parent": "Quantum Nifty 50 ETF",
+      "sid": "3450",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "SBI Silver ETF FOF",
+      "was_parent": "SBI Silver ETF",
+      "sid": "13950",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "THE WEALTH COMPANY GOLD ETF FOF",
+      "was_parent": "The Wealth Company Gold ETF",
+      "sid": "14387",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "Zerodha Gold ETF FoF",
+      "was_parent": "Zerodha Gold ETF",
+      "sid": "13881",
+      "reason": "fof_to_etf"
+    },
+    {
+      "disclosure": "Zerodha Silver ETF FoF",
+      "was_parent": "Zerodha Silver ETF",
+      "sid": "14162",
+      "reason": "fof_to_etf"
+    }
+  ],
+  "rejected_date": [
+    {
+      "disclosure": "Tata Nifty SDL Plus AAA PSU Bond Dec 6040 Index Fund",
+      "was_parent": "Tata Nifty SDL Plus AAA PSU Bond Dec 2027 60 40 Index Fund",
+      "sid": "13073",
+      "reason": "numeric ['6040'] vs ['2027']"
+    }
+  ],
+  "remapped": [
+    {
+      "disclosure": "Aditya Birla Sun Life Silver ETF FOF",
+      "old_sid": "12699",
+      "old_parent": "Aditya Birla Sun Life Silver ETF",
+      "new_sid": "12700",
+      "new_parent": "Aditya Birla Sun Life Silver ETF FOF",
+      "short": null
+    },
+    {
+      "disclosure": "ANGEL ONE GOLD ETF FOF",
+      "old_sid": "14296",
+      "old_parent": "ANGEL ONE GOLD ETF",
+      "new_sid": "14297",
+      "new_parent": "ANGEL ONE GOLD ETF FOF",
+      "short": "ANGELONEGOLDETFFOF"
+    },
+    {
+      "disclosure": "ANGEL ONE SILVER ETF FOF",
+      "old_sid": "14424",
+      "old_parent": "ANGEL ONE SILVER ETF",
+      "new_sid": "14425",
+      "new_parent": "ANGEL ONE SILVER ETF FOF",
+      "short": "ANGELONESILVERETFFOF"
+    },
+    {
+      "disclosure": "Bandhan Gold ETF FOF",
+      "old_sid": "14331",
+      "old_parent": "Bandhan Gold ETF",
+      "new_sid": "14398",
+      "new_parent": "Bandhan Gold ETF FOF",
+      "short": "IDF319"
+    },
+    {
+      "disclosure": "Bandhan Silver ETF FOF",
+      "old_sid": "14330",
+      "old_parent": "Bandhan Silver ETF",
+      "new_sid": "14400",
+      "new_parent": "Bandhan Silver ETF FOF",
+      "short": "IDF320"
+    },
+    {
+      "disclosure": "BHARAT Bond ETF FOF - April 2033",
+      "old_sid": "13245",
+      "old_parent": "BHARAT Bond ETF - April 2033",
+      "new_sid": "13246",
+      "new_parent": "BHARAT Bond ETF FOF - April 2033",
+      "short": null
+    },
+    {
+      "disclosure": "Groww BSE Hospitals ETF FOF",
+      "old_sid": "14421",
+      "old_parent": "Groww BSE Hospitals ETF",
+      "new_sid": "14422",
+      "new_parent": "Groww BSE Hospitals ETF FOF",
+      "short": "IB64"
+    },
+    {
+      "disclosure": "Groww BSE Power ETF FOF",
+      "old_sid": "14265",
+      "old_parent": "Groww BSE Power ETF",
+      "new_sid": "14266",
+      "new_parent": "Groww BSE Power ETF FOF",
+      "short": "IB46"
+    },
+    {
+      "disclosure": "Groww Gold ETF FOF",
+      "old_sid": "14024",
+      "old_parent": "Groww Gold ETF",
+      "new_sid": "14031",
+      "new_parent": "Groww Gold ETF FOF",
+      "short": "IB28"
+    },
+    {
+      "disclosure": "Groww Nifty 200 ETF FOF",
+      "old_sid": "14131",
+      "old_parent": "Groww Nifty 200 ETF",
+      "new_sid": "14130",
+      "new_parent": "Groww Nifty 200 ETF FOF",
+      "short": "IB34"
+    },
+    {
+      "disclosure": "Groww Nifty 500 Momentum 50 ETF FOF",
+      "old_sid": "14176",
+      "old_parent": "Groww Nifty 500 Momentum 50 ETF",
+      "new_sid": "14177",
+      "new_parent": "Groww Nifty 500 Momentum 50 ETF FOF",
+      "short": "IB36"
+    },
+    {
+      "disclosure": "Groww Nifty Capital Markets ETF FOF",
+      "old_sid": "14321",
+      "old_parent": "Groww Nifty Capital Markets ETF",
+      "new_sid": "14322",
+      "new_parent": "Groww Nifty Capital Markets ETF FOF",
+      "short": "IB56"
+    },
+    {
+      "disclosure": "Groww Nifty EV & New Age Automotive ETF FOF",
+      "old_sid": "13964",
+      "old_parent": "Groww Nifty EV & New Age Automotive ETF",
+      "new_sid": "13967",
+      "new_parent": "Groww Nifty EV & New Age Automotive ETF FOF",
+      "short": "IB22"
+    },
+    {
+      "disclosure": "Groww Nifty India Defence ETF FOF",
+      "old_sid": "13989",
+      "old_parent": "Groww Nifty India Defence ETF",
+      "new_sid": "14014",
+      "new_parent": "Groww Nifty India Defence ETF FOF",
+      "short": "IB26"
+    },
+    {
+      "disclosure": "Groww Nifty India Internet ETF FOF",
+      "old_sid": "14228",
+      "old_parent": "Groww Nifty India Internet ETF",
+      "new_sid": "14229",
+      "new_parent": "Groww Nifty India Internet ETF FOF",
+      "short": "IB42"
+    },
+    {
+      "disclosure": "Groww Nifty PSE ETF FOF",
+      "old_sid": "14408",
+      "old_parent": "Groww Nifty PSE ETF",
+      "new_sid": "14409",
+      "new_parent": "Groww Nifty PSE ETF FOF",
+      "short": "IB62"
+    },
+    {
+      "disclosure": "Groww Silver ETF FOF",
+      "old_sid": "14195",
+      "old_parent": "Groww Silver ETF",
+      "new_sid": "14196",
+      "new_parent": "Groww Silver ETF FOF",
+      "short": "IB39"
+    },
+    {
+      "disclosure": "ICICI Prudential BSE 500 ETF FOF",
+      "old_sid": "11183",
+      "old_parent": "ICICI Prudential BSE 500 ETF",
+      "new_sid": "12340",
+      "new_parent": "ICICI Prudential BSE 500 ETF FOF",
+      "short": "SNPFOF"
+    },
+    {
+      "disclosure": "ICICI Prudential Gold ETF FOF",
+      "old_sid": "4728",
+      "old_parent": "ICICI Prudential Gold ETF",
+      "new_sid": "5713",
+      "new_parent": "ICICI Prudential Gold ETF FOF",
+      "short": "REGGOLD"
+    },
+    {
+      "disclosure": "ICICI Prudential Nifty 100 Low Volatility 30 ETF FOF",
+      "old_sid": "10883",
+      "old_parent": "ICICI Prudential Nifty 100 Low Volatility 30 ETF",
+      "new_sid": "12220",
+      "new_parent": "ICICI Prudential Nifty 100 Low Volatility 30 ETF FOF",
+      "short": "NV30FOF"
+    },
+    {
+      "disclosure": "ICICI Prudential Nifty Alpha Low - Volatility 30 ETF",
+      "old_sid": "12294",
+      "old_parent": "ICICI Prudential Nifty Alpha Low - Volatility 30 ETF FOF",
+      "new_sid": "12136",
+      "new_parent": "ICICI Prudential Nifty Alpha Low- Volatility 30 ETF",
+      "short": "AP30ETF"
+    },
+    {
+      "disclosure": "ICICI Prudential Nifty EV & New Age Automotive ETF FOF",
+      "old_sid": "14155",
+      "old_parent": "ICICI Prudential Nifty EV & New Age Automotive ETF",
+      "new_sid": "14154",
+      "new_parent": "ICICI Prudential Nifty EV & New Age Automotive ETF FOF",
+      "short": "NIFEVFOF"
+    },
+    {
+      "disclosure": "ICICI Prudential Silver ETF FOF",
+      "old_sid": "12372",
+      "old_parent": "ICICI PRUDENTIAL SILVER ETF",
+      "new_sid": "12698",
+      "new_parent": "ICICI Prudential Silver ETF FOF",
+      "short": "SILFOF"
+    },
+    {
+      "disclosure": "Mirae Asset BSE India Defence ETF FOF",
+      "old_sid": "14416",
+      "old_parent": "Mirae Asset BSE India Defence ETF",
+      "new_sid": "14418",
+      "new_parent": "Mirae Asset BSE India Defence ETF FOF",
+      "short": "DEFENFOF"
+    },
+    {
+      "disclosure": "Mirae Asset BSE Midcap 150 Momentum 30 ETF FOF",
+      "old_sid": "14507",
+      "old_parent": "Mirae Asset BSE Midcap 150 Momentum 30 ETF",
+      "new_sid": "14508",
+      "new_parent": "Mirae Asset BSE Midcap 150 Momentum 30 ETF FOF",
+      "short": null
+    },
+    {
+      "disclosure": "Mirae Asset Nifty India Manufacturing ETF FOF",
+      "old_sid": "12701",
+      "old_parent": "Mirae Asset Nifty India Manufacturing ETF",
+      "new_sid": "12702",
+      "new_parent": "Mirae Asset Nifty India Manufacturing ETF Fund of Fund",
+      "short": "MAMFOF"
+    },
+    {
+      "disclosure": "Mirae Asset Nifty Metal ETF FOF",
+      "old_sid": "14013",
+      "old_parent": "Mirae Asset Nifty Metal ETF",
+      "new_sid": "14430",
+      "new_parent": "Mirae Asset Nifty Metal ETF FOF",
+      "short": "METALFOF"
+    },
+    {
+      "disclosure": "Mirae Asset Silver ETF FOF",
+      "old_sid": "13657",
+      "old_parent": "Mirae Asset Silver ETF",
+      "new_sid": "14450",
+      "new_parent": "Mirae Asset Silver ETF FOF",
+      "short": "SILVRFOF"
+    },
+    {
+      "disclosure": "Nippon India Silver ETF FOF",
+      "old_sid": "12693",
+      "old_parent": "Nippon India Silver ETF",
+      "new_sid": "12694",
+      "new_parent": "Nippon India Silver ETF FOF",
+      "short": "SO"
+    },
+    {
+      "disclosure": "Quantum Gold ETF FOF",
+      "old_sid": "3215",
+      "old_parent": "Quantum Gold ETF",
+      "new_sid": "5402",
+      "new_parent": "Quantum Gold ETF FOF",
+      "short": "QGSF"
+    },
+    {
+      "disclosure": "Quantum Nifty 50 ETF FOF",
+      "old_sid": "3450",
+      "old_parent": "Quantum Nifty 50 ETF",
+      "new_sid": "13087",
+      "new_parent": "Quantum Nifty 50 ETF FOF",
+      "short": "QNFOF"
+    },
+    {
+      "disclosure": "SBI Silver ETF FOF",
+      "old_sid": "13950",
+      "old_parent": "SBI Silver ETF",
+      "new_sid": "13954",
+      "new_parent": "SBI Silver ETF Fund of Fund",
+      "short": "SETFSILVERFOF"
+    },
+    {
+      "disclosure": "THE WEALTH COMPANY GOLD ETF FOF",
+      "old_sid": "14387",
+      "old_parent": "The Wealth Company Gold ETF",
+      "new_sid": "14399",
+      "new_parent": "The Wealth Company Gold ETF FOF",
+      "short": "WCGF"
+    },
+    {
+      "disclosure": "Zerodha Gold ETF FoF",
+      "old_sid": "13881",
+      "old_parent": "Zerodha Gold ETF",
+      "new_sid": "14040",
+      "new_parent": "Zerodha Gold ETF FoF",
+      "short": "ZGFOF"
+    },
+    {
+      "disclosure": "Zerodha Silver ETF FoF",
+      "old_sid": "14162",
+      "old_parent": "Zerodha Silver ETF",
+      "new_sid": "14239",
+      "new_parent": "Zerodha Silver ETF FoF",
+      "short": "ZSFOF"
+    }
+  ],
+  "unmapped": [
+    {
+      "disclosure": "Tata Nifty SDL Plus AAA PSU Bond Dec 6040 Index Fund",
+      "old_sid": "13073",
+      "old_parent": "Tata Nifty SDL Plus AAA PSU Bond Dec 2027 60 40 Index Fund",
+      "why": "date_mismatch:numeric ['6040'] vs ['2027']"
+    }
+  ],
+  "rest_count": 106,
+  "rest": [
+    {
+      "lev": 3,
+      "sid": "4296",
+      "short": null,
+      "disclosure_fund_name": "BANK OF INDIA Conservative Hybrid Fund - ECO",
+      "parent_fund_name": "BANK OF INDIA CONSERVATIVE HYBRID FUND",
+      "diff_summary": "disc+ eco",
+      "only_in_disclosure": [
+        "eco"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 3,
+      "sid": "4295",
+      "short": null,
+      "disclosure_fund_name": "BANK OF INDIA ELSS Tax Saver - ECO",
+      "parent_fund_name": "BANK OF INDIA ELSS TAX SAVER",
+      "diff_summary": "disc+ eco",
+      "only_in_disclosure": [
+        "eco"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 3,
+      "sid": "4085",
+      "short": null,
+      "disclosure_fund_name": "BANK OF INDIA Large & Mid Cap Fund Eco",
+      "parent_fund_name": "BANK OF INDIA LARGE & MID CAP FUND",
+      "diff_summary": "disc+ eco",
+      "only_in_disclosure": [
+        "eco"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 3,
+      "sid": "14419",
+      "short": "T0ME48",
+      "disclosure_fund_name": "Baroda BNP Paribas Best - in - Class Strategy Fund",
+      "parent_fund_name": "Baroda BNP Paribas ESG Best-in-Class Strategy Fund",
+      "diff_summary": "parent+ esg",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "esg"
+      ]
+    },
+    {
+      "lev": 3,
+      "sid": "3774",
+      "short": "BANFINSERVICES",
+      "disclosure_fund_name": "ICICI Prudential Banking and Financial Services Fund",
+      "parent_fund_name": "ICICI Prudential Banking & Financial Services Fund",
+      "diff_summary": "disc+ and",
+      "only_in_disclosure": [
+        "and"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 3,
+      "sid": "4450",
+      "short": "BANPSU",
+      "disclosure_fund_name": "ICICI Prudential Banking and PSU Debt Fund",
+      "parent_fund_name": "ICICI Prudential Banking & PSU Debt Fund",
+      "diff_summary": "disc+ and",
+      "only_in_disclosure": [
+        "and"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 3,
+      "sid": "13548",
+      "short": "BFS",
+      "disclosure_fund_name": "Kotak Banking & Financial Services Fund",
+      "parent_fund_name": "Kotak Banking and Financial Services Fund",
+      "diff_summary": "parent+ and",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "and"
+      ]
+    },
+    {
+      "lev": 3,
+      "sid": "9131",
+      "short": "KIE",
+      "disclosure_fund_name": "Kotak Infrastructure & Economic Reform Fund",
+      "parent_fund_name": "Kotak Infrastructure and Economic Reform Fund",
+      "diff_summary": "parent+ and",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "and"
+      ]
+    },
+    {
+      "lev": 3,
+      "sid": "14366",
+      "short": "NAVINIFTYMIDSMALLCAP400INDEXFUND",
+      "disclosure_fund_name": "Navi Nifty Midsmall 400 Index Fund",
+      "parent_fund_name": "Navi Nifty Midsmallcap 400 Index Fund",
+      "diff_summary": "disc+ midsmall | parent+ midsmallcap",
+      "only_in_disclosure": [
+        "midsmall"
+      ],
+      "only_in_parent": [
+        "midsmallcap"
+      ]
+    },
+    {
+      "lev": 3,
+      "sid": "14143",
+      "short": "NAVINIFTYSMALLCAP250MOMENTUMQLTY100",
+      "disclosure_fund_name": "Navi Nifty Smallcap 250 Momentum quality index fund",
+      "parent_fund_name": "Navi Nifty Smallcap250 Momentum Quality 100 Index Fund",
+      "diff_summary": "disc+ smallcap 250 | parent+ smallcap250 100",
+      "only_in_disclosure": [
+        "smallcap",
+        "250"
+      ],
+      "only_in_parent": [
+        "smallcap250",
+        "100"
+      ]
+    },
+    {
+      "lev": 3,
+      "sid": "9491",
+      "short": "TBFSF",
+      "disclosure_fund_name": "Tata Banking And Financial Services Fund",
+      "parent_fund_name": "Tata Banking & Financial Services Fund",
+      "diff_summary": "disc+ and",
+      "only_in_disclosure": [
+        "and"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 3,
+      "sid": "6746",
+      "short": null,
+      "disclosure_fund_name": "Tata Value Fund B(10%",
+      "parent_fund_name": "Tata Value Fund",
+      "diff_summary": "disc+ b 10",
+      "only_in_disclosure": [
+        "b",
+        "10"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 4,
+      "sid": "13585",
+      "short": "COFAIETF",
+      "disclosure_fund_name": "Aditya Birla Sun Life CRISIL Liquid Overnight ETF - IDCW",
+      "parent_fund_name": "Aditya Birla Sun Life CRISIL Liquid Overnight ETF",
+      "diff_summary": "disc+ idcw",
+      "only_in_disclosure": [
+        "idcw"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 4,
+      "sid": "13070",
+      "short": "FTPTI|FTPTJ|FTPTQ",
+      "disclosure_fund_name": "Aditya Birla Sun Life Fixed Term - Series TQ (1879 days",
+      "parent_fund_name": "Aditya Birla Sun Life Fixed Term Plan - Series TQ (1879 days)",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "5400",
+      "short": "GOLDFOF",
+      "disclosure_fund_name": "Aditya Birla Sun Life Gold Fund",
+      "parent_fund_name": "Aditya Birla Sun Life Gold ETF",
+      "diff_summary": "disc+ fund | parent+ etf",
+      "only_in_disclosure": [
+        "fund"
+      ],
+      "only_in_parent": [
+        "etf"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "4313",
+      "short": "BSLMTP",
+      "disclosure_fund_name": "Aditya Birla Sun Life Medium Term",
+      "parent_fund_name": "Aditya Birla Sun Life Medium Term Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "11831",
+      "short": "BSLRF30",
+      "disclosure_fund_name": "Aditya Birla Sun Life Retirement Fund - The 30s",
+      "parent_fund_name": "Aditya Birla Sun Life Retirement Fund-The 30s Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "11896",
+      "short": "BSLRF40",
+      "disclosure_fund_name": "Aditya Birla Sun Life Retirement Fund - The 40s",
+      "parent_fund_name": "Aditya Birla Sun Life Retirement Fund-The 40s Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "11898",
+      "short": "BSLRF50",
+      "disclosure_fund_name": "Aditya Birla Sun Life Retirement Fund - The 50s",
+      "parent_fund_name": "Aditya Birla Sun Life Retirement Fund-The 50s Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "11899",
+      "short": "BSLRF50P",
+      "disclosure_fund_name": "Aditya Birla Sun Life Retirement Fund - The 50s Plus - Debt",
+      "parent_fund_name": "Aditya Birla Sun Life Retirement Fund-The 50s Plus-Debt Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "4864",
+      "short": "AXISGLD",
+      "disclosure_fund_name": "Axis Gold Fund",
+      "parent_fund_name": "Axis Gold ETF",
+      "diff_summary": "disc+ fund | parent+ etf",
+      "only_in_disclosure": [
+        "fund"
+      ],
+      "only_in_parent": [
+        "etf"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "12051",
+      "short": "AXISRAP",
+      "disclosure_fund_name": "Axis Retirement Fund - Aggressive",
+      "parent_fund_name": "Axis Retirement Fund - Aggressive Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "12053",
+      "short": "AXISRCP",
+      "disclosure_fund_name": "Axis Retirement Fund - Conservative",
+      "parent_fund_name": "Axis Retirement Fund - Conservative Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "12052",
+      "short": "AXISRDP",
+      "disclosure_fund_name": "Axis Retirement Fund - Dynamic",
+      "parent_fund_name": "Axis Retirement Fund - Dynamic Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "3568",
+      "short": null,
+      "disclosure_fund_name": "Bandhan Medium to Long Duration Fund - Half",
+      "parent_fund_name": "Bandhan Medium to Long Duration Fund",
+      "diff_summary": "disc+ half",
+      "only_in_disclosure": [
+        "half"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 4,
+      "sid": "4296",
+      "short": null,
+      "disclosure_fund_name": "BANK OF INDIA Conservative Hybrid Fund Fund",
+      "parent_fund_name": "BANK OF INDIA CONSERVATIVE HYBRID FUND",
+      "diff_summary": "char-level / punctuation-only after token overlap",
+      "only_in_disclosure": [],
+      "only_in_parent": []
+    },
+    {
+      "lev": 4,
+      "sid": "14102",
+      "short": null,
+      "disclosure_fund_name": "Baroda BNP Paribas Energy Opportunities Fund - ICDW",
+      "parent_fund_name": "Baroda BNP Paribas Energy Opportunities Fund",
+      "diff_summary": "disc+ icdw",
+      "only_in_disclosure": [
+        "icdw"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 4,
+      "sid": "1582",
+      "short": "IN",
+      "disclosure_fund_name": "CANARA ROBECO INFRASTRUCTURE FUND",
+      "parent_fund_name": "Canara Robeco Infrastructure",
+      "diff_summary": "disc+ fund",
+      "only_in_disclosure": [
+        "fund"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 4,
+      "sid": "13873",
+      "short": null,
+      "disclosure_fund_name": "Canara Robeco Manufacturing Fund - IDWC",
+      "parent_fund_name": "Canara Robeco Manufacturing Fund",
+      "diff_summary": "disc+ idwc",
+      "only_in_disclosure": [
+        "idwc"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 4,
+      "sid": "14072",
+      "short": "EDCF28",
+      "disclosure_fund_name": "Edelweiss CRISIL IBX AAA Financial Services - Jan 2028 Index Fund",
+      "parent_fund_name": "Edelweiss CRISIL IBX AAA Financial Services Bond - Jan 2028 Index Fund",
+      "diff_summary": "parent+ bond",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "bond"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "9550",
+      "short": "HDFCRETEQP",
+      "disclosure_fund_name": "HDFC Retirement Savings Fund - Equity",
+      "parent_fund_name": "HDFC Retirement Savings Fund - Equity Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "9624",
+      "short": "DERIVATIVEHDFCRETHDP|HDFCRETHDP",
+      "disclosure_fund_name": "HDFC Retirement Savings Fund - Hybrid - Debt",
+      "parent_fund_name": "HDFC Retirement Savings Fund - Hybrid-Debt Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "9623",
+      "short": "HDFCRETHEP",
+      "disclosure_fund_name": "HDFC Retirement Savings Fund - Hybrid - Equity",
+      "parent_fund_name": "HDFC Retirement Savings Fund - Hybrid-Equity Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "12294",
+      "short": null,
+      "disclosure_fund_name": "ICICI Prudential Nifty Alpha Low - Volatility 30 ETF FOF - IDCW",
+      "parent_fund_name": "ICICI Prudential Nifty Alpha Low - Volatility 30 ETF FOF",
+      "diff_summary": "disc+ idcw",
+      "only_in_disclosure": [
+        "idcw"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 4,
+      "sid": "11858",
+      "short": "RETIREAG",
+      "disclosure_fund_name": "ICICI Prudential Retirement Fund - Hybrid Aggressive",
+      "parent_fund_name": "ICICI Prudential Retirement Fund Hybrid Aggressive Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "11857",
+      "short": "RETIRECO",
+      "disclosure_fund_name": "ICICI Prudential Retirement Fund - Hybrid Conservative",
+      "parent_fund_name": "ICICI Prudential Retirement Fund Hybrid Conservative Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "11859",
+      "short": "RETIREDE",
+      "disclosure_fund_name": "ICICI Prudential Retirement Fund - Pure Debt",
+      "parent_fund_name": "ICICI Prudential Retirement Fund Pure Debt Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "11789",
+      "short": "RETIREEQ",
+      "disclosure_fund_name": "ICICI Prudential Retirement Fund - Pure Equity",
+      "parent_fund_name": "ICICI Prudential Retirement Fund Pure Equity Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "7311",
+      "short": "KGS",
+      "disclosure_fund_name": "Kotak Banking and PSU Debt",
+      "parent_fund_name": "Kotak Banking and PSU Debt Fund",
+      "diff_summary": "parent+ fund",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "fund"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "627",
+      "short": null,
+      "disclosure_fund_name": "Kotak Bond Short Term",
+      "parent_fund_name": "Kotak Bond Short Term Fund",
+      "diff_summary": "parent+ fund",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "fund"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "13152",
+      "short": null,
+      "disclosure_fund_name": "Kotak Business Cycle",
+      "parent_fund_name": "Kotak Business Cycle Fund",
+      "diff_summary": "parent+ fund",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "fund"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "5287",
+      "short": "KIP",
+      "disclosure_fund_name": "Kotak Debt Hybrid",
+      "parent_fund_name": "Kotak Debt Hybrid Fund",
+      "diff_summary": "parent+ fund",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "fund"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "97",
+      "short": null,
+      "disclosure_fund_name": "Kotak Gilt",
+      "parent_fund_name": "Kotak Gilt Fund",
+      "diff_summary": "parent+ fund",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "fund"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "2695",
+      "short": "GOF",
+      "disclosure_fund_name": "Kotak Gold Fund",
+      "parent_fund_name": "KOTAK GOLD ETF",
+      "diff_summary": "disc+ fund | parent+ etf",
+      "only_in_disclosure": [
+        "fund"
+      ],
+      "only_in_parent": [
+        "etf"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "9480",
+      "short": "NVF",
+      "disclosure_fund_name": "Kotak Nifty 50 Value 20 ETF - IDCW",
+      "parent_fund_name": "Kotak Nifty 50 Value 20 ETF",
+      "diff_summary": "disc+ idcw",
+      "only_in_disclosure": [
+        "idcw"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 4,
+      "sid": "13846",
+      "short": "YO47",
+      "disclosure_fund_name": "Motilal Oswal Large Cap",
+      "parent_fund_name": "Motilal Oswal Large Cap Fund",
+      "diff_summary": "parent+ fund",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "fund"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "12017",
+      "short": null,
+      "disclosure_fund_name": "Motilal Oswal Nifty Bank Index",
+      "parent_fund_name": "Motilal Oswal Nifty Bank Index Fund",
+      "diff_summary": "parent+ fund",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "fund"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "12019",
+      "short": null,
+      "disclosure_fund_name": "Motilal Oswal Nifty Smallcap 250 Index",
+      "parent_fund_name": "Motilal Oswal Nifty Smallcap 250 Index Fund",
+      "diff_summary": "parent+ fund",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "fund"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "14209",
+      "short": null,
+      "disclosure_fund_name": "Nippon India BSE Sensex Next 30 Index",
+      "parent_fund_name": "Nippon India BSE Sensex Next 30 Index Fund",
+      "diff_summary": "parent+ fund",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "fund"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "10568",
+      "short": "LB",
+      "disclosure_fund_name": "Nippon India ETF Nifty 1D Rate Liquid BeES - IDCW",
+      "parent_fund_name": "Nippon India ETF Nifty 1D Rate Liquid BeES",
+      "diff_summary": "disc+ idcw",
+      "only_in_disclosure": [
+        "idcw"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 4,
+      "sid": "12733",
+      "short": "HK",
+      "disclosure_fund_name": "Nippon India Fixed Maturity - XLIII - Series 5",
+      "parent_fund_name": "Nippon India Fixed Maturity Plan - XLIII - Series 5",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "13153",
+      "short": "W5",
+      "disclosure_fund_name": "Nippon India Fixed Maturity - XLIV - Series 1",
+      "parent_fund_name": "Nippon India Fixed Maturity Plan - XLIV - Series 1",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "13633",
+      "short": "U8",
+      "disclosure_fund_name": "Nippon India Fixed Maturity - XLV - Series 5",
+      "parent_fund_name": "Nippon India Fixed Maturity Plan - XLV - Series 5",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "11926",
+      "short": "G6",
+      "disclosure_fund_name": "Nippon India Fixed Maturity XLI - Series 8",
+      "parent_fund_name": "Nippon India Fixed Maturity Plan - XLI - Series 8",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "4794",
+      "short": "SF",
+      "disclosure_fund_name": "Nippon India Index Fund - BSE Sensex",
+      "parent_fund_name": "Nippon India Index Fund - BSE Sensex Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "4806",
+      "short": "NF",
+      "disclosure_fund_name": "Nippon India Index Fund - Nifty 50",
+      "parent_fund_name": "Nippon India Index Fund - Nifty 50 Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "14288",
+      "short": null,
+      "disclosure_fund_name": "Nippon India Nifty India Manufacturing Index",
+      "parent_fund_name": "Nippon India Nifty India Manufacturing Index Fund",
+      "diff_summary": "parent+ fund",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "fund"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "12146",
+      "short": "SMCBFIP",
+      "disclosure_fund_name": "SBI Children's Fund - Investment",
+      "parent_fund_name": "SBI Children's Fund - Investment Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "575",
+      "short": "SMCBFSP",
+      "disclosure_fund_name": "SBI Children's Fund - Savings",
+      "parent_fund_name": "SBI CHILDREN'S FUND - SAVINGS PLAN",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "11905",
+      "short": "SFMPSERIES1",
+      "disclosure_fund_name": "SBI Fixed Maturity (FMP) - Series 1 (3668 Days",
+      "parent_fund_name": "SBI Fixed Maturity Plan (FMP) - Series 1 (3668 Days)",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "12119",
+      "short": "SFMPSERIES34|SFMPSERIES44|SFMPSERIES45",
+      "disclosure_fund_name": "SBI Fixed Maturity (FMP) - Series 34 (3682 Days",
+      "parent_fund_name": "SBI Fixed Maturity Plan (FMP) - Series 34 (3682 Days)",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "12290",
+      "short": "SFMPSERIES49|SFMPSERIES59",
+      "disclosure_fund_name": "SBI Fixed Maturity (FMP) - Series 49 (1823 Days",
+      "parent_fund_name": "SBI Fixed Maturity Plan (FMP) - Series 49 (1823 Days)",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "12299",
+      "short": "SFMPSERIES50",
+      "disclosure_fund_name": "SBI Fixed Maturity (FMP) - Series 50 (1843 Days",
+      "parent_fund_name": "SBI Fixed Maturity Plan (FMP) - Series 50 (1843 Days)",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "12304",
+      "short": "SFMPSERIES51",
+      "disclosure_fund_name": "SBI Fixed Maturity (FMP) - Series 51 (1846 Days",
+      "parent_fund_name": "SBI Fixed Maturity Plan (FMP) - Series 51 (1846 Days)",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "12310",
+      "short": "SFMPSERIES52",
+      "disclosure_fund_name": "SBI Fixed Maturity (FMP) - Series 52 (1848 Days",
+      "parent_fund_name": "SBI Fixed Maturity Plan (FMP) - Series 52 (1848 Days)",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "12326",
+      "short": "SFMPSERIES53",
+      "disclosure_fund_name": "SBI Fixed Maturity (FMP) - Series 53 (1839 Days",
+      "parent_fund_name": "SBI Fixed Maturity Plan (FMP) - Series 53 (1839 Days)",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "12336",
+      "short": "SFMPSERIES54",
+      "disclosure_fund_name": "SBI Fixed Maturity (FMP) - Series 54 (1842 Days",
+      "parent_fund_name": "SBI Fixed Maturity Plan (FMP) - Series 54 (1842 Days)",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "12343",
+      "short": "SFMPSERIES55",
+      "disclosure_fund_name": "SBI Fixed Maturity (FMP) - Series 55 (1849 Days",
+      "parent_fund_name": "SBI Fixed Maturity Plan (FMP) - Series 55 (1849 Days)",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "12363",
+      "short": "SFMPSERIES57",
+      "disclosure_fund_name": "SBI Fixed Maturity (FMP) - Series 57 (1835 Days",
+      "parent_fund_name": "SBI Fixed Maturity Plan (FMP) - Series 57 (1835 Days)",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "12370",
+      "short": "SFMPSERIES58",
+      "disclosure_fund_name": "SBI Fixed Maturity (FMP) - Series 58 (1842 Days",
+      "parent_fund_name": "SBI Fixed Maturity Plan (FMP) - Series 58 (1842 Days)",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "11953",
+      "short": "SFMPSERIES46|SFMPSERIES6",
+      "disclosure_fund_name": "SBI Fixed Maturity (FMP) - Series 6 (3668 Days",
+      "parent_fund_name": "SBI Fixed Maturity Plan (FMP) - Series 6 (3668 Days)",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "12723",
+      "short": "SFMPSERIES60",
+      "disclosure_fund_name": "SBI Fixed Maturity (FMP) - Series 60 (1878 Days",
+      "parent_fund_name": "SBI Fixed Maturity Plan (FMP) - Series 60 (1878 Days)",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "12750",
+      "short": "SFMPSERIES61",
+      "disclosure_fund_name": "SBI Fixed Maturity (FMP) - Series 61 (1927 Days",
+      "parent_fund_name": "SBI Fixed Maturity Plan (FMP) - Series 61 (1927 Days)",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "13103",
+      "short": "SFMPSERIES67",
+      "disclosure_fund_name": "SBI Fixed Maturity (FMP) - Series 67 (1467 Days",
+      "parent_fund_name": "SBI Fixed Maturity Plan (FMP) - Series 67 (1467 Days)",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "4352",
+      "short": "SGF",
+      "disclosure_fund_name": "SBI GOLD FUND",
+      "parent_fund_name": "SBI Gold ETF",
+      "diff_summary": "disc+ fund | parent+ etf",
+      "only_in_disclosure": [
+        "fund"
+      ],
+      "only_in_parent": [
+        "etf"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "12265",
+      "short": "SRBFAP",
+      "disclosure_fund_name": "SBI Retirement Benefit Fund - Aggressive",
+      "parent_fund_name": "SBI Retirement Benefit Fund - Aggressive Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "12188",
+      "short": "SRBFAHP",
+      "disclosure_fund_name": "SBI Retirement Benefit Fund - Aggressive Hybrid",
+      "parent_fund_name": "SBI Retirement Benefit Fund - Aggressive Hybrid Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "12267",
+      "short": "SRBFCP",
+      "disclosure_fund_name": "SBI Retirement Benefit Fund - Conservative",
+      "parent_fund_name": "SBI Retirement Benefit Fund - Conservative Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "12266",
+      "short": "SRBFCHP",
+      "disclosure_fund_name": "SBI Retirement Benefit Fund - Conservative Hybrid",
+      "parent_fund_name": "SBI Retirement Benefit Fund - Conservative Hybrid Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "14397",
+      "short": "SUNIPA",
+      "disclosure_fund_name": "Sundaram Income Plus Arbitrage Active FoF Fund",
+      "parent_fund_name": "Sundaram Income Plus Arbitrage Active FoF",
+      "diff_summary": "disc+ fund",
+      "only_in_disclosure": [
+        "fund"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 4,
+      "sid": "2234",
+      "short": null,
+      "disclosure_fund_name": "Sundaram Large and Midcap",
+      "parent_fund_name": "Sundaram Large and Midcap Fund",
+      "diff_summary": "parent+ fund",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "fund"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "10796",
+      "short": "SLTAX5",
+      "disclosure_fund_name": "Sundaram Long Term Micro Cap Tax Advantage Fund Series V",
+      "parent_fund_name": "SUNDARAM LONG TERM MICRO CAP TAX ADVANTAGE SERIES V",
+      "diff_summary": "disc+ fund",
+      "only_in_disclosure": [
+        "fund"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 4,
+      "sid": "12316",
+      "short": "TRSFC",
+      "disclosure_fund_name": "Tata Retirement Savings Fund - Conservative",
+      "parent_fund_name": "Tata Retirement Savings Fund-Conservative Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "12315",
+      "short": "TRSFM",
+      "disclosure_fund_name": "Tata Retirement Savings Fund - Moderate",
+      "parent_fund_name": "Tata Retirement Savings Fund-Moderate Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "6751",
+      "short": "TRSFP",
+      "disclosure_fund_name": "Tata Retirement Savings Fund - Progressive",
+      "parent_fund_name": "Tata Retirement Savings Fund-Progressive Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "14313",
+      "short": null,
+      "disclosure_fund_name": "THE WEALTH COMPANY LIQUID FUND ICDW",
+      "parent_fund_name": "The Wealth Company Liquid Fund",
+      "diff_summary": "disc+ icdw",
+      "only_in_disclosure": [
+        "icdw"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 4,
+      "sid": "13091",
+      "short": null,
+      "disclosure_fund_name": "Union Gilt Fund - Half",
+      "parent_fund_name": "Union Gilt Fund",
+      "diff_summary": "disc+ half",
+      "only_in_disclosure": [
+        "half"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 4,
+      "sid": "807",
+      "short": "151",
+      "disclosure_fund_name": "UTI - Master Equity Unit Scheme",
+      "parent_fund_name": "UTI - Master Equity Plan Unit Scheme",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "261",
+      "short": "002|EXPOSURE",
+      "disclosure_fund_name": "UTI - Unit Linked Insurance",
+      "parent_fund_name": "UTI - Unit Linked Insurance Plan",
+      "diff_summary": "parent+ plan",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "plan"
+      ]
+    },
+    {
+      "lev": 4,
+      "sid": "7893",
+      "short": null,
+      "disclosure_fund_name": "UTI Banking & PSU Fund - Half",
+      "parent_fund_name": "UTI Banking & PSU Fund",
+      "diff_summary": "disc+ half",
+      "only_in_disclosure": [
+        "half"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 4,
+      "sid": "11373",
+      "short": null,
+      "disclosure_fund_name": "UTI Corporate Bond Fund - Half",
+      "parent_fund_name": "UTI - Corporate Bond Fund",
+      "diff_summary": "disc+ half",
+      "only_in_disclosure": [
+        "half"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 4,
+      "sid": "6610",
+      "short": null,
+      "disclosure_fund_name": "UTI Credit Risk Fund - Half",
+      "parent_fund_name": "UTI - Credit Risk Fund.",
+      "diff_summary": "disc+ half",
+      "only_in_disclosure": [
+        "half"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 4,
+      "sid": "4729",
+      "short": null,
+      "disclosure_fund_name": "UTI Dynamic Bond Fund - Half",
+      "parent_fund_name": "UTI - Dynamic Bond Fund.",
+      "diff_summary": "disc+ half",
+      "only_in_disclosure": [
+        "half"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 4,
+      "sid": "11545",
+      "short": null,
+      "disclosure_fund_name": "UTI Floater Fund - Half",
+      "parent_fund_name": "UTI - Floater Fund",
+      "diff_summary": "disc+ half",
+      "only_in_disclosure": [
+        "half"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 4,
+      "sid": "880",
+      "short": null,
+      "disclosure_fund_name": "UTI Liquid Fund - Half",
+      "parent_fund_name": "UTI - Liquid Fund",
+      "diff_summary": "disc+ half",
+      "only_in_disclosure": [
+        "half"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 4,
+      "sid": "1194",
+      "short": null,
+      "disclosure_fund_name": "UTI Low Duration Fund - Half",
+      "parent_fund_name": "UTI Low Duration Fund",
+      "diff_summary": "disc+ half",
+      "only_in_disclosure": [
+        "half"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 4,
+      "sid": "9259",
+      "short": null,
+      "disclosure_fund_name": "UTI Medium Duration Fund - Half",
+      "parent_fund_name": "UTI Medium Duration Fund",
+      "diff_summary": "disc+ half",
+      "only_in_disclosure": [
+        "half"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 4,
+      "sid": "325",
+      "short": null,
+      "disclosure_fund_name": "UTI Medium to Long Duration Fund - Half",
+      "parent_fund_name": "UTI Medium to Long Duration Fund",
+      "diff_summary": "disc+ half",
+      "only_in_disclosure": [
+        "half"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 4,
+      "sid": "316",
+      "short": null,
+      "disclosure_fund_name": "UTI Money Market Fund - Half",
+      "parent_fund_name": "UTI - Money Market Fund",
+      "diff_summary": "disc+ half",
+      "only_in_disclosure": [
+        "half"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 4,
+      "sid": "2772",
+      "short": null,
+      "disclosure_fund_name": "UTI Short Duration Fund - Half",
+      "parent_fund_name": "UTI Short Duration Fund",
+      "diff_summary": "disc+ half",
+      "only_in_disclosure": [
+        "half"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 4,
+      "sid": "1191",
+      "short": null,
+      "disclosure_fund_name": "UTI Ultra Short Duration Fund - Half",
+      "parent_fund_name": "UTI Ultra Short Duration Fund",
+      "diff_summary": "disc+ half",
+      "only_in_disclosure": [
+        "half"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 5,
+      "sid": "12214",
+      "short": null,
+      "disclosure_fund_name": "Axis IT ETF",
+      "parent_fund_name": "Axis NIFTY IT ETF",
+      "diff_summary": "parent+ nifty",
+      "only_in_disclosure": [],
+      "only_in_parent": [
+        "nifty"
+      ]
+    },
+    {
+      "lev": 5,
+      "sid": "556",
+      "short": null,
+      "disclosure_fund_name": "Franklin India Money Market Fund Wkly R",
+      "parent_fund_name": "Franklin India Money Market Fund",
+      "diff_summary": "disc+ wkly r",
+      "only_in_disclosure": [
+        "wkly",
+        "r"
+      ],
+      "only_in_parent": []
+    },
+    {
+      "lev": 5,
+      "sid": "14148",
+      "short": "LIQUIDETF",
+      "disclosure_fund_name": "ICICI Prudential BSE Liquid Rate ETF - IDCW",
+      "parent_fund_name": "ICICI Prudential BSE Liquid Rate ETF - Growth",
+      "diff_summary": "disc+ idcw | parent+ growth",
+      "only_in_disclosure": [
+        "idcw"
+      ],
+      "only_in_parent": [
+        "growth"
+      ]
+    },
+    {
+      "lev": 5,
+      "sid": "14051",
+      "short": "MAN1DLTF",
+      "disclosure_fund_name": "Mirae Asset Nifty 1D Rate Liquid ETF - IDCW",
+      "parent_fund_name": "Mirae Asset Nifty 1D Rate Liquid ETF - Growth",
+      "diff_summary": "disc+ idcw | parent+ growth",
+      "only_in_disclosure": [
+        "idcw"
+      ],
+      "only_in_parent": [
+        "growth"
+      ]
+    },
+    {
+      "lev": 5,
+      "sid": "14285",
+      "short": "LIQUIDSBI",
+      "disclosure_fund_name": "SBI NIFTY 1D Rate Liquid ETF - IDCW",
+      "parent_fund_name": "SBI NIFTY 1D Rate Liquid ETF - Growth",
+      "diff_summary": "disc+ idcw | parent+ growth",
+      "only_in_disclosure": [
+        "idcw"
+      ],
+      "only_in_parent": [
+        "growth"
+      ]
+    }
+  ]
+}

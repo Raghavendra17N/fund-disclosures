@@ -1,0 +1,1748 @@
+{
+  "as_of": "2026-08-11T13:38:08.211856+00:00",
+  "summary": {
+    "aug_plans_total": 8643,
+    "aug_disclosure_mapped": 8381,
+    "aug_disclosure_unmapped_plans": 262,
+    "unique_unmapped_parents": 101,
+    "orphans": 1
+  },
+  "unmapped_parents": [
+    {
+      "fund_amfi_scheme_id": "709",
+      "parent_fund_name": "ICICI Prudential Savings Fund",
+      "amc_name": null,
+      "aug_plan_count": 13,
+      "sample_plan_names": [
+        "ICICI Prudential Savings Fund - Daily IDCW",
+        "ICICI Prudential Savings Fund - Direct Plan - Daily IDCW",
+        "ICICI Prudential Savings Fund - Direct Plan - Fortnightly IDCW",
+        "ICICI Prudential Savings Fund - Direct Plan - IDCW Others"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "ICICI Prudential Savings Fund",
+        "shortcodes": "RSF|SAVING",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "8471",
+      "parent_fund_name": "Nippon India Medium Duration Fund (Existing Number of Segregated Portfolios - 1)",
+      "amc_name": null,
+      "aug_plan_count": 13,
+      "sample_plan_names": [
+        "Nippon India Medium Duration  Fund - Segregated Portfolio 2 - Bonus Option",
+        "NIPPON INDIA MEDIUM DURATION FUND -  SEGREGATED PORTFOLIO 2 - DIRECT Plan - IDCW Option",
+        "NIPPON INDIA MEDIUM DURATION FUND -  SEGREGATED PORTFOLIO 2 - DIRECT Plan - QUARTERLY IDCW Option",
+        "NIPPON INDIA MEDIUM DURATION FUND -  SEGREGATED PORTFOLIO 2 - IDCW Option"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Nippon India Medium Duration Fund - Segregated Portfolio 2",
+        "shortcodes": "",
+        "score": 0.462,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "4266",
+      "parent_fund_name": "BANDHAN Dynamic Bond Fund",
+      "amc_name": null,
+      "aug_plan_count": 9,
+      "sample_plan_names": [
+        "BANDHAN Dynamic Bond Fund - Regular Plan B - Growth",
+        "BANDHAN Dynamic Bond Fund - Regular Plan B - Half Yearly IDCW",
+        "BANDHAN Dynamic Bond Fund - Regular Plan B - IDCW",
+        "BANDHAN Dynamic Bond Fund - Regular Plan B - Periodic IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "BANDHAN Dynamic Bond Fund",
+        "shortcodes": "IDF006",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "38",
+      "parent_fund_name": "DSP Savings Fund",
+      "amc_name": null,
+      "aug_plan_count": 9,
+      "sample_plan_names": [
+        "DSP Savings Fund - Direct Plan -  IDCW - Daily",
+        "DSP Savings Fund - Direct Plan - Growth",
+        "DSP Savings Fund - Direct Plan - IDCW",
+        "DSP Savings Fund - Direct Plan - IDCW - Monthly"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "DSP Savings Fund",
+        "shortcodes": "REGULARSAVINGS|SAVINGS",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "4267",
+      "parent_fund_name": "Bandhan Gilt   Fund",
+      "amc_name": null,
+      "aug_plan_count": 8,
+      "sample_plan_names": [
+        "Bandhan Gilt Fund - Direct Plan - Annual IDCW",
+        "Bandhan Gilt Fund - Direct Plan - Half Yearly IDCW",
+        "Bandhan Gilt Fund - Direct Plan - IDCW",
+        "Bandhan Gilt Fund - Direct Plan - Periodic IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Bandhan Gilt Fund",
+        "shortcodes": "IDF007",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "539",
+      "parent_fund_name": "Aditya Birla Sun Life Savings Fund",
+      "amc_name": null,
+      "aug_plan_count": 5,
+      "sample_plan_names": [
+        "Aditya Birla Sun Life Savings Fund - Growth - Regular Plan",
+        "Aditya Birla Sun Life Savings Fund-DIRECT - DAILY IDCW",
+        "Aditya Birla Sun Life Savings Fund-DIRECT - WEEKLY IDCW",
+        "Aditya Birla Sun Life Savings Fund-Regular - DAILY IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Aditya Birla Sun Life Savings Fund",
+        "shortcodes": "BBP|MIP25",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "12150",
+      "parent_fund_name": "Sundaram Large Cap Fund ( Formerly Know as Sundaram Blue Chip Fund)",
+      "amc_name": null,
+      "aug_plan_count": 5,
+      "sample_plan_names": [
+        "Sundaram Large Cap Fund (Formerly Known as Sundaram Blue Chip  Fund)  Direct Plan - Reinvestment of Income Distribution cum Capital Withdrawal (IDCW)",
+        "Sundaram Large Cap Fund (Formerly Known as Sundaram Blue Chip Fund)  Regular Plan - Payout of Income Distribution cum Capital Withdrawal (IDCW)",
+        "Sundaram Large Cap Fund (Formerly Known as Sundaram Blue Chip Fund) Direct Plan - Payout of Income Distribution cum Capital Withdrawal (IDCW)",
+        "Sundaram Large Cap Fund (Formerly Known as Sundaram Blue Chip Fund) Regular Plan - Reinvestment of Income Distribution cum Capital Withdrawal (IDCW)"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Sundaram Arbitrage Fund (Formerly Know as Principal Arbitrage Fund",
+        "shortcodes": "",
+        "score": 0.455,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14538",
+      "parent_fund_name": "ALPHAGREP LIQUID OMNI FOF",
+      "amc_name": null,
+      "aug_plan_count": 4,
+      "sample_plan_names": [
+        "AlphaGrep Liquid Omni FoF- Direct Growth",
+        "AlphaGrep Liquid Omni FoF- Direct IDCW",
+        "AlphaGrep Liquid Omni FoF- Regular Growth",
+        "AlphaGrep Liquid Omni FoF- Regular IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": null
+    },
+    {
+      "fund_amfi_scheme_id": "14512",
+      "parent_fund_name": "Baroda BNP Paribas Services Fund",
+      "amc_name": null,
+      "aug_plan_count": 4,
+      "sample_plan_names": [
+        "Baroda BNP Paribas Services Fund - Direct Growth Option",
+        "Baroda BNP Paribas Services Fund - Direct IDCW Payout option",
+        "Baroda BNP Paribas Services Fund - Regular Growth option",
+        "Baroda BNP Paribas Services Fund - Regular IDCW Payout"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "BARODA BNP PARIBAS ARBITRAGE FUND",
+        "shortcodes": "T0ME18",
+        "score": 0.667,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "1700",
+      "parent_fund_name": "ICICI Prudential Money Market Fund - Cash Option",
+      "amc_name": null,
+      "aug_plan_count": 4,
+      "sample_plan_names": [
+        "ICICI Prudential Money Market Fund Option - Daily IDCW",
+        "ICICI Prudential Money Market Fund Option - Growth",
+        "ICICI Prudential Money Market Fund Option - IDCW Others",
+        "ICICI Prudential Money Market Fund Option - Weekly IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "ICICI Prudential Money Market Fund",
+        "shortcodes": "",
+        "score": 0.714,
+        "status": "unmapped_open"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14501",
+      "parent_fund_name": "NJ Momentum Fund",
+      "amc_name": null,
+      "aug_plan_count": 4,
+      "sample_plan_names": [
+        "NJ Momentum Fund - Direct Growth",
+        "NJ Momentum Fund - Direct IDCW",
+        "NJ Momentum Fund - Regular Growth",
+        "NJ Momentum Fund - Regular IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": null
+    },
+    {
+      "fund_amfi_scheme_id": "14502",
+      "parent_fund_name": "NJ Value Fund",
+      "amc_name": null,
+      "aug_plan_count": 4,
+      "sample_plan_names": [
+        "NJ Value Fund - Direct Growth",
+        "NJ Value Fund - Direct IDCW",
+        "NJ Value Fund - Regular Growth",
+        "NJ Value Fund - Regular IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": null
+    },
+    {
+      "fund_amfi_scheme_id": "14511",
+      "parent_fund_name": "The Wealth Company Mid Cap Fund",
+      "amc_name": null,
+      "aug_plan_count": 4,
+      "sample_plan_names": [
+        "The Wealth Company Mid Cap Fund- Direct- IDCW",
+        "The Wealth Company Mid Cap Fund- Direct-Growth",
+        "The Wealth Company Mid Cap Fund- Regular-Growth",
+        "The Wealth Company Mid Cap Fund-Regular-IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "The Wealth Company Large & Mid Cap Fund",
+        "shortcodes": "WCLM",
+        "score": 0.857,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "6123",
+      "parent_fund_name": "Aditya Birla Sun Life Gold Fund",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Aditya Birla Sun Life Gold Fund-DIRECT - IDCW",
+        "Aditya Birla Sun Life Gold Fund-Growth",
+        "Aditya Birla Sun Life Gold Fund-REGULAR - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Aditya Birla Sun Life Gold Fund",
+        "shortcodes": "GOLDFOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "12700",
+      "parent_fund_name": "Aditya Birla Sun Life Silver ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Aditya Birla Sun Life Silver ETF FOF-Direct IDCW",
+        "Aditya Birla Sun Life Silver ETF FOF-Regular Growth",
+        "Aditya Birla Sun Life Silver ETF FOF-Regular IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Aditya Birla Sun Life Silver ETF FOF",
+        "shortcodes": "",
+        "score": 1.0,
+        "status": "unmapped_open"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "5741",
+      "parent_fund_name": "Axis Gold Fund",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Axis Gold Fund - Direct Plan - IDCW",
+        "Axis Gold Fund - Regular Plan - Growth Option",
+        "Axis Gold Fund - Regular Plan - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Axis Gold Fund",
+        "shortcodes": "AXISGLD",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "13148",
+      "parent_fund_name": "Axis Silver Fund of Fund",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Axis Silver Fund of Fund - Regular Plan - IDCW Option",
+        "Axis Silver Fund of Fund -Regular Plan- Growth Option",
+        "Axis Silver Fund of Fund- Direct Plan - IDCW Option"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Axis Silver Fund of Fund",
+        "shortcodes": "AXISSIL",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "12357",
+      "parent_fund_name": "BHARAT Bond ETF FOF - April 2032",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "BHARAT Bond ETF FOF - April 2032 Direct Plan Dividend",
+        "BHARAT Bond ETF FOF - April 2032 Regular Plan Dividend",
+        "BHARAT Bond ETF FOF - April 2032 Regular Plan Growth"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "BHARAT Bond ETF - April 2032",
+        "shortcodes": "",
+        "score": 0.833,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "13246",
+      "parent_fund_name": "BHARAT Bond ETF FOF - April 2033",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "BHARAT Bond ETF FOF - April 2033 - Direct Plan - IDCW",
+        "BHARAT Bond ETF FOF - April 2033 - Regular Plan - Growth",
+        "BHARAT Bond ETF FOF - April 2033 - Regular Plan - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "BHARAT Bond ETF FOF - April 2033",
+        "shortcodes": "",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "12134",
+      "parent_fund_name": "BHARAT Bond FOF- April 2031",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "BHARAT Bond FOF - April 2031 - Direct Plan - IDCW Option",
+        "BHARAT Bond FOF - April 2031 - Regular Plan - IDCW Option",
+        "BHARAT Bond FOF- April 2031- Regular Plan- Growth Option"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "BHARAT Bond FOF - April 2031",
+        "shortcodes": "",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "12060",
+      "parent_fund_name": "Bharat Bond FOF - April 2030",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "BHARAT Bond FOF - April 2030 - Direct Plan - IDCW Option",
+        "Bharat Bond FOF - April 2030 - Regular Plan - Growth Option",
+        "BHARAT Bond FOF - April 2030 - Regular Plan - IDCW Option"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Bharat Bond FOF - April 2030",
+        "shortcodes": "EDFF33",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "13801",
+      "parent_fund_name": "DSP Gold ETF Fund of Fund",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "DSP Gold ETF Fund of Fund - Direct - IDCW",
+        "DSP Gold ETF Fund of Fund - Regular - Growth",
+        "DSP Gold ETF Fund of Fund - Regular - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "DSP Gold ETF Fund of Fund",
+        "shortcodes": "GOLDETFFOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14186",
+      "parent_fund_name": "DSP Silver ETF Fund of Fund",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "DSP Silver ETF Fund of Fund - Direct - IDCW",
+        "DSP Silver ETF Fund of Fund - Regular - Growth",
+        "DSP Silver ETF Fund of Fund - Regular - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "DSP Silver ETF Fund of Fund",
+        "shortcodes": "SILVERETFFOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14422",
+      "parent_fund_name": "Groww BSE Hospitals ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Groww BSE Hospitals ETF FOF Direct IDCW",
+        "Groww BSE Hospitals ETF FOF Regular Growth",
+        "Groww BSE Hospitals ETF FOF Regular IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Groww BSE Hospitals ETF FOF",
+        "shortcodes": "IB64",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14266",
+      "parent_fund_name": "Groww BSE Power ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Groww BSE Power ETF FOF Direct IDCW",
+        "Groww BSE Power ETF FOF Regular Growth",
+        "Groww BSE Power ETF FOF Regular IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Groww BSE Power ETF FOF",
+        "shortcodes": "IB46",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14031",
+      "parent_fund_name": "Groww Gold ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Groww Gold ETF FOF - DIRECT - IDCW",
+        "Groww Gold ETF FOF - REGULAR - GROWTH",
+        "Groww Gold ETF FOF - REGULAR - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Groww Gold ETF FOF",
+        "shortcodes": "IB28",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14130",
+      "parent_fund_name": "Groww Nifty 200 ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Groww Nifty 200 ETF FOF - Direct - IDCW",
+        "Groww Nifty 200 ETF FOF - Regular - Growth",
+        "Groww Nifty 200 ETF FOF - Regular - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Groww Nifty 200 ETF FOF",
+        "shortcodes": "IB34",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14177",
+      "parent_fund_name": "Groww Nifty 500 Momentum 50 ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Groww Nifty 500 Momentum 50 ETF FOF - Direct Plan - IDCW",
+        "Groww Nifty 500 Momentum 50 ETF FOF - Regular Plan - IDCW",
+        "Groww Nifty 500 Momentum 50 ETF FOF - Regular Plan- Growth"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Groww Nifty 500 Momentum 50 ETF FOF",
+        "shortcodes": "IB36",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14322",
+      "parent_fund_name": "Groww Nifty Capital Markets ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Groww Nifty Capital Markets ETF FOF Direct IDCW",
+        "Groww Nifty Capital Markets ETF FOF Regular Growth",
+        "Groww Nifty Capital Markets ETF FOF Regular IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Groww Nifty Capital Markets ETF FOF",
+        "shortcodes": "IB56",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "13967",
+      "parent_fund_name": "Groww Nifty EV & New Age Automotive ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Groww Nifty EV & New Age Automotive ETF FOF - Direct Plan - IDCW",
+        "Groww Nifty EV & New Age Automotive ETF FOF - Regular Plan - Growth",
+        "Groww Nifty EV & New Age Automotive ETF FOF - Regular Plan - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Groww Nifty EV & New Age Automotive ETF FOF",
+        "shortcodes": "IB22",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14014",
+      "parent_fund_name": "Groww Nifty India Defence ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Groww Nifty India Defence ETF FOF - Direct - IDCW",
+        "Groww Nifty India Defence ETF FOF - Regular - Growth",
+        "Groww Nifty India Defence ETF FOF - Regular - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Groww Nifty India Defence ETF FOF",
+        "shortcodes": "IB26",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14229",
+      "parent_fund_name": "Groww Nifty India Internet ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Groww Nifty India Internet ETF FOF - Direct - IDCW",
+        "Groww Nifty India Internet ETF FOF - Regular - Growth",
+        "Groww Nifty India Internet ETF FOF - Regular - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Groww Nifty India Internet ETF FOF",
+        "shortcodes": "IB42",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14409",
+      "parent_fund_name": "Groww Nifty PSE ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Groww Nifty PSE ETF FOF Direct IDCW",
+        "Groww Nifty PSE ETF FOF Regular Growth",
+        "Groww Nifty PSE ETF FOF Regular IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Groww Nifty PSE ETF FOF",
+        "shortcodes": "IB62",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14196",
+      "parent_fund_name": "Groww Silver ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Groww Silver ETF FOF - Direct - IDCW",
+        "Groww Silver ETF FOF - Regular - Growth",
+        "Groww Silver ETF FOF - Regular - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Groww Silver ETF FOF",
+        "shortcodes": "IB39",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "1450",
+      "parent_fund_name": "HDFC Multi-Asset Allocation Fund",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "HDFC Multi-Asset Fund - Growth Option",
+        "HDFC Multi-Asset Fund - IDCW Option",
+        "HDFC Multi-Asset Fund - IDCW Option - Direct Plan"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "HDFC Multi - Asset Fund",
+        "shortcodes": "DERIVATIVEMY2005",
+        "score": 0.8,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14454",
+      "parent_fund_name": "HSBC Gold ETF Fund of Fund",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "HSBC Gold ETF Fund of fund - Direct IDCW",
+        "HSBC Gold ETF Fund of fund - Regular Growth",
+        "HSBC Gold ETF Fund of fund - Regular IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "HSBC Gold ETF Fund of fund",
+        "shortcodes": "HOGFOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14150",
+      "parent_fund_name": "Mirae Asset BSE 200 Equal Weight ETF Fund of Fund",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Mirae Asset BSE 200 Equal Weight ETF Fund of Fund - Direct Plan - IDCW",
+        "Mirae Asset BSE 200 Equal Weight ETF Fund of Fund - Regular Plan - Growth",
+        "Mirae Asset BSE 200 Equal Weight ETF Fund of Fund - Regular Plan - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Mirae Asset BSE 200 Equal Weight ETF Fund of Fund",
+        "shortcodes": "200EWFOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14418",
+      "parent_fund_name": "Mirae Asset BSE India Defence ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Mirae Asset BSE India Defence ETF FOF - Direct Plan - IDCW",
+        "Mirae Asset BSE India Defence ETF FOF - Regular Plan - Growth",
+        "Mirae Asset BSE India Defence ETF FOF - Regular Plan - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Mirae Asset BSE India Defence ETF FOF",
+        "shortcodes": "DEFENFOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14152",
+      "parent_fund_name": "Mirae Asset BSE Select IPO ETF Fund of Fund",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Mirae Asset BSE Select IPO ETF Fund of Fund - Direct Plan - IDCW",
+        "Mirae Asset BSE Select IPO ETF Fund of Fund - Regular Plan - Growth",
+        "Mirae Asset BSE Select IPO ETF Fund of Fund - Regular Plan - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Mirae Asset BSE Select IPO ETF Fund of Fund",
+        "shortcodes": "IPOFOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14039",
+      "parent_fund_name": "Mirae Asset Gold ETF Fund of Fund",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Mirae Asset Gold ETF Fund of Fund - Direct Plan - IDCW",
+        "Mirae Asset Gold ETF Fund of Fund - Regular Plan - Growth",
+        "Mirae Asset Gold ETF Fund of Fund - Regular Plan - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Mirae Asset Gold ETF Fund of Fund",
+        "shortcodes": "MGOLDFOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "12164",
+      "parent_fund_name": "Mirae Asset Nifty 100 ESG Sector Leaders Fund of Fund",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Mirae Asset Nifty 100 ESG Sector Leaders Fund  of Fund Direct IDCW",
+        "Mirae Asset Nifty 100 ESG Sector Leaders Fund  of Fund Regular IDCW",
+        "Mirae Asset Nifty 100 ESG Sector Leaders Fund of Fund Regular Growth"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Mirae Asset Nifty 100 ESG Sector Leaders Fund of Fund",
+        "shortcodes": "MASLF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "12702",
+      "parent_fund_name": "Mirae Asset Nifty India Manufacturing ETF Fund of Fund",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Mirae Asset Nifty India Manufacturing ETF FOF - Direct Plan- IDCW",
+        "Mirae Asset Nifty India Manufacturing ETF FOF - Regular Plan - Growth",
+        "Mirae Asset Nifty India Manufacturing ETF FOF - Regular Plan - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Mirae Asset Nifty India Manufacturing ETF",
+        "shortcodes": "MTETF",
+        "score": 0.75,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14093",
+      "parent_fund_name": "Mirae Asset Nifty India New Age Consumption ETF Fund of Fund",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Mirae Asset Nifty India New Age Consumption ETF Fund of Fund - Direct Plan - IDCW",
+        "Mirae Asset Nifty India New Age Consumption ETF Fund of Fund - Regular Plan - Growth",
+        "Mirae Asset Nifty India New Age Consumption ETF Fund of Fund - Regular Plan - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Mirae Asset Nifty India New Age Consumption ETF Fund of Fund",
+        "shortcodes": "B2CETFOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14430",
+      "parent_fund_name": "Mirae Asset Nifty Metal ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Mirae Asset Nifty Metal ETF FOF - Direct Plan - IDCW",
+        "Mirae Asset Nifty Metal ETF FOF - Regular Plan - Growth",
+        "Mirae Asset Nifty Metal ETF FOF - Regular Plan - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Mirae Asset Nifty Metal ETF FOF",
+        "shortcodes": "METALFOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "13926",
+      "parent_fund_name": "Mirae Asset Nifty MidSmallcap400 Momentum Quality 100 ETF Fund of Fund",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Mirae Asset Nifty MidSmallcap400 Momentum Quality 100 ETF Fund of Fund - Direct Plan - IDCW",
+        "Mirae Asset Nifty MidSmallcap400 Momentum Quality 100 ETF Fund of Fund - Regular Plan - Growth",
+        "Mirae Asset Nifty MidSmallcap400 Momentum Quality 100 ETF Fund of Fund - Regular Plan - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Mirae Asset Nifty MidSmallcap400 Momentum Quality 100 ETF Fund of Fund",
+        "shortcodes": "MNSFOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "13876",
+      "parent_fund_name": "Mirae Asset Nifty Smallcap 250 Momentum Quality 100 ETF Fund of Fund",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Mirae Asset Nifty Smallcap 250 Momentum Quality 100 ETF Fund of Fund - Direct Plan - IDCW",
+        "Mirae Asset Nifty Smallcap 250 Momentum Quality 100 ETF Fund of Fund - Regular Plan - Growth",
+        "Mirae Asset Nifty Smallcap 250 Momentum Quality 100 ETF Fund of Fund - Regular Plan - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Mirae Asset Nifty Smallcap 250 Momentum Quality 100 ETF Fund of Fund",
+        "shortcodes": "SMQFOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "13949",
+      "parent_fund_name": "Mirae Asset Nifty200 Alpha 30 ETF Fund of Fund",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Mirae Asset Nifty200 Alpha 30 ETF Fund of Fund - Direct Plan - IDCW",
+        "Mirae Asset Nifty200 Alpha 30 ETF Fund of Fund - Regular Plan - Growth",
+        "Mirae Asset Nifty200 Alpha 30 ETF Fund of Fund - Regular Plan - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Mirae Asset Nifty200 Alpha 30 ETF Fund of Fund",
+        "shortcodes": "ALPHAFOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14450",
+      "parent_fund_name": "Mirae Asset Silver ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Mirae Asset Silver ETF FOF - Direct Plan - IDCW",
+        "Mirae Asset Silver ETF FOF - Regular Plan - Growth",
+        "Mirae Asset Silver ETF FOF - Regular Plan - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Mirae Asset Silver ETF FOF",
+        "shortcodes": "SILVRFOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "11819",
+      "parent_fund_name": "Nippon India Nifty Next 50 Junior BeES FoF",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "NIPPON INDIA NIFTY NEXT 50 JUNIOR BEES FOF - DIRECT Plan - IDCW Option",
+        "Nippon India Nifty Next 50 Junior BeES FoF - Growth Plan - Growth Option",
+        "NIPPON INDIA NIFTY NEXT 50 JUNIOR BEES FOF - IDCW Option"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Nippon India Nifty Next 50 Junior BeES FoF",
+        "shortcodes": "RJ",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "12694",
+      "parent_fund_name": "Nippon India Silver ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Nippon India Silver ETF FOF- Direct Plan-IDCW Option",
+        "Nippon India Silver ETF FOF- Regular Plan-IDCW Option",
+        "Nippon India Silver ETF FOF-Regular Plan- Growth Option"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Nippon India Silver ETF FOF",
+        "shortcodes": "SO",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "5636",
+      "parent_fund_name": "SBI GOLD FUND",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "SBI Gold Fund - Direct Plan - Income Distribution cum Capital Withdrawal Option (IDCW)",
+        "SBI Gold Fund - Regular Plan - Income Distribution cum Capital Withdrawal Option (IDCW)",
+        "SBI GOLD FUND REGULAR PLAN - GROWTH"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "SBI GOLD FUND",
+        "shortcodes": "SGF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14399",
+      "parent_fund_name": "The Wealth Company Gold ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "THE WEALTH COMPANY GOLD ETF FOF DIRECT IDCW",
+        "THE WEALTH COMPANY GOLD ETF FOF REGULAR GROWTH",
+        "THE WEALTH COMPANY GOLD ETF FOF REGULAR IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "THE WEALTH COMPANY GOLD ETF FOF",
+        "shortcodes": "WCGF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14136",
+      "parent_fund_name": "Union Gold ETF Fund of Fund",
+      "amc_name": null,
+      "aug_plan_count": 3,
+      "sample_plan_names": [
+        "Union Gold ETF Fund of Fund - Direct Plan - IDCW Option",
+        "Union Gold ETF Fund of Fund - Regular Plan - Growth Option",
+        "Union Gold ETF Fund of Fund - Regular Plan - IDCW Option"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Union Gold ETF Fund of Fund",
+        "shortcodes": "GOLDFOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14510",
+      "parent_fund_name": "Abakkus Large & Mid Cap Fund",
+      "amc_name": null,
+      "aug_plan_count": 2,
+      "sample_plan_names": [
+        "Abakkus Large & Mid Cap Fund - Direct  Plan - Growth",
+        "Abakkus Large & Mid Cap Fund - Regular Plan - Growth"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Axis Large & Mid Cap Fund",
+        "shortcodes": "AXISGOF",
+        "score": 0.667,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14255",
+      "parent_fund_name": "Edelweiss Income Plus Arbitrage Omni Fund of Funds",
+      "amc_name": null,
+      "aug_plan_count": 2,
+      "sample_plan_names": [
+        "Edelweiss Income Plus Arbitrage Active Fund of Funds - Direct-Dividend-Payout",
+        "Edelweiss Income Plus Arbitrage Active Fund of Funds - Regular-Growth"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Edelweiss Income Plus Arbitrage Active Fund of Funds",
+        "shortcodes": "",
+        "score": 0.778,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14520",
+      "parent_fund_name": "HDFC Nifty Metal ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 2,
+      "sample_plan_names": [
+        "HDFC Nifty Metal ETF FOF - Direct Plan - Growth Option",
+        "HDFC Nifty Metal ETF FOF - Growth Option"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "HDFC Nifty Metal ETF - Growth",
+        "shortcodes": "HDFCMETETF",
+        "score": 0.667,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "11571",
+      "parent_fund_name": "HSBC Aggressive Hybrid Active FOF (erstwhile HSBC Managed Solutions India - Growth fund)",
+      "amc_name": null,
+      "aug_plan_count": 2,
+      "sample_plan_names": [
+        "HSBC Aggressive Hybrid Active FOF - Dividend Direct",
+        "HSBC Aggressive Hybrid Active FOF - Growth"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "HSBC Aggressive Hybrid Active FOF",
+        "shortcodes": "HOMSGS",
+        "score": 0.455,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "5241",
+      "parent_fund_name": "Kotak Gold Fund",
+      "amc_name": null,
+      "aug_plan_count": 2,
+      "sample_plan_names": [
+        "Kotak Gold Fund Growth",
+        "Kotak Gold Fund Payout of Income Distribution cum capital withdrawal option"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Kotak Gold Fund",
+        "shortcodes": "GOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "12200",
+      "parent_fund_name": "Motilal Oswal Asset Allocation Fund of Fund- Conservative",
+      "amc_name": null,
+      "aug_plan_count": 2,
+      "sample_plan_names": [
+        "Motilal Oswal Asset Allocation FOF- C- Direct Growth",
+        "Motilal Oswal Asset Allocation FOF- C- Regular Growth"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Motilal Oswal Multi Asset Passive Fund of Fund",
+        "shortcodes": "",
+        "score": 0.556,
+        "status": "unmapped_open"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "13954",
+      "parent_fund_name": "SBI Silver ETF Fund of Fund",
+      "amc_name": null,
+      "aug_plan_count": 2,
+      "sample_plan_names": [
+        "SBI Silver ETF Fund of Fund- Direct Plan - Income Distribution Cum Capital Withdrawal Option (IDCW)",
+        "SBI Silver ETF Fund of Fund- Regular Plan - Growth"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "SBI Silver ETF Fund of Fund",
+        "shortcodes": "",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14297",
+      "parent_fund_name": "ANGEL ONE GOLD ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "ANGEL ONE GOLD ETF FOF - REGULAR GROWTH"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "ANGEL ONE GOLD ETF FOF",
+        "shortcodes": "ANGELONEGOLDETFFOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14425",
+      "parent_fund_name": "ANGEL ONE SILVER ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "ANGEL ONE SILVER ETF FOF -REGULAR GROWTH"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "ANGEL ONE SILVER ETF FOF",
+        "shortcodes": "ANGELONESILVERETFFOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "3532",
+      "parent_fund_name": "BANDHAN Dynamic Bond  Fund",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "BANDHAN Dynamic Bond Fund - Regular Plan B - Annual IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "BANDHAN Dynamic Bond Fund",
+        "shortcodes": "IDF006",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "3475",
+      "parent_fund_name": "Bandhan Gilt  Fund",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "Bandhan Gilt Fund - Regular Plan - Annual IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Bandhan Gilt Fund",
+        "shortcodes": "IDF007",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "3560",
+      "parent_fund_name": "Bandhan Gilt Fund  with 10 year constant duration Fund",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "Bandhan Gilt Fund with 10 year constant duration Fund - Regular Plan - Growth"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Bandhan Gilt Fund with 10 year constant duration Fund",
+        "shortcodes": "IDF009",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "4223",
+      "parent_fund_name": "Bandhan Gilt Fund with  10 year constant duration Fund",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "Bandhan Gilt Fund with 10 year constant duration Fund - Regular Plan - Weekly IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Bandhan Gilt Fund with 10 year constant duration Fund",
+        "shortcodes": "IDF009",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "3520",
+      "parent_fund_name": "Bandhan Gilt Fund with 10 year constant duration Fund",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "Bandhan Gilt Fund with 10 year constant duration Fund - Regular Plan - Quarterly IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Bandhan Gilt Fund with 10 year constant duration Fund",
+        "shortcodes": "IDF009",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14398",
+      "parent_fund_name": "Bandhan Gold ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "Bandhan Gold ETF FOF-Regular-Growth"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Bandhan Gold ETF FOF",
+        "shortcodes": "IDF319",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "3523",
+      "parent_fund_name": "Bandhan Money Market   Fund",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "BANDHAN Money Market Fund - Regular Plan - Daily IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Bandhan Money Market Fund",
+        "shortcodes": "IDF003",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "3563",
+      "parent_fund_name": "Bandhan Money Market  Fund",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "BANDHAN Money Market Fund - Regular Plan - Growth"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Bandhan Money Market Fund",
+        "shortcodes": "IDF003",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "3564",
+      "parent_fund_name": "Bandhan Money Market Fund",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "BANDHAN Money Market Fund - Regular Plan - Monthly IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Bandhan Money Market Fund",
+        "shortcodes": "IDF003",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14400",
+      "parent_fund_name": "Bandhan Silver ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "Bandhan Silver ETF FOF-Regular-Growth"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Bandhan Silver ETF FOF",
+        "shortcodes": "IDF320",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14284",
+      "parent_fund_name": "Baroda BNP Paribas Gold ETF Fund of Fund",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "Baroda BNP Paribas Gold ETF Fund of Funds Regular Growth"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Baroda BNP Paribas Gold ETF Fund of Funds",
+        "shortcodes": "T0ME46",
+        "score": 0.875,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14525",
+      "parent_fund_name": "DSP BSE MidSmall Private Banks ETF",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "DSP BSE MidSmall Private Banks ETF"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "DSP BSE Top 10 Banks ETF",
+        "shortcodes": "BSETOP10BANKSETF",
+        "score": 0.5,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14527",
+      "parent_fund_name": "Edelweiss BSE LargeMid (60:40) Stable dividend 50 ETF",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "Edelweiss BSE LargeMid (60:40) Stable Dividend 50 ETF"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": null
+    },
+    {
+      "fund_amfi_scheme_id": "14524",
+      "parent_fund_name": "Edelweiss BSE Top 10 Bank ETF",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "Edelweiss BSE Top 10 Bank ETF"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "DSP BSE Top 10 Banks ETF",
+        "shortcodes": "BSETOP10BANKSETF",
+        "score": 0.5,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14426",
+      "parent_fund_name": "Edelweiss Gold ETF Fund of Fund",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "Edelweiss Gold ETF Fund of Fund Regular Plan Growth Option"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Edelweiss Gold ETF Fund of Fund",
+        "shortcodes": "EGEFOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14379",
+      "parent_fund_name": "Edelweiss Silver ETF Fund of Fund",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "Edelweiss Silver ETF Fund of Fund - Regular Plan Growth Option"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Edelweiss Silver ETF Fund of Fund",
+        "shortcodes": "ESEFOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "1160",
+      "parent_fund_name": "Franklin India Liquid Fund- Institution",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "Franklin India Liquid Fund - Institutional Plan - Daily - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Franklin India Liquid Fund",
+        "shortcodes": "FILF",
+        "score": 0.8,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "1021",
+      "parent_fund_name": "ICICI Prudential Aggressive Hybrid Active FOF - Dividend Option",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "ICICI Prudential Aggressive Hybrid Active FOF - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "ICICI Prudential Aggressive Hybrid Active FOF",
+        "shortcodes": "VERAGG",
+        "score": 0.75,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "12340",
+      "parent_fund_name": "ICICI Prudential BSE 500 ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "ICICI Prudential BSE 500 ETF FOF - Direct Plan - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "ICICI Prudential BSE 500 ETF FOF",
+        "shortcodes": "SNPFOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14518",
+      "parent_fund_name": "ICICI Prudential BSE Insurance ETF",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "ICICI Prudential BSE Insurance ETF"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "ICICI Prudential BSE 500 ETF",
+        "shortcodes": "SPBSEETF",
+        "score": 0.667,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "1027",
+      "parent_fund_name": "ICICI Prudential Diversified Debt Strategy Active FOF - Dividend option",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "ICICI Prudential Diversified Debt Strategy Active FOF - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "ICICI Prudential Diversified Debt Strategy Active FOF",
+        "shortcodes": "VERCAU",
+        "score": 0.778,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "1023",
+      "parent_fund_name": "ICICI Prudential Dynamic Asset Allocation Active FOF- Dividend",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "ICICI Prudential Dynamic Asset Allocation Active FOF - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "ICICI Prudential Dynamic Asset Allocation Active FOF",
+        "shortcodes": "MODER",
+        "score": 0.875,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "5713",
+      "parent_fund_name": "ICICI Prudential Gold ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "ICICI Prudential Gold ETF FOF - Direct Plan - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "ICICI Prudential Gold ETF FOF",
+        "shortcodes": "REGGOLD",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "1025",
+      "parent_fund_name": "ICICI Prudential Income plus Arbitrage Omni FOF - Dividend Option",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "ICICI Prudential Income plus Arbitrage Omni FOF - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "ICICI Prudential Income plus Arbitrage Omni FOF",
+        "shortcodes": "CAUT",
+        "score": 0.778,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "1019",
+      "parent_fund_name": "ICICI Prudential Multi Sector Passive FOF-Dividend Option",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "ICICI Prudential Multi Sector Passive FOF - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "ICICI Prudential Multi Sector Passive FOF",
+        "shortcodes": "AGGRES",
+        "score": 0.75,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "12220",
+      "parent_fund_name": "ICICI Prudential Nifty 100 Low Volatility 30 ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "ICICI Prudential Nifty 100 Low Volatility 30 ETF FOF - Direct Plan - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "ICICI Prudential Nifty 100 Low Volatility 30 ETF FOF",
+        "shortcodes": "NV30FOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14154",
+      "parent_fund_name": "ICICI Prudential Nifty EV & New Age Automotive ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "ICICI Prudential Nifty EV & New Age Automotive ETF FOF - Direct Plan - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "ICICI Prudential Nifty EV & New Age Automotive ETF FOF",
+        "shortcodes": "NIFEVFOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "538",
+      "parent_fund_name": "ICICI Prudential Short Term Fund - Div. Option",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "ICICI Prudential Short Term Fund - Monthly IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "ICICI Prudential Short Term Fund",
+        "shortcodes": "SHTERMBOND",
+        "score": 0.714,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "12698",
+      "parent_fund_name": "ICICI Prudential Silver ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "ICICI Prudential Silver ETF FOF - Direct Plan - IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "ICICI Prudential Silver ETF FOF",
+        "shortcodes": "SILFOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "489",
+      "parent_fund_name": "JM Liquid Fund - Daily Dividend Option",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "JM Liquid Fund (Regular) - Daily IDCW"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "JM Liquid Fund",
+        "shortcodes": "JMLIQUIDFUND",
+        "score": 0.5,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "13605",
+      "parent_fund_name": "Kotak Silver ETF Fund of Fund",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "Kotak Silver ETF Fund of Fund - Regular Plan - Growth Option"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Kotak Silver ETF Fund of Fund",
+        "shortcodes": "SOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14508",
+      "parent_fund_name": "Mirae Asset BSE Midcap 150 Momentum 30 ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "Mirae Asset BSE Midcap 150 Momentum 30 ETF FOF - Regular Plan - Growth"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Mirae Asset BSE Midcap 150 Momentum 30 ETF FOF",
+        "shortcodes": "",
+        "score": 1.0,
+        "status": "unmapped_open"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "12298",
+      "parent_fund_name": "Mirae Asset S&P 500 Top 50 ETF Fund of Fund",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "Mirae Asset S&P 500 Top 50 ETF Fund of Fund Regular Growth"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Mirae Asset S&P 500 Top 50 ETF Fund of Fund",
+        "shortcodes": "MASPF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "11628",
+      "parent_fund_name": "Motilal Oswal Nasdaq 100 Fund of Fund",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "Motilal Oswal Nasdaq 100 Fund of Fund- Regular Plan Growth"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Motilal Oswal Nasdaq 100 Fund of Fund",
+        "shortcodes": "YO13",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14534",
+      "parent_fund_name": "Motilal Oswal Nifty Metal ETF",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "Motilal Oswal Nifty Metal ETF"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Motilal Oswal Nifty 100 ETF",
+        "shortcodes": "YO83",
+        "score": 0.667,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "14535",
+      "parent_fund_name": "Motilal Oswal Nifty Oil & Gas ETF",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "Motilal Oswal Nifty Oil & Gas ETF"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Motilal Oswal Nifty 100 ETF",
+        "shortcodes": "YO83",
+        "score": 0.571,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "5402",
+      "parent_fund_name": "Quantum Gold ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "Quantum Gold ETF FOF - Regular Plan Growth Option"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Quantum Gold ETF FOF",
+        "shortcodes": "QGSF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "13087",
+      "parent_fund_name": "Quantum Nifty 50 ETF FOF",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "Quantum Nifty 50 ETF FOF - Regular Plan - Growth"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Quantum Nifty 50 ETF FOF",
+        "shortcodes": "QNFOF",
+        "score": 1.0,
+        "status": "mapped"
+      }
+    },
+    {
+      "fund_amfi_scheme_id": "10474",
+      "parent_fund_name": "Taurus Investor Education Pool (Greater than 3 yrs)",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "Taurus Investor Education Pool - Unclaimed Dividend - Growth"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": {
+        "base_name": "Taurus Investor Education Pool - Unclaimed Dividend",
+        "shortcodes": "",
+        "score": 0.4,
+        "status": "unmapped_open"
+      }
+    }
+  ],
+  "orphans": [
+    {
+      "fund_amfi_scheme_id": null,
+      "parent_fund_name": "Taurus Investor Education Pool - Unclaimed Redemption - Growth",
+      "amc_name": null,
+      "aug_plan_count": 1,
+      "sample_plan_names": [
+        "Taurus Investor Education Pool - Unclaimed Redemption - Growth"
+      ],
+      "in_disclosure_map": false,
+      "catalog_near_miss": null,
+      "note": "true orphan / leave"
+    }
+  ]
+}

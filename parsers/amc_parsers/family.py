@@ -1,0 +1,170 @@
+"""Family-based parser used for all AMCs via amc_parser_families.json."""
+from __future__ import annotations
+
+import re
+import shutil
+import tempfile
+import zipfile
+from pathlib import Path
+
+from .common import (
+    SchemePortfolio,
+    disclosure_type_from_path,
+    extract_as_of_from_rows,
+    extract_scheme_name_cams,
+    extract_title_scheme,
+    load_sheets,
+    parse_holdings_table,
+    period_from_path,
+    safe_name,
+)
+
+SKIP_SHEET = re.compile(
+    r"(?i)^(index|contents|cover|notes?|disclaimer|summary|risk.?o.?meter|"
+    r"annexure|instruction|read.?me|legend|glossary|overview|derivatives?|"
+    r"top\s*\d+\s*(stocks?|securities|sectors?|groups?))$"
+)
+SKIP_SHEET_CONTAINS = re.compile(
+    r"(?i)risk.?o.?meter|disclaimer|notes?\s*to|important\s+information|sebi\s+circular|"
+    r"exposure\s+to\s+top\s+\d+|top\s+\d+\s+(stocks?|securities|sectors?|groups?)"
+)
+MEGA_NAME = re.compile(
+    r"(?i)all[-_\s]?schemes|consolidated|combined[-_\s]?portfolio|"
+    r"debt-schemes-fortnightly-portfolio---as-on"
+)
+# Marketing / summary packs that are not SEBI scheme portfolios (Zerodha Top 10 etc.)
+SKIP_FILE_RE = re.compile(
+    r"(?i)top\s*\d+\s*holdings(?:\s+by\s+issuer)?|holdings\s+by\s+issuer"
+)
+
+
+def _is_junk_sheet(name: str) -> bool:
+    n = (name or "").strip()
+    if not n or SKIP_SHEET.match(n):
+        return True
+    if SKIP_SHEET_CONTAINS.search(n) and not re.search(r"(?i)portfolio|holding|isin", n):
+        return True
+    return False
+
+
+def _expand_zip(path: Path, dest: Path) -> list[Path]:
+    out: list[Path] = []
+    with zipfile.ZipFile(path) as zf:
+        for info in zf.infolist():
+            if info.is_dir():
+                continue
+            name = Path(info.filename).name
+            if name.startswith(".") or name.startswith("__"):
+                continue
+            if not re.search(r"\.(xlsx|xls|xlsm|xlsb)$", name, re.I):
+                continue
+            target = dest / safe_name(name)
+            # avoid collisions
+            if target.exists():
+                target = dest / f"{safe_name(Path(name).stem)}_{len(out)}{Path(name).suffix.lower()}"
+            with zf.open(info) as src, target.open("wb") as dst:
+                shutil.copyfileobj(src, dst)
+            out.append(target)
+    return out
+
+
+def _workbook_candidates(path: Path, tmp: Path, *, skip_mega: bool, limit: int | None) -> list[Path]:
+    if path.suffix.lower() == ".zip":
+        files = _expand_zip(path, tmp)
+    else:
+        files = [path]
+    files = [p for p in files if not SKIP_FILE_RE.search(p.name)]
+    if skip_mega and len(files) > 1:
+        filtered = [p for p in files if not MEGA_NAME.search(p.name)]
+        if filtered:
+            files = filtered
+    files = sorted(files, key=lambda p: p.stat().st_size)
+    if limit is not None and limit > 0:
+        # diversify: smallest + mid
+        if len(files) <= limit:
+            return files
+        picks = [files[0]]
+        mid = files[len(files) // 2]
+        if mid not in picks:
+            picks.append(mid)
+        for p in files:
+            if len(picks) >= limit:
+                break
+            if p not in picks:
+                picks.append(p)
+        return picks[:limit]
+    return files
+
+
+def parse_file(
+    path: Path,
+    *,
+    amc_id: str,
+    family: str = "sebi_title",
+    prefer_leading_code: bool = False,
+    multi_sheet: bool = True,
+    skip_mega: bool = True,
+    workbook_limit: int | None = None,
+) -> list[SchemePortfolio]:
+    """Parse one disclosure file (xlsx/xls/zip) into scheme portfolios."""
+    out: list[SchemePortfolio] = []
+    dtype = disclosure_type_from_path(path)
+    period = period_from_path(path)
+    if SKIP_FILE_RE.search(path.name):
+        return out
+    if skip_mega and path.suffix.lower() != ".zip" and MEGA_NAME.search(path.name):
+        # single mega workbook still parseable, but often noisy; keep unless alternatives exist
+        pass
+
+    with tempfile.TemporaryDirectory() as td:
+        workbooks = _workbook_candidates(
+            path, Path(td), skip_mega=skip_mega, limit=workbook_limit
+        )
+        for wb_path in workbooks:
+            try:
+                sheets = load_sheets(wb_path)
+            except Exception:
+                continue
+            scheme_sheets = [(n, r) for n, r in sheets if not _is_junk_sheet(n)]
+            if not scheme_sheets:
+                continue
+            # single-sheet packs: use the one sheet; multi: all scheme tabs
+            for sheet_name, rows in scheme_sheets:
+                if not rows:
+                    continue
+                if family == "cams":
+                    scheme = extract_scheme_name_cams(rows) or extract_title_scheme(rows, sheet_name)
+                    shortcode = sheet_name.strip() or None
+                    code_pref = True if prefer_leading_code is None else prefer_leading_code
+                    # cams almost always has leading codes
+                    code_pref = True
+                else:
+                    scheme = extract_title_scheme(rows, sheet_name)
+                    # shortcode = tab when it looks like a code
+                    sc = sheet_name.strip()
+                    shortcode = sc if sc and (len(sc) <= 16 or re.fullmatch(r"[A-Z0-9_\-]{2,20}", sc)) else None
+                    code_pref = prefer_leading_code
+
+                holdings, _meta = parse_holdings_table(rows, prefer_leading_code=code_pref)
+                # skip empty junk tabs
+                if not holdings and len(scheme_sheets) > 1:
+                    continue
+                out.append(
+                    SchemePortfolio(
+                        amc_id=amc_id,
+                        disclosure_type=dtype,
+                        period=period,
+                        scheme_name=scheme or sheet_name or wb_path.stem,
+                        shortcode=shortcode,
+                        as_of=extract_as_of_from_rows(rows),
+                        source_file=path.name if path.suffix.lower() == ".zip" else wb_path.name,
+                        sheet_name=sheet_name,
+                        holdings=holdings,
+                        notes=[f"from_zip:{wb_path.name}"] if path.suffix.lower() == ".zip" else [],
+                    )
+                )
+                if not multi_sheet:
+                    break
+            # For zip fixture runs with workbook_limit, don't explode into every sheet of every file
+            # unless multi_sheet; already handled per workbook.
+    return out

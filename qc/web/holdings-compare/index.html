@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Holdings compare — local vs Upvaly</title>
+  <style>
+    :root {
+      --bg: #f3efe6;
+      --ink: #1a1a1a;
+      --muted: #5c574e;
+      --panel: #fffdf8;
+      --line: #d9d2c4;
+      --ours: #0b5f4b;
+      --ours-soft: #d8efe7;
+      --api: #1e3a6e;
+      --api-soft: #e2e9f6;
+      --match: #e8f2dc;
+      --miss: #f7e4d8;
+      --warn: #f4e2b0;
+      --accent: #c45c26;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 500px at 10% -10%, #efe4cf 0%, transparent 55%),
+        radial-gradient(900px 400px at 100% 0%, #d9e7df 0%, transparent 50%),
+        var(--bg);
+      min-height: 100vh;
+    }
+    header {
+      padding: 1.25rem 1.5rem 0.75rem;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,253,248,0.85);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+    header h1 {
+      margin: 0;
+      font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+      font-weight: 600;
+      font-size: 1.55rem;
+      letter-spacing: -0.02em;
+    }
+    header p {
+      margin: 0.25rem 0 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+    }
+    @media (max-width: 900px) {
+      .controls { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+    }
+    .card h2 {
+      margin: 0 0 0.75rem;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+    .ours-card { border-top: 3px solid var(--ours); }
+    .api-card { border-top: 3px solid var(--api); }
+    label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+    input, select, button {
+      font: inherit;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.7rem;
+      background: #fff;
+      color: var(--ink);
+    }
+    input, select { width: 100%; }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.5rem;
+      align-items: end;
+      margin-bottom: 0.65rem;
+    }
+    .stack { display: grid; gap: 0.55rem; }
+    button {
+      cursor: pointer;
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+      white-space: nowrap;
+    }
+    button.secondary {
+      background: transparent;
+      color: var(--ink);
+    }
+    button:disabled { opacity: 0.5; cursor: wait; }
+    .meta {
+      margin-top: 0.6rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+    .meta strong { color: var(--ink); font-weight: 600; }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      padding: 0 1.5rem 0.75rem;
+    }
+    .toolbar input[type="search"] { max-width: 260px; }
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-left: auto;
+    }
+    .pill {
+      font-size: 0.78rem;
+      padding: 0.3rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+    .pill.match { background: var(--match); border-color: #c5d9a8; }
+    .pill.ours { background: var(--ours-soft); border-color: #9fcbbb; }
+    .pill.api { background: var(--api-soft); border-color: #b7c6e4; }
+    .pill.warn { background: var(--warn); border-color: #e0c67a; }
+
+    .compare-wrap {
+      padding: 0 1.5rem 2rem;
+      overflow: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      font-size: 0.88rem;
+    }
+    th, td {
+      padding: 0.55rem 0.65rem;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    th {
+      text-align: left;
+      background: #f7f1e6;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      position: sticky;
+      top: 0;
+    }
+    tr:last-child td { border-bottom: 0; }
+    tr.row-match { background: #f5f9ef; }
+    tr.row-ours { background: #f2faf7; }
+    tr.row-api { background: #f3f6fc; }
+    tr.row-weight { background: #fff7e6; }
+    .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .name { max-width: 280px; }
+    .tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      padding: 0.1rem 0.35rem;
+      border-radius: 4px;
+      margin-left: 0.35rem;
+      vertical-align: middle;
+    }
+    .tag.match { background: var(--match); }
+    .tag.ours { background: var(--ours-soft); color: var(--ours); }
+    .tag.api { background: var(--api-soft); color: var(--api); }
+    .tag.weight { background: var(--warn); }
+    .empty {
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      color: var(--muted);
+    }
+    .error { color: #9b1c1c; font-size: 0.85rem; margin-top: 0.4rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Holdings compare</h1>
+    <p>Load one local parsed scheme and one Upvaly scheme, then compare holdings by name and weight.</p>
+  </header>
+
+  <section class="controls">
+    <div class="card ours-card">
+      <h2>Our parse</h2>
+      <div class="stack">
+        <div>
+          <label for="schemeSearch">Search schemes</label>
+          <input id="schemeSearch" type="search" placeholder="AMC, name, shortcode…" />
+        </div>
+        <div>
+          <label for="schemeSelect">Scheme</label>
+          <select id="schemeSelect" size="8"></select>
+        </div>
+        <div class="row">
+          <div></div>
+          <button id="loadLocal" type="button">Load local</button>
+        </div>
+      </div>
+      <div class="meta" id="localMeta">No local scheme loaded.</div>
+      <div class="error" id="localErr"></div>
+    </div>
+
+    <div class="card api-card">
+      <h2>Upvaly (Finapi)</h2>
+      <div class="stack">
+        <div class="row">
+          <div>
+            <label for="amfiCode">AMFI scheme code</label>
+            <input id="amfiCode" inputmode="numeric" placeholder="e.g. 122640" />
+          </div>
+          <button id="loadApi" type="button">Load API</button>
+        </div>
+        <div class="row">
+          <div>
+            <label>Suggested codes (from shortcode map)</label>
+            <div id="hintCodes" class="meta">Select a local scheme to see hints.</div>
+          </div>
+          <button class="secondary" id="useHint" type="button" disabled>Use first hint</button>
+        </div>
+      </div>
+      <div class="meta" id="apiMeta">No Upvaly scheme loaded.</div>
+      <div class="error" id="apiErr"></div>
+    </div>
+  </section>
+
+  <div class="toolbar">
+    <input id="filter" type="search" placeholder="Filter rows…" />
+    <label style="display:flex;gap:0.35rem;align-items:center;margin:0;color:var(--muted)">
+      <input type="checkbox" id="onlyDiff" /> Only differences
+    </label>
+    <button class="secondary" id="runCompare" type="button">Compare</button>
+    <div class="stats" id="stats"></div>
+  </div>
+
+  <div class="compare-wrap">
+    <div class="empty" id="empty">Load both sides, then compare.</div>
+    <table id="grid" hidden>
+      <thead>
+        <tr>
+          <th style="width:5rem">Status</th>
+          <th>Our instrument</th>
+          <th class="num">Our %</th>
+          <th>Upvaly name</th>
+          <th class="num">API %</th>
+          <th class="num">Δ</th>
+          <th class="num">Name score</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <script>
+    const state = {
+      schemes: [],
+      hints: [],
+      local: null,
+      api: null,
+      rows: [],
+    };
+
+    const $ = (id) => document.getElementById(id);
+
+    function normName(s) {
+      return String(s || "")
+        .toLowerCase()
+        .replace(/&/g, " and ")
+        .replace(/\b(limited|ltd\.?|plc|inc\.?|corp\.?|corporation|company|co\.?)\b/g, " ")
+        .replace(/\b(ordinary shares?|class [a-z])\b/g, " ")
+        .replace(/[^a-z0-9]+/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function parseWeight(v) {
+      if (v == null || v === "") return null;
+      if (typeof v === "number") return v;
+      const s = String(v).replace(/[,%]/g, "").trim();
+      if (!s || /^nil$/i.test(s)) return null;
+      const n = Number(s);
+      return Number.isFinite(n) ? n : null;
+    }
+
+    function toPercents(weights) {
+      const nums = weights.filter((x) => x != null);
+      if (!nums.length) return weights;
+      const mx = Math.max(...nums.map(Math.abs));
+      if (mx > 0 && mx <= 1.5) return weights.map((x) => (x == null ? null : x * 100));
+      return weights;
+    }
+
+    function tokenSortRatio(a, b) {
+      const ta = a.split(" ").filter(Boolean).sort().join(" ");
+      const tb = b.split(" ").filter(Boolean).sort().join(" ");
+      if (ta === tb) return 100;
+      // simple Dice on bigrams
+      const grams = (s) => {
+        const g = new Set();
+        const t = ` ${s} `;
+        for (let i = 0; i < t.length - 1; i++) g.add(t.slice(i, i + 2));
+        return g;
+      };
+      const A = grams(ta), B = grams(tb);
+      let inter = 0;
+      for (const x of A) if (B.has(x)) inter++;
+      const score = (2 * inter) / (A.size + B.size || 1);
+      return Math.round(score * 1000) / 10;
+    }
+
+    function bestMatch(query, choices) {
+      if (!query || !choices.length) return { hit: null, score: 0 };
+      let best = null, score = 0;
+      for (const c of choices) {
+        if (c === query) return { hit: c, score: 100 };
+        const sc = tokenSortRatio(query, c);
+        if (sc > score) { best = c; score = sc; }
+      }
+      return { hit: best, score };
+    }
+
+    function localHoldings(payload) {
+      const rows = (payload.holdings || [])
+        .map((h) => ({
+          name: h.instrument || h.name || "",
+          isin: h.isin || "",
+          weight: parseWeight(h.pct_nav ?? h.weightage),
+          section: h.section || "",
+        }))
+        .filter((h) => h.name && !/^(net receivables|sub total|grand total|nil)$/i.test(h.name));
+      const w = toPercents(rows.map((r) => r.weight));
+      rows.forEach((r, i) => { r.weight = w[i]; r.norm = normName(r.name); });
+      return rows;
+    }
+
+    function apiHoldings(payload) {
+      return (payload.holdings || [])
+        .map((h) => ({
+          name: h.name || "",
+          weight: parseWeight(h.weightage),
+          sector: h.sector || "",
+          norm: normName(h.name || ""),
+        }))
+        .filter((h) => h.name && !/^(net receivables|cash offset)/i.test(h.name));
+    }
+
+    function compare() {
+      if (!state.local || !state.api) return;
+      const ours = localHoldings(state.local);
+      const api = apiHoldings(state.api);
+      const apiBy = new Map(api.filter((h) => h.norm).map((h) => [h.norm, h]));
+      const apiNorms = [...apiBy.keys()];
+      const used = new Set();
+      const rows = [];
+
+      for (const p of ours) {
+        const { hit, score } = bestMatch(p.norm, apiNorms);
+        if (hit && score >= 88) {
+          used.add(hit);
+          const a = apiBy.get(hit);
+          const delta = (p.weight != null && a.weight != null) ? Math.abs(p.weight - a.weight) : null;
+          const weightOk = delta == null ? true : (delta <= 0.35 || delta / Math.max(Math.abs(a.weight), 0.2) <= 0.15);
+          rows.push({
+            status: weightOk ? "match" : "weight",
+            ours: p, api: a, score, delta, weightOk,
+          });
+        } else {
+          rows.push({ status: "ours", ours: p, api: null, score, delta: null, weightOk: null });
+        }
+      }
+      for (const [n, a] of apiBy) {
+        if (used.has(n)) continue;
+        if (a.weight != null && Math.abs(a.weight) < 0.05) continue;
+        rows.push({ status: "api", ours: null, api: a, score: null, delta: null, weightOk: null });
+      }
+
+      // sort by our % weight descending; API-only rows (no our weight) last
+      rows.sort((a, b) => {
+        const aw = a.ours?.weight;
+        const bw = b.ours?.weight;
+        if (aw == null && bw == null) {
+          return Math.abs(b.api?.weight ?? 0) - Math.abs(a.api?.weight ?? 0);
+        }
+        if (aw == null) return 1;
+        if (bw == null) return -1;
+        return Math.abs(bw) - Math.abs(aw);
+      });
+      state.rows = rows;
+      renderTable();
+    }
+
+    function fmt(n) {
+      if (n == null || Number.isNaN(n)) return "—";
+      return Number(n).toFixed(2);
+    }
+
+    function renderTable() {
+      const q = $("filter").value.trim().toLowerCase();
+      const onlyDiff = $("onlyDiff").checked;
+      const tbody = $("tbody");
+      tbody.innerHTML = "";
+      let shown = 0;
+      const counts = { match: 0, weight: 0, ours: 0, api: 0 };
+
+      for (const r of state.rows) {
+        counts[r.status] = (counts[r.status] || 0) + 1;
+        if (onlyDiff && r.status === "match") continue;
+        const blob = `${r.ours?.name || ""} ${r.api?.name || ""}`.toLowerCase();
+        if (q && !blob.includes(q)) continue;
+        shown++;
+        const tr = document.createElement("tr");
+        tr.className = `row-${r.status}`;
+        const tag =
+          r.status === "match" ? '<span class="tag match">match</span>' :
+          r.status === "weight" ? '<span class="tag weight">weight</span>' :
+          r.status === "ours" ? '<span class="tag ours">ours only</span>' :
+          '<span class="tag api">api only</span>';
+        tr.innerHTML = `
+          <td>${tag}</td>
+          <td class="name">${escapeHtml(r.ours?.name || "—")}</td>
+          <td class="num">${fmt(r.ours?.weight)}</td>
+          <td class="name">${escapeHtml(r.api?.name || "—")}</td>
+          <td class="num">${fmt(r.api?.weight)}</td>
+          <td class="num">${r.delta == null ? "—" : fmt(r.delta)}</td>
+          <td class="num">${r.score == null ? "—" : fmt(r.score)}</td>
+        `;
+        tbody.appendChild(tr);
+      }
+
+      $("empty").hidden = shown > 0 || state.rows.length > 0;
+      $("grid").hidden = state.rows.length === 0;
+      if (state.rows.length && shown === 0) {
+        $("empty").hidden = false;
+        $("empty").textContent = "No rows match the current filter.";
+      } else if (!state.rows.length) {
+        $("empty").textContent = "Load both sides, then compare.";
+      }
+
+      $("stats").innerHTML = `
+        <span class="pill match">match ${counts.match || 0}</span>
+        <span class="pill warn">weight Δ ${counts.weight || 0}</span>
+        <span class="pill ours">ours only ${counts.ours || 0}</span>
+        <span class="pill api">api only ${counts.api || 0}</span>
+        <span class="pill">showing ${shown}</span>
+      `;
+    }
+
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    async function loadSchemes() {
+      const q = $("schemeSearch").value.trim();
+      const url = q ? `/api/schemes?q=${encodeURIComponent(q)}` : "/api/schemes";
+      const res = await fetch(url);
+      const data = await res.json();
+      state.schemes = data.schemes || [];
+      const sel = $("schemeSelect");
+      sel.innerHTML = "";
+      for (const s of state.schemes.slice(0, 800)) {
+        const opt = document.createElement("option");
+        opt.value = s.id;
+        opt.textContent = `${s.cadence.slice(0,1).toUpperCase()} · ${s.amc_id.replace(/-mutual-fund$/,"")} · ${s.shortcode || s.folder} — ${s.scheme}`.slice(0, 140);
+        sel.appendChild(opt);
+      }
+    }
+
+    async function refreshHints() {
+      const id = $("schemeSelect").value;
+      const s = state.schemes.find((x) => x.id === id);
+      state.hints = [];
+      $("useHint").disabled = true;
+      if (!s) {
+        $("hintCodes").textContent = "Select a local scheme to see hints.";
+        return;
+      }
+      const keys = [s.shortcode, s.folder].filter(Boolean);
+      const all = [];
+      for (const key of keys) {
+        const res = await fetch(`/api/amfi-hint?key=${encodeURIComponent(key)}`);
+        const data = await res.json();
+        for (const c of data.codes || []) if (!all.includes(c)) all.push(c);
+      }
+      state.hints = all;
+      if (!all.length) {
+        $("hintCodes").textContent = "No mapped AMFI codes for this shortcode/folder.";
+      } else {
+        $("hintCodes").innerHTML = all.map((c) => `<strong>${c}</strong>`).join(" · ");
+        $("useHint").disabled = false;
+        if (!$("amfiCode").value) $("amfiCode").value = all[0];
+      }
+    }
+
+    $("schemeSearch").addEventListener("input", () => {
+      clearTimeout(window.__sch);
+      window.__sch = setTimeout(loadSchemes, 200);
+    });
+    $("schemeSelect").addEventListener("change", refreshHints);
+    $("useHint").addEventListener("click", () => {
+      if (state.hints[0]) $("amfiCode").value = state.hints[0];
+    });
+    $("filter").addEventListener("input", renderTable);
+    $("onlyDiff").addEventListener("change", renderTable);
+    $("runCompare").addEventListener("click", compare);
+
+    $("loadLocal").addEventListener("click", async () => {
+      $("localErr").textContent = "";
+      const id = $("schemeSelect").value;
+      const s = state.schemes.find((x) => x.id === id);
+      if (!s) { $("localErr").textContent = "Pick a scheme."; return; }
+      $("loadLocal").disabled = true;
+      try {
+        const url = `/api/local?cadence=${encodeURIComponent(s.cadence)}&amc=${encodeURIComponent(s.amc_id)}&folder=${encodeURIComponent(s.folder)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || res.statusText);
+        state.local = data;
+        const n = (data.holdings || []).length;
+        $("localMeta").innerHTML = `<strong>${escapeHtml(s.scheme)}</strong><br/>${escapeHtml(s.amc_id)} · ${s.cadence} · ${n} rows<br/><code>${escapeHtml(data.path || "")}</code>`;
+        await refreshHints();
+        if (state.api) compare();
+      } catch (e) {
+        $("localErr").textContent = String(e.message || e);
+      } finally {
+        $("loadLocal").disabled = false;
+      }
+    });
+
+    $("loadApi").addEventListener("click", async () => {
+      $("apiErr").textContent = "";
+      const code = $("amfiCode").value.trim();
+      if (!/^\d{4,8}$/.test(code)) {
+        $("apiErr").textContent = "Enter a numeric AMFI scheme code.";
+        return;
+      }
+      $("loadApi").disabled = true;
+      try {
+        const res = await fetch(`/api/upvaly/${code}`);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || data.detail || res.statusText);
+        state.api = data;
+        $("apiMeta").innerHTML = `<strong>${escapeHtml(data.schemeName || code)}</strong><br/>${escapeHtml(data.fundHouse || "")} · code ${escapeHtml(String(data.schemeCode || code))}<br/>API holdings ${(data.holdings || []).length}${data.numberOfHoldings != null ? ` (reported ${data.numberOfHoldings})` : ""} · NAV ${data.latestNav ?? "—"} (${data.latestNavDate || "—"})`;
+        if (state.local) compare();
+      } catch (e) {
+        $("apiErr").textContent = String(e.message || e);
+      } finally {
+        $("loadApi").disabled = false;
+      }
+    });
+
+    loadSchemes().catch((e) => { $("localErr").textContent = String(e); });
+  </script>
+</body>
+</html>
