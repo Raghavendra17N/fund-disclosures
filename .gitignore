@@ -32,6 +32,14 @@ reference/python-fetchers/**
 !reference/python-fetchers/MOVED.md
 scripts/amc_parsers/
 
+# Leftover pre-clean duplicates (canonical under scrapers/node, qc/web, exports/)
+src/adapters/
+src/lib/
+web/
+data/exports/
+scripts/*.mjs
+
+
 # Optional large duplicate baseline JSON (Excel + FREEZE kept)
 exports/baseline/disclosure_to_amfi_global_mapping.json
 exports/baseline/amfi_navall_to_disclosure_global_mapping.json
