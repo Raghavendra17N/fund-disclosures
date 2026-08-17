@@ -1,12 +1,13 @@
 """Shared helpers for AMC-wise portfolio disclosure parsers."""
 from __future__ import annotations
 
+import calendar
 import csv
 import json
 import re
 import shutil
 import tempfile
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, replace
 from datetime import date, datetime
 from pathlib import Path
 from typing import Any, Iterable
@@ -74,26 +75,81 @@ HEADER_HINT_RES = (
 )
 
 COLUMN_ALIASES: dict[str, re.Pattern[str]] = {
-    "security_code": re.compile(r"(?i)^\s*(security\s*)?(code|no\.?)\s*$|^\s*sr\.?\s*no"),
+    "security_code": re.compile(
+        r"(?i)^\s*(security\s*)?(code|no\.?)\s*$|^\s*sr\.?\s*no|^\s*scrip\s*code|^\s*sl\s*no"
+    ),
     "instrument": re.compile(
         r"(?i)name\s+of\s+(the\s+)?(instrument|security|issuer)|"
         r"company\s*/?\s*issuer\s*/?\s*instrument|"
         r"instrument\s*/?\s*issuer|security\s+name|^(security|instrument|scrip)\b"
     ),
     "isin": re.compile(r"(?i)^\s*isin\b|isin\s*code"),
-    "industry": re.compile(r"(?i)industry|sector|rating"),
-    "quantity": re.compile(r"(?i)quantity|qty|no\.?\s*of\s*(shares|units)|units?\b"),
+    "coupon": re.compile(r"(?i)\bcoupon\b"),
+    "ytm": re.compile(r"(?i)\bytm\b|yield\s*to\s*maturity"),
+    "ytc": re.compile(r"(?i)\bytc\b|yield\s*to\s*call|at1|tier\s*2"),
+    "instrument_yield": re.compile(r"(?i)\byield\b"),
+    "residual_maturity": re.compile(r"(?i)residual|remaining\s*maturity|\btenor\b"),
+    "maturity_date": re.compile(
+        r"(?i)maturity\s*date|date\s*of\s*maturity|redemption\s*date|(?<!to )\bmaturity\b"
+    ),
+    "face_value": re.compile(r"(?i)face\s*value|par\s*value"),
+    "put_call_date": re.compile(r"(?i)put\s*/?\s*call|call\s*date|put\s*date"),
+    "industry_rating": re.compile(
+        r"(?i)industry\s*[\^+\*]?\s*/\s*rating|rating\s*/\s*industry|"
+        r"industry\s+classification\s*/\s*rating"
+    ),
+    "rating_agency": re.compile(r"(?i)rating\s*agency"),
+    "rating": re.compile(r"(?i)credit\s*rating|^\s*rating\b|conservative\s+rating"),
+    "industry": re.compile(r"(?i)\bindustry\b|\bsector\b"),
+    "quantity": re.compile(
+        r"(?i)^\s*quantity\b|\bqty\b|no\.?\s*of\s*(shares|units)|hedged\s+quantity"
+    ),
+    "futures_price": re.compile(
+        r"(?i)(futures?|option|contract)\s+price|current\s+price\s+of\s+the\s+contract"
+    ),
     "market_value": re.compile(
         r"(?i)market\s*/?\s*fair\s*value|market[\s\-]*value|mkt\.?\s*[\-]?\s*val(?:ue)?|"
-        r"value\s*\(.*?(rs|inr|lakh)"
+        r"exposure\s*/\s*market|value\s*\(.*?(rs|inr|lakh)|"
+        r"value\s+recognised\s+in\s+nav"
     ),
     "pct_nav": re.compile(
         r"(?i)%\s*(to|of)?\s*(n\.?a\.?v|aum|net\s*assets?)|"
         r"percent(age)?\s*(to|of)?\s*(n\.?a\.?v|aum|net\s*assets?)"
     ),
-    "ytm": re.compile(r"(?i)^\s*ytm|yield\s*to\s*maturity"),
-    "ytc": re.compile(r"(?i)^\s*ytc|yield\s*to\s*call"),
+    "macaulay_duration": re.compile(r"(?i)macaulay"),
+    "modified_duration": re.compile(r"(?i)modified\s*duration"),
+    "duration": re.compile(r"(?i)\bduration\b"),
+    "listed_status": re.compile(r"(?i)listed\s*status|\blisted\b|\bunlisted\b"),
+    "accrued_interest": re.compile(r"(?i)accrued\s*interest|interest\s*accrued"),
+    "position_side": re.compile(r"(?i)long\s*/\s*\(?\s*short"),
+    "margin": re.compile(r"(?i)^\s*margin\b|margin\s+maintained"),
+    "market_cap": re.compile(r"(?i)market\s*capital"),
+    "underlying": re.compile(r"(?i)^\s*underlying\b"),
+    "asset_class": re.compile(r"(?i)asset\s*(class|type)|type of security"),
 }
+
+EXTRA_HOLDING_FIELDS = (
+    "coupon",
+    "maturity_date",
+    "residual_maturity",
+    "put_call_date",
+    "instrument_yield",
+    "industry_rating",
+    "rating",
+    "rating_agency",
+    "face_value",
+    "listed_status",
+    "macaulay_duration",
+    "modified_duration",
+    "duration",
+    "accrued_interest",
+    "futures_price",
+    "position_side",
+    "margin",
+    "market_cap",
+    "underlying",
+    "asset_class",
+)
 
 
 @dataclass
@@ -107,8 +163,57 @@ class Holding:
     ytm: str = ""
     ytc: str = ""
     security_code: str = ""
+    coupon: str = ""
+    maturity_date: str = ""
+    residual_maturity: str = ""
+    put_call_date: str = ""
+    instrument_yield: str = ""
+    industry_rating: str = ""
+    rating: str = ""
+    rating_agency: str = ""
+    face_value: str = ""
+    listed_status: str = ""
+    macaulay_duration: str = ""
+    modified_duration: str = ""
+    duration: str = ""
+    accrued_interest: str = ""
+    futures_price: str = ""
+    position_side: str = ""
+    margin: str = ""
+    market_cap: str = ""
+    underlying: str = ""
+    asset_class: str = ""
     section: str = ""
     raw: dict[str, str] = field(default_factory=dict)
+
+
+def holding_from_dict(h: dict[str, Any] | Holding) -> Holding:
+    """Rebuild a Holding from portfolio.json row (keep industry/qty/MV for futures QC)."""
+    if isinstance(h, Holding):
+        return h
+    raw_in = h.get("raw") if isinstance(h.get("raw"), dict) else None
+    raw = {
+        str(k): str(v)
+        for k, v in (raw_in or h).items()
+        if v is not None and k != "raw"
+    }
+    extras = {k: str(h.get(k) or "") for k in EXTRA_HOLDING_FIELDS}
+    return Holding(
+        instrument=str(h.get("instrument") or h.get("name") or ""),
+        isin=str(h.get("isin") or ""),
+        industry=str(h.get("industry") or extras.get("industry_rating") or ""),
+        quantity=str(h.get("quantity") or ""),
+        market_value=str(h.get("market_value") or ""),
+        pct_nav=str(
+            h.get("pct_nav") if h.get("pct_nav") is not None else h.get("weight") or ""
+        ),
+        ytm=str(h.get("ytm") or ""),
+        ytc=str(h.get("ytc") or ""),
+        security_code=str(h.get("security_code") or ""),
+        section=str(h.get("section") or ""),
+        raw=raw,
+        **extras,
+    )
 
 
 @dataclass
@@ -395,21 +500,7 @@ def normalize_fractional_pct_nav(holdings: list[Holding]) -> tuple[list[Holding]
         pct = f"{w * 100.0:.6f}".rstrip("0").rstrip(".")
         raw = dict(h.raw or {})
         raw["pct_was_fraction"] = "1"
-        out.append(
-            Holding(
-                instrument=h.instrument,
-                isin=h.isin,
-                industry=h.industry,
-                quantity=h.quantity,
-                market_value=h.market_value,
-                pct_nav=pct,
-                ytm=h.ytm,
-                ytc=h.ytc,
-                security_code=h.security_code,
-                section=h.section,
-                raw=raw,
-            )
-        )
+        out.append(replace(h, pct_nav=pct, raw=raw))
     meta["fractional_pct_scaled"] = True
     return out, meta
 
@@ -488,9 +579,9 @@ def allocation_policy_for_amc(amc_id: str) -> dict[str, bool]:
     """Per-AMC flags for allocation_totals (from amc_parser_families.json)."""
     try:
         _root = Path(__file__).resolve().parents[2]
-_reg = _root / "registry" / "amc_parser_families.json"
-_old = _root / "data" / "sources" / "amc_parser_families.json"
-cfg_path = _reg if _reg.exists() else _old
+        _reg = _root / "registry" / "amc_parser_families.json"
+        _old = _root / "data" / "sources" / "amc_parser_families.json"
+        cfg_path = _reg if _reg.exists() else _old
         cfg = json.loads(cfg_path.read_text(encoding="utf-8")).get(amc_id) or {}
     except Exception:
         cfg = {}
@@ -581,21 +672,7 @@ def apply_zero_aum_junk_weights(
             mv_out = f"{eff_mv:.6f}".rstrip("0").rstrip(".")
         else:
             mv_out = h.market_value
-        out.append(
-            Holding(
-                instrument=h.instrument,
-                isin=h.isin,
-                industry=h.industry,
-                quantity=h.quantity,
-                market_value=mv_out,
-                pct_nav=pct,
-                ytm=h.ytm,
-                ytc=h.ytc,
-                security_code=h.security_code,
-                section=h.section,
-                raw=raw,
-            )
-        )
+        out.append(replace(h, market_value=mv_out, pct_nav=pct, raw=raw))
     meta["zero_aum_junk_reweight"] = True
     meta["zero_aum_junk_synthetic_total_mv"] = total
     return out, meta
@@ -689,19 +766,7 @@ def absorb_rounding_residual(
     raw = dict(h.raw or {})
     raw["pct_rounding_residual"] = f"{residual:.6f}".rstrip("0").rstrip(".")
     holdings = list(holdings)
-    holdings[cash_i] = Holding(
-        instrument=h.instrument,
-        isin=h.isin,
-        industry=h.industry,
-        quantity=h.quantity,
-        market_value=h.market_value,
-        pct_nav=new_pct,
-        ytm=h.ytm,
-        ytc=h.ytc,
-        security_code=h.security_code,
-        section=h.section,
-        raw=raw,
-    )
+    holdings[cash_i] = replace(h, pct_nav=new_pct, raw=raw)
     meta["rounding_residual_absorbed"] = residual
     return holdings, meta
 
@@ -765,21 +830,7 @@ def rebase_pct_nav_from_market_value(
         pct = f"{(mv / portfolio_total) * 100.0:.6f}".rstrip("0").rstrip(".")
         raw = dict(h.raw or {})
         raw["pct_rebased_from_mv"] = "1"
-        out.append(
-            Holding(
-                instrument=h.instrument,
-                isin=h.isin,
-                industry=h.industry,
-                quantity=h.quantity,
-                market_value=h.market_value,
-                pct_nav=pct,
-                ytm=h.ytm,
-                ytc=h.ytc,
-                security_code=h.security_code,
-                section=h.section,
-                raw=raw,
-            )
-        )
+        out.append(replace(h, pct_nav=pct, raw=raw))
     meta["pct_rebased_from_mv"] = True
     return out, meta
 
@@ -922,31 +973,107 @@ def _find(aliases: list[str], name: str) -> int | None:
         return None
 
 
+_MONTH_NUM = {
+    "jan": 1, "january": 1, "feb": 2, "february": 2, "mar": 3, "march": 3,
+    "apr": 4, "april": 4, "may": 5, "jun": 6, "june": 6, "jul": 7, "july": 7,
+    "aug": 8, "august": 8, "sep": 9, "sept": 9, "september": 9, "oct": 10,
+    "october": 10, "nov": 11, "november": 11, "dec": 12, "december": 12,
+}
+_MONTH_RE = (
+    r"jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|"
+    r"jul(?:y)?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?"
+)
+# Prefer labeled portfolio dates over inception / dividend / holding maturities.
+_AS_OF_LABEL_RE = re.compile(
+    r"(?i)(?:as\s*on|as\s*of|as\s*at|month\s+ended|period\s+ended|"
+    r"(?:monthly|fortnightly|half[\s-]?yearly)?\s*portfolio\s+statement|"
+    r"portfolio\s+(?:disclosure\s+)?as\s+o[nf]|holdings?\s+as\s+o[nf])"
+)
+
+
+def _iso_date(year: int, month: int, day: int) -> str | None:
+    try:
+        return date(year, month, day).isoformat()
+    except ValueError:
+        return None
+
+
+def _expand_year(y: str) -> int:
+    n = int(y)
+    if n < 100:
+        return 2000 + n
+    return n
+
+
 def parse_as_of(text: str) -> str | None:
-    s = text or ""
-    # ISO / excel date already normalized
-    m = re.search(r"\b(20\d{2}-\d{2}-\d{2})\b", s)
+    """Parse a portfolio as-of date to ISO YYYY-MM-DD (month-only → last day)."""
+    s = (text or "").replace("_", " ")
+    s = re.sub(r"\s+", " ", s)
+    s = re.sub(r"(?i)(\d)(?:st|nd|rd|th)\b", r"\1", s)
+
+    m = re.search(r"\b(20\d{2})-(\d{2})-(\d{2})\b", s)
     if m:
-        return m.group(1)
-    # Month DD, YYYY  /  DD-Month-YYYY  /  DD-MON-YYYY
-    m = re.search(
-        r"(?i)\b((?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|"
-        r"jul(?:y)?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)"
-        r"\s+\d{1,2},?\s*20\d{2})\b",
-        s,
-    )
+        return _iso_date(int(m.group(1)), int(m.group(2)), int(m.group(3)))
+
+    m = re.search(rf"\b(\d{{1,2}})[-/ .]({_MONTH_RE})[-/ . ]?(20\d{{2}}|\d{{2}})\b", s, re.I)
     if m:
-        return re.sub(r"\s+", " ", m.group(1)).replace(",", "").strip()
-    m = re.search(
-        r"(?i)(?:as\s*on|statement\s+as\s+on|portfolio\s+as\s+on|portfolio\s+statement\s+as\s+on)"
-        r"\s*:?\s*([0-9]{1,2}[-/ ][A-Za-z]{3,9}[-/, ]+20\d{2}|[0-9]{1,2}[-/][0-9]{1,2}[-/]20\d{2})",
-        s,
-    )
+        mon = _MONTH_NUM.get(m.group(2).lower())
+        if mon:
+            return _iso_date(_expand_year(m.group(3)), mon, int(m.group(1)))
+
+    m = re.search(rf"\b({_MONTH_RE})[-/ .]+(\d{{1,2}})[-/ .,]+(20\d{{2}}|\d{{2}})\b", s, re.I)
     if m:
-        return re.sub(r"\s+", " ", m.group(1)).strip(" ,")
-    m = re.search(r"\b([0-9]{1,2}[- ][A-Za-z]{3,}[- ]20\d{2})\b", s)
+        mon = _MONTH_NUM.get(m.group(1).lower())
+        if mon:
+            return _iso_date(_expand_year(m.group(3)), mon, int(m.group(2)))
+
+    m = re.search(r"\b(\d{1,2})[./-](\d{1,2})[./-]((?:20)?\d{2})\b", s)
     if m:
-        return m.group(1)
+        a, b, y = int(m.group(1)), int(m.group(2)), _expand_year(m.group(3))
+        if a > 12 and 1 <= b <= 12:
+            return _iso_date(y, b, a)
+        if b > 12 and 1 <= a <= 12:
+            return _iso_date(y, a, b)
+        if 1 <= a <= 12 and 1 <= b <= 12:
+            return _iso_date(y, b, a)  # India DMY
+        return None
+
+    m = re.search(rf"\b({_MONTH_RE})\s+(20\d{{2}})\b", s, re.I)
+    if m:
+        mon = _MONTH_NUM.get(m.group(1).lower())
+        if mon:
+            y = int(m.group(2))
+            return _iso_date(y, mon, calendar.monthrange(y, mon)[1])
+    return None
+
+
+def extract_as_of_from_rows(rows: list[list[str]]) -> str | None:
+    """Read as-of from banner rows (as on / as of / month ended), not holding dates."""
+    for row in rows[:40]:
+        joined = " | ".join(x for x in row if x)
+        if not joined or not _AS_OF_LABEL_RE.search(joined):
+            continue
+        got = parse_as_of(joined)
+        if got:
+            return got
+        for cell in row:
+            got = parse_as_of(cell or "")
+            if got:
+                return got
+    return None
+
+
+def extract_as_of(
+    rows: list[list[str]],
+    *,
+    filename: str | None = None,
+) -> str | None:
+    """Sheet banner first, then filename (double-check when the date is in the file name)."""
+    got = extract_as_of_from_rows(rows)
+    if got:
+        return got
+    if filename:
+        return parse_as_of(filename)
     return None
 
 
@@ -964,15 +1091,6 @@ def extract_scheme_name_cams(rows: list[list[str]]) -> str | None:
             m = re.search(r"(?i)scheme\s*name\s*:\s*(.+)$", joined)
             if m:
                 return m.group(1).split("|")[0].strip()
-    return None
-
-
-def extract_as_of_from_rows(rows: list[list[str]]) -> str | None:
-    for row in rows[:30]:
-        joined = " | ".join(x for x in row if x)
-        got = parse_as_of(joined)
-        if got:
-            return got
     return None
 
 
@@ -1016,6 +1134,9 @@ def parse_holdings_table(
     idx_ytm = _find(aliases, "ytm")
     idx_ytc = _find(aliases, "ytc")
     idx_code = _find(aliases, "security_code")
+    extra_idx = {k: _find(aliases, k) for k in EXTRA_HOLDING_FIELDS}
+    if idx_ind is None:
+        idx_ind = extra_idx.get("industry_rating")
 
     # CAMS/Choice/SBI/Abakkus often put issuer code in col0 with no header label.
     header_shifted = False
@@ -1086,6 +1207,9 @@ def parse_holdings_table(
                 idx_ytm = _find(aliases, "ytm")
                 idx_ytc = _find(aliases, "ytc")
                 idx_code = _find(aliases, "security_code")
+                extra_idx = {k: _find(aliases, k) for k in EXTRA_HOLDING_FIELDS}
+                if idx_ind is None:
+                    idx_ind = extra_idx.get("industry_rating")
                 header_shifted = False
                 if idx_code is None and prefer_leading_code:
                     if idx_instr == 0 and idx_isin == 2:
@@ -1153,6 +1277,9 @@ def parse_holdings_table(
         pct = _cell(cells, idx_pct)
         ytm = _cell(cells, idx_ytm)
         ytc = _cell(cells, idx_ytc)
+        extras = {k: _cell(cells, extra_idx.get(k)) for k in EXTRA_HOLDING_FIELDS}
+        if not industry:
+            industry = extras.get("industry_rating") or ""
 
         # Compact SEBI "Others" line: Name | Market Value | % to NAV (no ISIN / qty cols).
         # Edelweiss etc. put Yield in a trailing column (Name|…|MV|%|Yield) — prefer the
@@ -1371,6 +1498,7 @@ def parse_holdings_table(
                 security_code=code,
                 section=section,
                 raw=raw,
+                **extras,
             )
         )
     holdings, nca_meta = collapse_duplicate_net_receivables(holdings)
@@ -1380,6 +1508,7 @@ def parse_holdings_table(
     holdings, scale_meta = normalize_fractional_pct_nav(holdings)
     holdings, rebase_meta = rebase_pct_nav_from_market_value(holdings, portfolio_total)
     holdings, round_meta = absorb_rounding_residual(holdings)
+    holdings, cash_meta = normalize_cash_position_names(holdings)
     meta["holding_count"] = len(holdings)
     meta["implied_pct_from_mv"] = implied_pct_count
     meta.update(nca_meta)
@@ -1389,7 +1518,63 @@ def parse_holdings_table(
     meta.update(scale_meta)
     meta.update(rebase_meta)
     meta.update(round_meta)
+    meta.update(cash_meta)
     return holdings, meta
+
+
+# TREPS / CCIL / reverse repo / NCA / cash margin — one instrument name: Cash.
+_CASH_POSITION_RE = re.compile(
+    r"(?i)treps?|tri[\s\-]?party|"
+    r"reverse\s+repos?|\bcblo\b|"
+    r"clearing\s+corporation|\bccil\b|"
+    r"amc\s+repo\s+clearing|"
+    r"net\s+current\s+assets?|\bnca\b|"
+    r"net\s+receivables?|net\s+payables?|"
+    r"receivable\s*/\s*\(?\s*payable|payables?\s*/\s*\(?\s*receivable|"
+    r"cash\s+margin|margin\s+money|cash\s*/\s*bank|cash\s+and\s+other|"
+    r"^\s*cash\s*$|^\s*cash\s*/|"
+    r"\brepos?\b|"
+    r"^\s*trp[_-]|^\s*rep\d+"
+)
+_NOT_CASH_POSITION_RE = re.compile(
+    r"(?i)interest\s+rate\s+swaps?|\birs\b|(?<![A-Za-z])ois(?![A-Za-z])|"
+    r"t[\s\-]?bill|treasury\s+bill|"
+    r"commercial\s+paper|certificate\s+of\s+deposit|"
+    r"\bdebenture\b|\bncd\b"
+)
+
+
+def is_cash_position(h: Holding) -> bool:
+    """True for TREPS, CCIL, reverse repo, cash, and net current assets."""
+    name = (h.instrument or "").strip()
+    sec = (h.section or "").strip()
+    if re.search(r"(?i)interest\s+rate\s+swaps?|\birs\b|(?<![A-Za-z])ois(?![A-Za-z])", name):
+        return False
+    if _NOT_CASH_POSITION_RE.search(name) and not _CASH_POSITION_RE.search(name):
+        return False
+    if _CASH_POSITION_RE.search(name):
+        return True
+    if _CASH_POSITION_RE.search(sec) and not (h.isin or "").strip():
+        if re.search(r"(?i)\d+(?:\.\d+)?\s*%", name) and not re.search(r"(?i)repo", name):
+            return False
+        return True
+    return False
+
+
+def normalize_cash_position_names(
+    holdings: list[Holding],
+) -> tuple[list[Holding], dict[str, Any]]:
+    """Rename cash-equivalent legs to instrument=Cash, section=Cash."""
+    meta: dict[str, Any] = {"cash_positions_renamed": 0}
+    out: list[Holding] = []
+    for h in holdings:
+        if is_cash_position(h) and (
+            (h.instrument or "").strip() != "Cash" or (h.section or "").strip() != "Cash"
+        ):
+            meta["cash_positions_renamed"] += 1
+            h = replace(h, instrument="Cash", section="Cash")
+        out.append(h)
+    return out, meta
 
 
 def collapse_duplicate_net_receivables(holdings: list[Holding]) -> tuple[list[Holding], dict[str, Any]]:
@@ -1496,17 +1681,38 @@ def write_scheme_portfolio(out_root: Path, portfolio: SchemePortfolio) -> Path:
     dest = out_root / folder
     dest.mkdir(parents=True, exist_ok=True)
 
+    portfolio.holdings, _ = normalize_cash_position_names(portfolio.holdings)
     rows = [asdict(h) for h in portfolio.holdings]
     # Flatten: keep canonical cols; drop nested raw from csv
     csv_fields = [
         "instrument",
         "isin",
         "industry",
+        "industry_rating",
+        "rating",
+        "rating_agency",
+        "coupon",
+        "maturity_date",
+        "residual_maturity",
+        "put_call_date",
         "quantity",
+        "face_value",
         "market_value",
         "pct_nav",
         "ytm",
         "ytc",
+        "instrument_yield",
+        "duration",
+        "macaulay_duration",
+        "modified_duration",
+        "accrued_interest",
+        "listed_status",
+        "futures_price",
+        "position_side",
+        "margin",
+        "market_cap",
+        "underlying",
+        "asset_class",
         "security_code",
         "section",
     ]

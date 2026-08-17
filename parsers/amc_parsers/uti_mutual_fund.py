@@ -10,7 +10,7 @@ from pathlib import Path
 from .common import (
     SchemePortfolio,
     disclosure_type_from_path,
-    extract_as_of_from_rows,
+    extract_as_of,
     load_sheets,
     parse_holdings_table,
     period_from_path,
@@ -145,7 +145,8 @@ def parse_file(path: Path, *, workbook_limit: int | None = None) -> list[SchemeP
                             period=period,
                             scheme_name=scheme_name,
                             shortcode=None,
-                            as_of=extract_as_of_from_rows(block_rows) or extract_as_of_from_rows(rows),
+                            as_of=extract_as_of(block_rows, filename=path.name)
+                            or extract_as_of(rows, filename=wb.name),
                             source_file=path.name,
                             sheet_name=sheet_name,
                             holdings=holdings,

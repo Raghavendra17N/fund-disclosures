@@ -62,21 +62,34 @@ def parse_ym(label_date: str) -> tuple[int, int] | None:
 
 
 def collect_pairs(text: str, *, label_re: re.Pattern[str], upload_re: re.Pattern[str]) -> list[dict]:
-    labels = [m.group(1) for m in label_re.finditer(text)]
-    uploads = []
-    seen: set[str] = set()
+    """Pair document labels with /uploads paths.
+
+    The monthly/fortnightly pages embed each label twice (SSR + JSON). Pairing
+    the raw lists by index then maps June labels onto May files. Dedup labels
+    (order-preserving, after unescaping &amp;) so the first N unique titles
+    line up with the N unique upload paths.
+    """
+    text = text.replace("&amp;", "&")
+    labels: list[str] = []
+    seen_l: set[str] = set()
+    for m in label_re.finditer(text):
+        key = m.group(0)
+        if key in seen_l:
+            continue
+        seen_l.add(key)
+        labels.append(m.group(1))
+    uploads: list[str] = []
+    seen_u: set[str] = set()
     for u in upload_re.findall(text):
-        if u not in seen:
-            seen.add(u)
+        if u not in seen_u:
+            seen_u.add(u)
             uploads.append(u)
     pairs = []
-    for i, lab in enumerate(labels):
-        if i >= len(uploads):
-            break
+    for lab, path in zip(labels, uploads):
         ym = parse_ym(lab)
         if not ym:
             continue
-        pairs.append({"year": ym[0], "month": ym[1], "label": lab, "path": uploads[i]})
+        pairs.append({"year": ym[0], "month": ym[1], "label": lab, "path": path})
     return pairs
 
 

@@ -58,6 +58,7 @@ Baseline freeze: `exports/baseline/`.
 ## Secrets
 
 - `EDELWEISS_API_SECRET` — required for Edelweiss statutory API fetch
+- Holdings API object storage: `B2_KEY_ID`, `B2_APPLICATION_KEY` (see `holdings-browser/.env.example`)
 
 ## Compat
 

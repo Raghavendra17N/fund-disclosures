@@ -10,7 +10,7 @@ from pathlib import Path
 from .common import (
     SchemePortfolio,
     disclosure_type_from_path,
-    extract_as_of_from_rows,
+    extract_as_of,
     extract_scheme_name_cams,
     extract_title_scheme,
     load_sheets,
@@ -156,7 +156,8 @@ def parse_file(
                         period=period,
                         scheme_name=scheme or sheet_name or wb_path.stem,
                         shortcode=shortcode,
-                        as_of=extract_as_of_from_rows(rows),
+                        as_of=extract_as_of(rows, filename=path.name)
+                        or extract_as_of(rows, filename=wb_path.name),
                         source_file=path.name if path.suffix.lower() == ".zip" else wb_path.name,
                         sheet_name=sheet_name,
                         holdings=holdings,

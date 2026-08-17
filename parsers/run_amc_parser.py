@@ -16,8 +16,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "parsers"))
 sys.path.insert(0, str(ROOT / "scripts"))  # compat shim
+sys.path.insert(0, str(ROOT / "parsers"))  # canonical parsers win
 
 from amc_parsers.common import (  # noqa: E402
     write_amc_schemes_index,
@@ -119,6 +119,7 @@ def parse_paths(
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--amc", help="AMC id (e.g. nj-mutual-fund)")
+    ap.add_argument("--all", action="store_true", help="Parse every registered AMC for --type/--period")
     ap.add_argument("--type", choices=["monthly", "fortnightly"], help="Disclosure cadence")
     ap.add_argument("--period", default="latest", help="YYYY-MM or latest")
     ap.add_argument("--limit", type=int, default=0, help="Max files to parse (0=all)")
@@ -160,17 +161,38 @@ def main() -> int:
             # Fixture mode: limit zip/mega expansion to 2 workbooks / schemes
             reports.append(parse_paths(amc_id, paths, workbook_limit=2))
     else:
-        if not args.amc:
-            raise SystemExit("Need --amc (or --all-fixtures / --list)")
-        if args.file:
-            paths = [Path(f) for f in args.file]
-        else:
+        if args.all:
             if not args.type:
-                raise SystemExit("--type required unless --fixtures/--file")
-            paths = iter_amc_files(args.amc, args.type, args.period)
-            if args.limit:
-                paths = paths[: args.limit]
-        reports.append(parse_paths(args.amc, paths))
+                raise SystemExit("--type required with --all")
+            for amc_id in list_amcs():
+                paths = iter_amc_files(amc_id, args.type, args.period)
+                if args.limit:
+                    paths = paths[: args.limit]
+                if not paths:
+                    reports.append(
+                        {
+                            "amc_id": amc_id,
+                            "files": 0,
+                            "schemes": 0,
+                            "holdings": 0,
+                            "errors": [],
+                            "schemes_detail": [],
+                        }
+                    )
+                    continue
+                reports.append(parse_paths(amc_id, paths))
+        elif not args.amc:
+            raise SystemExit("Need --amc or --all (or --all-fixtures / --list)")
+        else:
+            if args.file:
+                paths = [Path(f) for f in args.file]
+            else:
+                if not args.type:
+                    raise SystemExit("--type required unless --fixtures/--file")
+                paths = iter_amc_files(args.amc, args.type, args.period)
+                if args.limit:
+                    paths = paths[: args.limit]
+            reports.append(parse_paths(args.amc, paths))
 
     if args.summary_only:
         summary = []

@@ -6,7 +6,7 @@ from pathlib import Path
 from .common import (
     SchemePortfolio,
     disclosure_type_from_path,
-    extract_as_of_from_rows,
+    extract_as_of,
     extract_title_scheme,
     load_sheets,
     parse_holdings_table,
@@ -36,7 +36,7 @@ def parse_file(path: Path) -> list[SchemePortfolio]:
                 period=period,
                 scheme_name=scheme,
                 shortcode=sheet_name.strip() or None,
-                as_of=extract_as_of_from_rows(rows),
+                as_of=extract_as_of(rows, filename=path.name),
                 source_file=path.name,
                 sheet_name=sheet_name,
                 holdings=holdings,
