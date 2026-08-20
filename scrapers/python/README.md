@@ -18,7 +18,7 @@ These are **reference** AMC disclosure fetchers (YYYY-MM repeatable downloads) f
 
 | AMC / script | Official domain |
 |--------------|-----------------|
-| 360 ONE (`fetch_360_one.py`) | archive.iiflmf.com |
+| 360 ONE (`fetch_360_one.py` monthly; `fetch_360one.py` FN) | www.360.one/asset/mutual-funds/downloads/ (not archive.iiflmf.com) |
 | Abakkus (`fetch_abakkus.py`) | www.abakkusmf.com |
 | Aditya Birla SL (`fetch_absl.py`) | mutualfund.adityabirlacapital.com |
 | Angel One (`fetch_angel_one.py`) | www.angelonemf.com |

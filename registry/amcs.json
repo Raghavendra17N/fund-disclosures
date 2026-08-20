@@ -32,11 +32,14 @@
         }
       },
       "status": "unknown",
-      "notes": "",
+      "notes": "Monthly: consolidated multi-sheet pack from www.360.one downloads hub (includes Flexi Cap sheet). archive.iiflmf.com is stale/down — do not use. Fortnightly: fetch_360one.py on same hub.",
       "fetch": {
         "monthly": {
-          "adapter": "static_html",
-          "notes": ""
+          "adapter": "python_ref",
+          "script": "fetch_360_one.py",
+          "python_slug": "360-one-mutual-fund",
+          "extra_args": [],
+          "notes": "live downloads hub Monthly Portfolio consolidated pack"
         },
         "fortnightly": {
           "adapter": "python_ref",
