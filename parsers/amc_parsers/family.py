@@ -47,6 +47,32 @@ def _is_junk_sheet(name: str) -> bool:
     return False
 
 
+# AMC tickers like IFCF / RARBF / IBSESXF — not human sheet titles ("Flexi Cap").
+_SHORTCODE_TAB_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_\-]{1,19}$")
+
+
+def _looks_like_shortcode(label: str | None) -> bool:
+    s = (label or "").strip()
+    if not s or " " in s or not _SHORTCODE_TAB_RE.fullmatch(s):
+        return False
+    # Reject plain English words used as tabs (Liquid, Overnight, …)
+    if s.isalpha() and not s.isupper() and len(s) >= 6:
+        return False
+    return True
+
+
+def _scheme_shortcode(sheet_name: str, rows: list[list[str]]) -> str | None:
+    """Prefer a real AMC ticker: leading A1 cell (Invesco), else sheet tab."""
+    if rows:
+        a1 = (rows[0][0] or "").strip() if rows[0] else ""
+        if _looks_like_shortcode(a1):
+            return a1.upper()
+    sc = (sheet_name or "").strip()
+    if _looks_like_shortcode(sc):
+        return sc.upper()
+    return None
+
+
 def _expand_zip(path: Path, dest: Path) -> list[Path]:
     out: list[Path] = []
     with zipfile.ZipFile(path) as zf:
@@ -140,9 +166,7 @@ def parse_file(
                     code_pref = True
                 else:
                     scheme = extract_title_scheme(rows, sheet_name)
-                    # shortcode = tab when it looks like a code
-                    sc = sheet_name.strip()
-                    shortcode = sc if sc and (len(sc) <= 16 or re.fullmatch(r"[A-Z0-9_\-]{2,20}", sc)) else None
+                    shortcode = _scheme_shortcode(sheet_name, rows)
                     code_pref = prefer_leading_code
 
                 holdings, _meta = parse_holdings_table(rows, prefer_leading_code=code_pref)

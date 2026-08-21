@@ -12569,7 +12569,9 @@
     {
       "amc_id": "invesco-mutual-fund",
       "shortcode": "RNIFTY1",
-      "aliases": [],
+      "aliases": [
+        "RNIFTY"
+      ],
       "canonical_amfi_code": "115284",
       "amfi_base_name": "Invesco India Nifty 50 Exchange Traded Fund",
       "disclosure_label": "Invesco India NIFTY 50 Exchange Traded Fund",
