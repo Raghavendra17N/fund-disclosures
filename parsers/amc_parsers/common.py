@@ -1095,15 +1095,24 @@ def extract_scheme_name_cams(rows: list[list[str]]) -> str | None:
 
 
 def extract_title_scheme(rows: list[list[str]], sheet_name: str) -> str:
-    """NJ / Angel / Abakkus: fund name appears above the header, often row 1–3."""
-    for row in rows[:8]:
+    """NJ / Angel / Abakkus / Navi: fund name appears above the header, often row 1–6."""
+    for row in rows[:10]:
         for cell in row:
             t = (cell or "").strip()
             if not t or len(t) < 6:
                 continue
-            if re.search(r"(?i)mutual\s+fund$|portfolio\s+(statement|as\s+on)|open\s+ended", t):
+            if re.search(
+                r"(?i)mutual\s+fund$|portfolio\s+(statement|as\s+on)|open\s+ended|"
+                r"name\s+of\s+the\s+instrument",
+                t,
+            ):
                 continue
-            if re.search(r"(?i)\b(fund|etf|index|scheme|liquid|overnight|arbitrage)\b", t):
+            # Include FOF / index-style titles that omit the word "Fund" (Navi, etc.)
+            if re.search(
+                r"(?i)\b(fund|etf|fof|index|scheme|liquid|overnight|arbitrage|"
+                r"momentum|quality|nifty|sensex|nasdaq)\b",
+                t,
+            ):
                 if not looks_like_header([t]):
                     return t
     return sheet_name.strip() or "unknown"

@@ -51,9 +51,15 @@ def _is_junk_sheet(name: str) -> bool:
 _SHORTCODE_TAB_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_\-]{1,19}$")
 
 
+_GENERIC_SHEET_RE = re.compile(r"(?i)^sheet\d*$")
+
+
 def _looks_like_shortcode(label: str | None) -> bool:
     s = (label or "").strip()
     if not s or " " in s or not _SHORTCODE_TAB_RE.fullmatch(s):
+        return False
+    # Excel defaults (Navi etc.) are not AMC tickers
+    if _GENERIC_SHEET_RE.fullmatch(s):
         return False
     # Reject plain English words used as tabs (Liquid, Overnight, …)
     if s.isalpha() and not s.isupper() and len(s) >= 6:

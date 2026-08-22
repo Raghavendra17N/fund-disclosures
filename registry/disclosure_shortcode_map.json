@@ -17855,7 +17855,9 @@
     {
       "amc_id": "navi-mutual-fund",
       "shortcode": "Navi Liquid Fund",
-      "aliases": [],
+      "aliases": [
+        "LQ"
+      ],
       "canonical_amfi_code": "119164",
       "amfi_base_name": "Navi Liquid Fund",
       "disclosure_label": "Navi Liquid Fund",
@@ -17940,7 +17942,7 @@
       "amc_id": "navi-mutual-fund",
       "shortcode": "Navi Nifty MidSmallcap 400 Index Fund",
       "aliases": [],
-      "canonical_amfi_code": "154026",
+      "canonical_amfi_code": "154027",
       "amfi_base_name": "Navi Nifty Midsmall 400 Index Fund",
       "disclosure_label": "Navi Nifty MidSmallcap 400 Index Fund",
       "confidence": "seeded",
