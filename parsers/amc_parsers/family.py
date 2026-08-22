@@ -48,7 +48,7 @@ def _is_junk_sheet(name: str) -> bool:
 
 
 # AMC tickers like IFCF / RARBF / IBSESXF — not human sheet titles ("Flexi Cap").
-_SHORTCODE_TAB_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_\-]{1,19}$")
+_SHORTCODE_TAB_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_\-]{1,19}$")
 
 
 def _looks_like_shortcode(label: str | None) -> bool:
@@ -61,15 +61,33 @@ def _looks_like_shortcode(label: str | None) -> bool:
     return True
 
 
+def _shortcode_from_cell(value: str | None) -> str | None:
+    """Whole-cell shortcode, or a leading ticker in titles like ``IB01-Groww …``."""
+    s = (value or "").strip()
+    if not s:
+        return None
+    if _looks_like_shortcode(s):
+        return s.upper()
+    m = re.match(r"^([A-Za-z0-9][A-Za-z0-9_\-]{1,19})\s*[-–—:]\s+\S", s)
+    if m and _looks_like_shortcode(m.group(1)):
+        return m.group(1).upper()
+    m = re.match(r"^(IB\d+)\b", s, re.I)
+    if m:
+        return m.group(1).upper()
+    return None
+
+
 def _scheme_shortcode(sheet_name: str, rows: list[list[str]]) -> str | None:
-    """Prefer a real AMC ticker: leading A1 cell (Invesco), else sheet tab."""
-    if rows:
-        a1 = (rows[0][0] or "").strip() if rows[0] else ""
-        if _looks_like_shortcode(a1):
-            return a1.upper()
-    sc = (sheet_name or "").strip()
-    if _looks_like_shortcode(sc):
-        return sc.upper()
+    """Sheet tab → A1 → B1 (first token that looks like an AMC shortcode)."""
+    for cand in (_shortcode_from_cell(sheet_name),):
+        if cand:
+            return cand
+    if rows and rows[0]:
+        a1 = rows[0][0] if len(rows[0]) > 0 else None
+        b1 = rows[0][1] if len(rows[0]) > 1 else None
+        for cand in (_shortcode_from_cell(a1), _shortcode_from_cell(b1)):
+            if cand:
+                return cand
     return None
 
 
