@@ -150,12 +150,15 @@ def monthly_files_for(payload: dict, year: int, month: int, *, fortnightly: bool
             continue
         if str(f.get("month") or "") != abbr:
             continue
+        # Prefer filePath — downloadFile is often double-prefixed (/Files/MF//Files/MF/…).
         path = (
-            f.get("downloadFile")
-            or f.get("filePath")
+            f.get("filePath")
             or f.get("excelFilePath")
+            or f.get("downloadFile")
             or f.get("pdfFilePath")
         )
+        if isinstance(path, str):
+            path = path.replace("/Files/MF//Files/MF/", "/Files/MF/")
         url = abs_url(path)
         if not url:
             continue

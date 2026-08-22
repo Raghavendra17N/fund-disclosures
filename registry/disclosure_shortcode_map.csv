@@ -519,7 +519,7 @@ dsp-mutual-fund,US Specific Equity FoF,,119252,DSP US Specific Equity Omni FoF,D
 dsp-mutual-fund,World Gold Mining FOF,,119277,DSP World Gold Mining Overseas Equity Omni FoF,DSP World Gold Mining Overseas Equity Omni FoF,seeded,shortcode,latest,latest
 dsp-mutual-fund,World Mining FOF,,119279,DSP World Mining Overseas Equity Omni FoF,DSP World Mining Overseas Equity Omni FoF,seeded,shortcode,latest,latest
 edelweiss-mutual-fund,EDACBF,,140237,Edelweiss Money Market Fund,Edelweiss Money Market Fund,seeded,shortcode,2026-06,latest
-edelweiss-mutual-fund,EDBE33,,147849,Bharat Bond ETF - April 2030,BHARAT Bond ETF -,seeded,shortcode,2026-06,latest
+edelweiss-mutual-fund,EDBE33,,150987,BHARAT Bond ETF - April 2033,BHARAT Bond ETF - April 2033,seeded,shortcode,2026-06,2026-07
 edelweiss-mutual-fund,EDBPDF,,140286,Edelweiss Banking and PSU Debt Fund,Edelweiss Banking and PSU Debt Fund,seeded,shortcode,2026-06,latest
 edelweiss-mutual-fund,EDCF27,,153335,Edelweiss CRISIL IBX AAA Bond NBFC HFC Jun 2027 Index Fund,Edelweiss CRISIL-IBX AAA Bond NBFC-HFC - Jun 2027 Index Fund,seeded,shortcode,2026-06,latest
 edelweiss-mutual-fund,EDCF28,,153115,Edelweiss CRISIL IBX AAA Financial Services - Jan 2028 Index Fund,Edelweiss CRISIL IBX AAA Financial Services Bond – Jan 2028 Index Fund,seeded,shortcode,2026-06,latest
@@ -527,7 +527,7 @@ edelweiss-mutual-fund,EDCG27,,150727,Edelweiss CRISIL IBX 50:50 Gilt Plus SDL Ju
 edelweiss-mutual-fund,EDCG28,,150807,Edelweiss CRISIL IBX 50:50 Gilt Plus SDL Sep 2028 Index Fund,Edelweiss_CRISIL_IBX 50 50 Gilt Plus SDL Sep 2028 Index Fund,seeded,shortcode,2026-06,latest
 edelweiss-mutual-fund,EDCG37,,150671,Edelweiss CRISIL IBX 50:50 Gilt Plus SDL April 2037 Index Fund,Edelweiss_CRISIL IBX 50 50 Gilt Plus SDL April 2037 Index Fund,seeded,shortcode,2026-06,latest
 edelweiss-mutual-fund,EDCSDF,,151365,Edelweiss CRISIL IBX 50:50 Gilt Plus SDL Short Duration Index fund,EDELWEISS CRISIL IBX 50:50 GILT PLUS SDL SHORT DURATION INDEX FUND,seeded,shortcode,2026-06,latest
-edelweiss-mutual-fund,EDFF33,,147857,Bharat Bond FOF - April 2030,BHARAT Bond FOF -,seeded,shortcode,2026-06,latest
+edelweiss-mutual-fund,EDFF33,,150989,BHARAT Bond ETF FOF - April 2033,BHARAT Bond ETF FOF - April 2033,seeded,shortcode,2026-06,2026-07
 edelweiss-mutual-fund,EDGSEC,,140298,Edelweiss Government Securities Fund,Edelweiss Government Securities Fund,seeded,shortcode,2026-06,latest
 edelweiss-mutual-fund,EDLDUF,,153416,Edelweiss Low Duration Fund,Edelweiss Low Duration Fund,seeded,shortcode,2026-06,latest
 edelweiss-mutual-fund,EDN1LE,,153920,Edelweiss Nifty 1D Rate Liquid ETF - Growth,Edelweiss Nifty 1D Rate Liquid ETF,seeded,shortcode,2026-06,latest
@@ -583,6 +583,15 @@ edelweiss-mutual-fund,EOUSEF,,140274,Edelweiss US Value Equity Offshore Fund,Ede
 edelweiss-mutual-fund,EOUSTF,,148063,Edelweiss US Technology Equity Fund of Fund,EDELWEISS US TECHNOLOGY EQUITY FOF,seeded,shortcode,2026-06,latest
 edelweiss-mutual-fund,ESEFOF,,154072,Edelweiss Silver ETF Fund of Fund,Edelweiss Silver ETF Fund of Fund,seeded,shortcode,2026-06,latest
 edelweiss-mutual-fund,ESLVRE,,152212,Edelweiss Silver ETF,Edelweiss Silver ETF Fund,seeded,shortcode,2026-06,latest
+edelweiss-mutual-fund,EDBE30,,147849,Bharat Bond ETF - April 2030,Bharat Bond ETF - April 2030,seeded,shortcode,2026-07,2026-07
+edelweiss-mutual-fund,EDBE31,,148445,BHARAT Bond ETF - April 2031,BHARAT Bond ETF - April 2031,seeded,shortcode,2026-07,2026-07
+edelweiss-mutual-fund,EDBE32,,149398,BHARAT Bond ETF - April 2032,BHARAT Bond ETF - April 2032,seeded,shortcode,2026-07,2026-07
+edelweiss-mutual-fund,EDFF30,,147857,Bharat Bond FOF - April 2030,Bharat Bond FOF - April 2030,seeded,shortcode,2026-07,2026-07
+edelweiss-mutual-fund,EDFF31,,148450,BHARAT Bond FOF - April 2031,BHARAT Bond FOF - April 2031,seeded,shortcode,2026-07,2026-07
+edelweiss-mutual-fund,EDFF32,,149401,BHARAT Bond ETF FOF - April 2032,BHARAT Bond ETF FOF - April 2032,seeded,shortcode,2026-07,2026-07
+edelweiss-mutual-fund,EEBSDE,,154535,Edelweiss BSE LargeMid (60:40) Stable dividend 50 ETF,Edelweiss BSE LargeMid (60:40) Stable dividend 50 ETF,seeded,shortcode,2026-07,2026-07
+edelweiss-mutual-fund,EEBTBE,,154524,Edelweiss BSE Top 10 Bank ETF,Edelweiss BSE Top 10 Bank ETF,seeded,shortcode,2026-07,2026-07
+edelweiss-mutual-fund,EENMET,,154461,Edelweiss Nifty Metal ETF,Edelweiss Nifty Metal ETF,seeded,shortcode,2026-07,2026-07
 franklin-templeton-mutual-fund,FAEF,,118559,Franklin Asian Equity Fund,Franklin Asian Equity Fund,seeded,shortcode,2026-06,latest
 franklin-templeton-mutual-fund,FBIF,,118557,Franklin Build India Fund,Franklin Build India Fund,seeded,shortcode,2026-06,latest
 franklin-templeton-mutual-fund,FBPF,,129008,Franklin India Banking & PSU Debt Fund,Franklin India Banking & PSU Debt Fund,seeded,shortcode,2026-06,latest
