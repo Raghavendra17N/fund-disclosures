@@ -21570,26 +21570,30 @@
     {
       "amc_id": "sbi-mutual-fund",
       "shortcode": "SMCBFIP",
-      "aliases": [],
+      "aliases": [
+        "SMCBF-IP"
+      ],
       "canonical_amfi_code": "148490",
-      "amfi_base_name": "SBI Children's Fund - Investment",
+      "amfi_base_name": "SBI Children's Fund - Investment Plan",
       "disclosure_label": "SBI Children's Fund - Investment Plan",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
+      "last_verified_period": "2026-07"
     },
     {
       "amc_id": "sbi-mutual-fund",
       "shortcode": "SMCBFSP",
-      "aliases": [],
+      "aliases": [
+        "SMCBF-SP"
+      ],
       "canonical_amfi_code": "119719",
-      "amfi_base_name": "SBI Children's Fund - Savings",
+      "amfi_base_name": "SBI Children's Fund - Savings Plan",
       "disclosure_label": "SBI Children's Fund - Savings Plan",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
+      "last_verified_period": "2026-07"
     },
     {
       "amc_id": "sbi-mutual-fund",
@@ -25748,6 +25752,30 @@
       "source": "shortcode",
       "first_seen_period": "2026-06",
       "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "zerodha-mutual-fund",
+      "shortcode": "ZLC36",
+      "aliases": [],
+      "canonical_amfi_code": "154436",
+      "amfi_base_name": "Zerodha Life Cycle Fund 2036",
+      "disclosure_label": "Zerodha Life Cycle Fund 2036",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
+    },
+    {
+      "amc_id": "zerodha-mutual-fund",
+      "shortcode": "ZLC41",
+      "aliases": [],
+      "canonical_amfi_code": "154437",
+      "amfi_base_name": "Zerodha Life Cycle Fund 2041",
+      "disclosure_label": "Zerodha Life Cycle Fund 2041",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
     },
     {
       "amc_id": "edelweiss-mutual-fund",

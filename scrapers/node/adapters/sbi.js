@@ -40,7 +40,15 @@ export const sbiAdapter = {
     const re = /href\s*=\s*["']([^"']+\.xlsx?(?:\?[^"']*)?)["']/gi;
     let m;
     while ((m = re.exec(text))) {
-      const url = absUrl(m[1], "https://www.sbimf.com");
+      // Sitefinity HTML-encodes apostrophes (Children&#39;s) which breaks downloads.
+      const href = m[1]
+        .replace(/&amp;/g, "&")
+        .replace(/&#39;/g, "'")
+        .replace(/&apos;/g, "'")
+        .replace(/&quot;/g, '"')
+        .replace(/&lt;/g, "<")
+        .replace(/&gt;/g, ">");
+      const url = absUrl(href, "https://www.sbimf.com");
       if (!url || seen.has(url)) continue;
       seen.add(url);
       files.push({

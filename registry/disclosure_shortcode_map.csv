@@ -1792,8 +1792,8 @@ sbi-mutual-fund,SLTAFV,,142138,SBI Long Term Advantage Fund - Series V,SBI Long 
 sbi-mutual-fund,SLTAFVI,,143178,SBI Long Term Advantage Fund - Series VI,SBI Long Term Advantage Fund - Series VI,seeded,shortcode,2026-06,latest
 sbi-mutual-fund,SLTEF,,119723,SBI ELSS Tax Saver FUND,SBI ELSS Tax Saver Fund,seeded,shortcode,2026-06,latest
 sbi-mutual-fund,SMAAF,,119843,SBI MULTI ASSET ALLOCATION FUND,SBI Multi Asset Fund,seeded,shortcode,2026-06,latest
-sbi-mutual-fund,SMCBFIP,,148490,SBI Children's Fund - Investment,SBI Children's Fund - Investment Plan,seeded,shortcode,2026-06,latest
-sbi-mutual-fund,SMCBFSP,,119719,SBI Children's Fund - Savings,SBI Children's Fund - Savings Plan,seeded,shortcode,2026-06,latest
+sbi-mutual-fund,SMCBFIP,SMCBF-IP,148490,SBI Children's Fund - Investment Plan,SBI Children's Fund - Investment Plan,seeded,shortcode,2026-06,2026-07
+sbi-mutual-fund,SMCBFSP,SMCBF-SP,119719,SBI Children's Fund - Savings Plan,SBI Children's Fund - Savings Plan,seeded,shortcode,2026-06,2026-07
 sbi-mutual-fund,SMCF,,149882,SBI Multicap Fund,SBI MultiCap Fund,seeded,shortcode,2026-06,latest
 sbi-mutual-fund,SMCMF,,120137,SBI CONSTANT MATURITY 10 YEAR GILT FUND,SBI Constant Maturity 10-Year Gilt Fund,seeded,shortcode,2026-06,latest
 sbi-mutual-fund,SMCOMMA,,119705,SBI COMMA Fund,SBI Comma Fund,seeded,shortcode,2026-06,latest
@@ -2140,3 +2140,5 @@ zerodha-mutual-fund,ZNSDG,,154109,Zerodha Nifty Short Duration G - Sec Index Fun
 zerodha-mutual-fund,ZOVER,,153436,Zerodha Overnight Fund,ZERODHA OVERNIGHT FUND,seeded,shortcode,2026-06,latest
 zerodha-mutual-fund,ZSFOF,,153656,Zerodha Silver ETF FoF,ZERODHA SILVER ETF FoF,seeded,shortcode,2026-06,latest
 zerodha-mutual-fund,ZSLVR,,153413,Zerodha Silver ETF,ZERODHA SILVER ETF,seeded,shortcode,2026-06,latest
+zerodha-mutual-fund,ZLC36,,154436,Zerodha Life Cycle Fund 2036,Zerodha Life Cycle Fund 2036,seeded,shortcode,2026-07,2026-07
+zerodha-mutual-fund,ZLC41,,154437,Zerodha Life Cycle Fund 2041,Zerodha Life Cycle Fund 2041,seeded,shortcode,2026-07,2026-07
