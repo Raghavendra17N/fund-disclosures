@@ -17,7 +17,9 @@
     {
       "amc_id": "360-one-mutual-fund",
       "shortcode": "ELSS Tax Saver Nifty 50 Index",
-      "aliases": [],
+      "aliases": [
+        "ELSS Tax Saver"
+      ],
       "canonical_amfi_code": "151165",
       "amfi_base_name": "360 ONE ELSS Tax Saver Nifty 50 Index Fund",
       "disclosure_label": "360 ONE ELSS Tax Saver Nifty 50 Index Fund",
@@ -29,7 +31,10 @@
     {
       "amc_id": "360-one-mutual-fund",
       "shortcode": "Flexicap Fund",
-      "aliases": [],
+      "aliases": [
+        "Flexi Cap",
+        "Flexi Cap Fund"
+      ],
       "canonical_amfi_code": "151796",
       "amfi_base_name": "360 ONE FLEXICAP FUND",
       "disclosure_label": "360 ONE FLEXICAP FUND",
@@ -65,7 +70,10 @@
     {
       "amc_id": "360-one-mutual-fund",
       "shortcode": "Hybrid Fund",
-      "aliases": [],
+      "aliases": [
+        "Balance Hybrid",
+        "Balanced Hybrid"
+      ],
       "canonical_amfi_code": "152076",
       "amfi_base_name": "360 ONE Balanced Hybrid Fund",
       "disclosure_label": "360 ONE Balanced Hybrid Fund",
@@ -101,7 +109,10 @@
     {
       "amc_id": "360-one-mutual-fund",
       "shortcode": "Multi Asset",
-      "aliases": [],
+      "aliases": [
+        "Multi Asset Allocation",
+        "Multi Asset Allocation Fund"
+      ],
       "canonical_amfi_code": "153774",
       "amfi_base_name": "360 ONE Multi Asset Allocation Fund",
       "disclosure_label": "360 ONE Multi Asset Allocation Fund",
@@ -113,7 +124,9 @@
     {
       "amc_id": "360-one-mutual-fund",
       "shortcode": "OVERNIGHT",
-      "aliases": [],
+      "aliases": [
+        "Overnight Fund"
+      ],
       "canonical_amfi_code": "153703",
       "amfi_base_name": "360 ONE Overnight Fund",
       "disclosure_label": "360 ONE Overnight Fund",
@@ -9849,6 +9862,66 @@
       "last_verified_period": "latest"
     },
     {
+      "amc_id": "hdfc-mutual-fund",
+      "shortcode": "HDFCAR",
+      "aliases": [
+        "DerivativeHDFCAR",
+        "HDFC Arbitrage Fund"
+      ],
+      "canonical_amfi_code": "129052",
+      "amfi_base_name": "HDFC ARBITRAGE FUND",
+      "disclosure_label": "HDFC ARBITRAGE FUND",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
+    },
+    {
+      "amc_id": "hdfc-mutual-fund",
+      "shortcode": "HDFCGR",
+      "aliases": [
+        "DerivativeHDFC Balanced Advanta",
+        "HDFC Balanced Advantage Fund"
+      ],
+      "canonical_amfi_code": "118968",
+      "amfi_base_name": "HDFC Balanced Advantage Fund",
+      "disclosure_label": "HDFC Balanced Advantage Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
+    },
+    {
+      "amc_id": "hdfc-mutual-fund",
+      "shortcode": "HDFCMY",
+      "aliases": [
+        "DerivativeHDFCMY",
+        "HDFC Equity Savings Fund"
+      ],
+      "canonical_amfi_code": "119128",
+      "amfi_base_name": "HDFC Equity Savings Fund",
+      "disclosure_label": "HDFC Equity Savings Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
+    },
+    {
+      "amc_id": "hdfc-mutual-fund",
+      "shortcode": "HDFCPM",
+      "aliases": [
+        "DerivativeHDFC Hybrid Equity Fu",
+        "HDFC Hybrid Equity Fund"
+      ],
+      "canonical_amfi_code": "119062",
+      "amfi_base_name": "HDFC Hybrid Equity Fund",
+      "disclosure_label": "HDFC Hybrid Equity Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
+    },
+    {
       "amc_id": "helios-mutual-fund",
       "shortcode": "H01",
       "aliases": [],
@@ -16765,14 +16838,16 @@
     {
       "amc_id": "motilal-oswal-mutual-fund",
       "shortcode": "Y054",
-      "aliases": [],
-      "canonical_amfi_code": "152796",
+      "aliases": [
+        "YO54"
+      ],
+      "canonical_amfi_code": "152794",
       "amfi_base_name": "Motilal Oswal Business Cycle Fund",
       "disclosure_label": "Motilal Oswal Business Cycle Fund",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
+      "last_verified_period": "2026-07"
     },
     {
       "amc_id": "motilal-oswal-mutual-fund",

@@ -1,14 +1,14 @@
 amc_id,shortcode,aliases,canonical_amfi_code,amfi_base_name,disclosure_label,confidence,source,first_seen_period,last_verified_period
 360-one-mutual-fund,Dynamic Bond,,122715,360 ONE Dynamic Bond Fund,360 ONE Dynamic Bond Fund,seeded,shortcode,latest,latest
-360-one-mutual-fund,ELSS Tax Saver Nifty 50 Index,,151165,360 ONE ELSS Tax Saver Nifty 50 Index Fund,360 ONE ELSS Tax Saver Nifty 50 Index Fund,seeded,shortcode,latest,latest
-360-one-mutual-fund,Flexicap Fund,,151796,360 ONE FLEXICAP FUND,360 ONE FLEXICAP FUND,seeded,shortcode,latest,latest
+360-one-mutual-fund,ELSS Tax Saver Nifty 50 Index,ELSS Tax Saver,151165,360 ONE ELSS Tax Saver Nifty 50 Index Fund,360 ONE ELSS Tax Saver Nifty 50 Index Fund,seeded,shortcode,latest,latest
+360-one-mutual-fund,Flexicap Fund,Flexi Cap|Flexi Cap Fund,151796,360 ONE FLEXICAP FUND,360 ONE FLEXICAP FUND,seeded,shortcode,latest,latest
 360-one-mutual-fund,Focused Fund,,131580,360 ONE Focused Fund,360 ONE Focused Fund,seeded,shortcode,latest,latest
 360-one-mutual-fund,GOLDETF,,153357,360 ONE Gold ETF,360 ONE GOLD ETF,seeded,shortcode,2026-06,latest
-360-one-mutual-fund,Hybrid Fund,,152076,360 ONE Balanced Hybrid Fund,360 ONE Balanced Hybrid Fund,seeded,shortcode,latest,latest
+360-one-mutual-fund,Hybrid Fund,Balance Hybrid|Balanced Hybrid,152076,360 ONE Balanced Hybrid Fund,360 ONE Balanced Hybrid Fund,seeded,shortcode,latest,latest
 360-one-mutual-fund,Liquid Fund,,125345,360 ONE LIQUID FUND,360 ONE Liquid Fund,seeded,shortcode,latest,latest
 360-one-mutual-fund,MSCI India ETF,,154366,360 ONE MSCI India ETF,360 ONE MSCI India ETF,seeded,shortcode,latest,latest
-360-one-mutual-fund,Multi Asset,,153774,360 ONE Multi Asset Allocation Fund,360 ONE Multi Asset Allocation Fund,seeded,shortcode,latest,latest
-360-one-mutual-fund,OVERNIGHT,,153703,360 ONE Overnight Fund,360 ONE Overnight Fund,seeded,shortcode,2026-06,latest
+360-one-mutual-fund,Multi Asset,Multi Asset Allocation|Multi Asset Allocation Fund,153774,360 ONE Multi Asset Allocation Fund,360 ONE Multi Asset Allocation Fund,seeded,shortcode,latest,latest
+360-one-mutual-fund,OVERNIGHT,Overnight Fund,153703,360 ONE Overnight Fund,360 ONE Overnight Fund,seeded,shortcode,2026-06,latest
 360-one-mutual-fund,Quant Fund,,149318,360 ONE QUANT FUND,360 ONE QUANT FUND,seeded,shortcode,latest,latest
 360-one-mutual-fund,SILVERETF,,153415,360 ONE Silver ETF,360 ONE Silver ETF,seeded,shortcode,2026-06,latest
 360-one-mutual-fund,YY07,,122715,360 ONE Dynamic Bond Fund,360 ONE Dynamic Bond Fund,seeded,name_match,2026-06,2026-06
@@ -809,6 +809,10 @@ hdfc-mutual-fund,MAR1269D23,,151565,HDFC FMP 1269D March 2023,HDFC FMP 1269D,see
 hdfc-mutual-fund,MAR1861D22,,149924,HDFC FMP 1861D March 2022,HDFC FMP 1861D,seeded,shortcode,2026-06,latest
 hdfc-mutual-fund,MAR1876D22,,150002,HDFC FMP 1876D March 2022,HDFC FMP 1876D,seeded,shortcode,2026-06,latest
 hdfc-mutual-fund,MIDCAP,,118989,HDFC Mid Cap Fund,HDFC Mid Cap Fund,seeded,shortcode,2026-06,latest
+hdfc-mutual-fund,HDFCAR,DerivativeHDFCAR|HDFC Arbitrage Fund,129052,HDFC ARBITRAGE FUND,HDFC ARBITRAGE FUND,seeded,shortcode,2026-07,2026-07
+hdfc-mutual-fund,HDFCGR,DerivativeHDFC Balanced Advanta|HDFC Balanced Advantage Fund,118968,HDFC Balanced Advantage Fund,HDFC Balanced Advantage Fund,seeded,shortcode,2026-07,2026-07
+hdfc-mutual-fund,HDFCMY,DerivativeHDFCMY|HDFC Equity Savings Fund,119128,HDFC Equity Savings Fund,HDFC Equity Savings Fund,seeded,shortcode,2026-07,2026-07
+hdfc-mutual-fund,HDFCPM,DerivativeHDFC Hybrid Equity Fu|HDFC Hybrid Equity Fund,119062,HDFC Hybrid Equity Fund,HDFC Hybrid Equity Fund,seeded,shortcode,2026-07,2026-07
 helios-mutual-fund,H01,,152152,Helios Overnight Fund,Helios Overnight Fund,seeded,name_match,2026-06,2026-06
 helios-mutual-fund,HARF,,154257,Helios Arbitrage Fund,Helios Arbitrage Fund,seeded,shortcode,2026-06,latest
 helios-mutual-fund,HBAF,,152509,Helios Balanced Advantage Fund,Helios Balanced Advantage Fund,seeded,shortcode,2026-06,latest
@@ -1385,7 +1389,7 @@ mirae-asset-mutual-fund,SMQFOF,,152459,Mirae Asset Nifty Smallcap 250 Momentum Q
 mirae-asset-mutual-fund,TM750,,152968,Mirae Asset Nifty Total Market Index Fund,Mirae Asset Nifty Total Market Index Fund,seeded,shortcode,2026-06,latest
 mirae-asset-mutual-fund,TOP20ETF,,154060,Mirae Asset Nifty Top 20 Equal Weight ETF,Mirae Asset Nifty Top 20 Equal Weight ETF,seeded,shortcode,2026-06,latest
 mirae-asset-mutual-fund,VALUE50,,154299,Mirae Asset Nifty 500 Value 50 ETF,Mirae Asset Nifty 500 Value 50 ETF,seeded,shortcode,2026-06,latest
-motilal-oswal-mutual-fund,Y054,,152796,Motilal Oswal Business Cycle Fund,Motilal Oswal Business Cycle Fund,seeded,shortcode,2026-06,latest
+motilal-oswal-mutual-fund,Y054,YO54,152794,Motilal Oswal Business Cycle Fund,Motilal Oswal Business Cycle Fund,seeded,shortcode,2026-06,2026-07
 motilal-oswal-mutual-fund,YO01,,113069,Motilal Oswal Nifty 50 ETF,Motilal Oswal Nifty 50 ETF,seeded,shortcode,2026-06,latest
 motilal-oswal-mutual-fund,YO02,,114456,Motilal Oswal Nifty Midcap 100 ETF,Motilal Oswal Nifty Midcap 100 ETF,seeded,shortcode,2026-06,latest
 motilal-oswal-mutual-fund,YO03,,114984,Motilal Oswal Nasdaq 100 ETF (MOFN100,Motilal Oswal Nasdaq 100 ETF,seeded,shortcode,2026-06,latest
