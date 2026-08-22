@@ -183,7 +183,7 @@
         }
       },
       "status": "monthly_only",
-      "notes": "Fortnightly not published as of 2026-08-09. Monthly portfolios via downloads __next_f disclosuresData (Dropdown=Monthly; month often only in filename when Dropdown2 is empty). July 2026 portfolios not uploaded yet.",
+      "notes": "Fortnightly not published as of 2026-08-09. Monthly portfolios via downloads __next_f disclosuresData (Dropdown=Monthly; month often only in filename when Dropdown2 is empty).",
       "fetch": {
         "monthly": {
           "adapter": "python_ref",

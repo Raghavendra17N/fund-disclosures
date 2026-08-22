@@ -122,16 +122,17 @@ aditya-birla-sun-life-mutual-fund,PURE,,119659,Aditya Birla Sun Life Value Fund,
 aditya-birla-sun-life-mutual-fund,SENSXETF,,139581,Aditya Birla Sun Life BSE Sensex ETF,SENSXETF,seeded,shortcode,2026-06,latest
 aditya-birla-sun-life-mutual-fund,SILVRETF,,149779,Aditya Birla Sun Life Silver ETF,SILVRETF,seeded,shortcode,2026-06,latest
 aditya-birla-sun-life-mutual-fund,SILVRFOF,,152150,Aditya Birla Sun Life US Treasury 3 - 10 Year Bond ETFs Fund Of Funds,SILVRFOF,seeded,shortcode,2026-06,latest
-angel-one-mutual-fund,Angel One Gold ETF,,153826,ANGEL ONE GOLD ETF,Angel One Gold ETF,seeded,shortcode,latest,latest
-angel-one-mutual-fund,Angel One Gold ETF FOF,,153827,ANGEL ONE GOLD ETF FOF,Angel One Gold ETF FOF,seeded,shortcode,latest,latest
-angel-one-mutual-fund,Angel One Nifty 50 ETF,,153531,ANGEL ONE NIFTY 50 ETF,Angel One Nifty ETF,seeded,shortcode,latest,latest
-angel-one-mutual-fund,Angel One Nifty 50 Index Fund,,153529,ANGEL ONE NIFTY 50 INDEX FUND,Angel One Nifty Index Fund,seeded,shortcode,latest,latest
-angel-one-mutual-fund,Angel One Nifty Total Market ET,,153332,ANGEL ONE NIFTY TOTAL MARKET ETF,Angel One Nifty Total Market ETF,seeded,shortcode,latest,latest
-angel-one-mutual-fund,Angel One Nifty Total Market In,,153330,ANGEL ONE NIFTY TOTAL MARKET INDEX FUND,Angel One Nifty Total Market Index Fund,seeded,shortcode,latest,latest
-angel-one-mutual-fund,Angel One Nifty Total Market Mo,,153957,ANGEL ONE NIFTY TOTAL MARKET MOMENTUM QUALITY 50 ETF,Angel One Nifty Total Market Momentum quality index50 INDEX,seeded,shortcode,latest,latest
-angel-one-mutual-fund,Angel One Silver ETF,,154205,ANGEL ONE SILVER ETF,Angel One Silver ETF,seeded,shortcode,latest,latest
-angel-one-mutual-fund,Angel One Silver ETF FOF,,154206,ANGEL ONE SILVER ETF FOF,Angel One Silver ETF FOF,seeded,shortcode,latest,latest
-angel-one-mutual-fund,AngelOne Nifty 1D Rate Liquid E,,153451,ANGEL ONE NIFTY 1D RATE LIQUID ETF - Growth,AngelOne Nifty 1D Rate Liquid ETF GROWTH,seeded,shortcode,latest,latest
+angel-one-mutual-fund,Angel One Gold ETF FOF,,153827,ANGEL ONE GOLD ETF FOF,Angel One Gold ETF FOF,seeded,shortcode,2026-07,latest
+angel-one-mutual-fund,Angel One Gold ETF,,153826,ANGEL ONE GOLD ETF,Angel One Gold ETF,seeded,shortcode,2026-07,latest
+angel-one-mutual-fund,AngelOne Nifty 1D Rate Liquid ETF GROWTH,Angel One Nifty 1D Rate Liquid ETF GROWTH,153451,ANGEL ONE NIFTY 1D RATE LIQUID ETF - GROWTH,AngelOne Nifty 1D Rate Liquid ETF GROWTH,seeded,shortcode,2026-07,latest
+angel-one-mutual-fund,Angel One Nifty 50 ETF,,153531,ANGEL ONE NIFTY 50 ETF,Angel One Nifty 50 ETF,seeded,shortcode,2026-07,latest
+angel-one-mutual-fund,Angel One Nifty 50 Index Fund,,153529,ANGEL ONE NIFTY 50 INDEX FUND,Angel One Nifty 50 Index Fund,seeded,shortcode,2026-07,latest
+angel-one-mutual-fund,Angel One Nifty Total Market ETF,,153332,ANGEL ONE NIFTY TOTAL MARKET ETF,Angel One Nifty Total Market ETF,seeded,shortcode,2026-07,latest
+angel-one-mutual-fund,Angel One Nifty Total Market Index Fund,,153330,ANGEL ONE NIFTY TOTAL MARKET INDEX FUND,Angel One Nifty Total Market Index Fund,seeded,shortcode,2026-07,latest
+angel-one-mutual-fund,Angel One Nifty Total Market Momentum Quality 50 ETF,,153957,ANGEL ONE NIFTY TOTAL MARKET MOMENTUM QUALITY 50 ETF,Angel One Nifty Total Market Momentum Quality 50 ETF,seeded,shortcode,2026-07,latest
+angel-one-mutual-fund,Angel One Nifty Total Market Momentum Quality 50 Index Fund,,153956,ANGEL ONE NIFTY TOTAL MARKET MOMENTUM QUALITY 50 INDEX FUND,Angel One Nifty Total Market Momentum Quality 50 Index Fund,seeded,shortcode,2026-07,latest
+angel-one-mutual-fund,Angel One Silver ETF FOF,,154206,ANGEL ONE SILVER ETF FOF,Angel One Silver ETF FOF,seeded,shortcode,2026-07,latest
+angel-one-mutual-fund,Angel One Silver ETF,,154205,ANGEL ONE SILVER ETF,Angel One Silver ETF,seeded,shortcode,2026-07,latest
 axis-mutual-fund,AXIS500,,152731,Axis Nifty 500 Index Fund,Axis Nifty 500 Index Fund,seeded,shortcode,2026-06,latest
 axis-mutual-fund,AXISASD,,147889,Axis Income Plus Arbitrage Active FOF,Axis Income Plus Arbitrage Active FOF,seeded,shortcode,2026-06,latest
 axis-mutual-fund,AXISBCF,,151368,Axis Business Cycles Fund,Axis Business Cycles Fund,seeded,shortcode,2026-06,latest
