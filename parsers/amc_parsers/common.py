@@ -1095,15 +1095,25 @@ def extract_scheme_name_cams(rows: list[list[str]]) -> str | None:
 
 
 def extract_title_scheme(rows: list[list[str]], sheet_name: str) -> str:
-    """NJ / Angel / Abakkus / Navi: fund name appears above the header, often row 1–6."""
-    for row in rows[:10]:
+    """NJ / Angel / Abakkus / Navi / Union: fund name above the holdings header."""
+    for row in rows[:12]:
         for cell in row:
             t = (cell or "").strip()
             if not t or len(t) < 6:
                 continue
+            # Union: "MONTHLY PORTFOLIO STATEMENT OF {FUND} AS ON …"
+            m = re.search(
+                r"(?i)portfolio\s+statement\s+of\s+(.+?)\s+as\s+on\b",
+                t,
+            )
+            if m:
+                title = m.group(1).strip(" -–—")
+                if title and not re.search(r"(?i)registration\s+no", title):
+                    return title
             if re.search(
-                r"(?i)mutual\s+fund$|portfolio\s+(statement|as\s+on)|open\s+ended|"
-                r"name\s+of\s+the\s+instrument",
+                r"(?i)registration\s+no|registered\s+office|toll\s+free|"
+                r"mutual\s+fund$|open\s+ended|name\s+of\s+the\s+instrument|"
+                r"portfolio\s+(statement|as\s+on)",
                 t,
             ):
                 continue

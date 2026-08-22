@@ -67,6 +67,35 @@ def _looks_like_shortcode(label: str | None) -> bool:
     return True
 
 
+_SHEET_LABEL_HINT_RE = re.compile(
+    r"(?i)\b(fund|etf|fof|scheme|hybrid|cap|bond|duration|liquid|overnight|"
+    r"arbitrage|equity|debt|gilt|gold|silver|momentum|allocation|savings|"
+    r"market|children|retirement|innovation|advantage|cycle|consumption|"
+    r"focused|value|multicap|midcap|largecap|flexi|aggressive|balanced|"
+    r"dynamic|corporate|money|short|low|active|opportunities)\b"
+)
+
+
+def _looks_like_sheet_label(label: str | None) -> bool:
+    """Sheet tabs used as shortcodes (Union: ``Aggressive Hybrid``, ``Largecap``)."""
+    s = (label or "").strip()
+    if not s or _GENERIC_SHEET_RE.fullmatch(s):
+        return False
+    if len(s) < 4 or len(s) > 80:
+        return False
+    if re.search(r"(?i)registration|portfolio\s+statement|registered\s+office", s):
+        return False
+    # Multi-word fund labels
+    if " " in s:
+        if _SHEET_LABEL_HINT_RE.search(s):
+            return True
+        return 2 <= len(s.split()) <= 6
+    # Single-word Title Case tabs (Union Largecap / Midcap) — not ALLCAPS tickers
+    if s.isalpha() and not s.isupper() and _SHEET_LABEL_HINT_RE.search(s):
+        return True
+    return False
+
+
 def _shortcode_from_cell(value: str | None) -> str | None:
     """Whole-cell shortcode, or a leading ticker in titles like ``IB01-Groww …``."""
     s = (value or "").strip()
@@ -84,10 +113,13 @@ def _shortcode_from_cell(value: str | None) -> str | None:
 
 
 def _scheme_shortcode(sheet_name: str, rows: list[list[str]]) -> str | None:
-    """Sheet tab → A1 → B1 (first token that looks like an AMC shortcode)."""
-    for cand in (_shortcode_from_cell(sheet_name),):
-        if cand:
-            return cand
+    """Sheet tab → A1 → B1 (ticker or multi-word sheet label)."""
+    tab = (sheet_name or "").strip()
+    if tab and not _GENERIC_SHEET_RE.fullmatch(tab):
+        if _looks_like_shortcode(tab):
+            return tab.upper()
+        if _looks_like_sheet_label(tab):
+            return tab
     if rows and rows[0]:
         a1 = rows[0][0] if len(rows[0]) > 0 else None
         b1 = rows[0][1] if len(rows[0]) > 1 else None

@@ -23955,7 +23955,10 @@
     {
       "amc_id": "union-mutual-fund",
       "shortcode": "LARGECAP",
-      "aliases": [],
+      "aliases": [
+        "Largecap",
+        "Large Cap"
+      ],
       "canonical_amfi_code": "141248",
       "amfi_base_name": "Union Largecap Fund",
       "disclosure_label": "UNION LARGECAP FUND",
@@ -24003,7 +24006,10 @@
     {
       "amc_id": "union-mutual-fund",
       "shortcode": "MIDCAP",
-      "aliases": [],
+      "aliases": [
+        "Midcap",
+        "Mid Cap"
+      ],
       "canonical_amfi_code": "148073",
       "amfi_base_name": "Union Midcap Fund",
       "disclosure_label": "UNION MIDCAP FUND",
@@ -24011,6 +24017,18 @@
       "source": "shortcode",
       "first_seen_period": "2026-06",
       "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "union-mutual-fund",
+      "shortcode": "Money Market",
+      "aliases": [],
+      "canonical_amfi_code": "149117",
+      "amfi_base_name": "Union Money Market Fund",
+      "disclosure_label": "UNION MONEY MARKET FUND",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
     },
     {
       "amc_id": "union-mutual-fund",
