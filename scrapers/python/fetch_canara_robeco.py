@@ -1,13 +1,18 @@
 #!/usr/bin/env python3
 """
-Canara Robeco Mutual Fund — download monthly (or fortnightly debt) portfolio files.
+Canara Robeco Mutual Fund — download monthly or fortnightly-debt portfolio files.
 
 No BeautifulSoup. Listing pages are HTML; Excel URLs are extracted with regex:
 
-  https://www.canararobeco.com/wp-content/uploads/....xlsx?
+  https://www.canararobeco.com/wp-content/uploads/....xls(x)
 
-Monthly listing (paginated ~10 files/page):
-  {PAGE}?filteryear=YYYY&filtermonth=MM&pagination=N
+Monthly (scheme dashboard, ~10 files/page):
+  .../scheme-dashboard/scheme-monthly-portfolio/
+    ?filteryear=YYYY&filtermonth=MM&pagination=N
+
+Fortnightly debt (same query shape; --fortnightly):
+  .../fortnightly-portfolio-disclosure-debt/
+    ?filteryear=YYYY&filtermonth=MM&pagination=N
 
 TLS: plain urllib often gets 403; prefer curl_cffi chrome impersonation.
 """
