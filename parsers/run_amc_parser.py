@@ -65,6 +65,29 @@ def _call_parser(parser, path: Path, *, workbook_limit: int | None):
         return parser(path)
 
 
+def _flush_schemes_index(
+    amc_id: str,
+    portfolios: list,
+    *,
+    out_base: Path | None = None,
+) -> None:
+    """Persist schemes.json for whatever portfolios we have so far.
+
+    Portfolios are written per file; historically the index was only written at
+    the end of parse_paths. A kill/timeout mid-AMC (common for Mirae’s ~100
+    single-scheme workbooks) left portfolio.json folders with no schemes.json,
+    and enrich skipped the whole AMC. Flush after each file + in finally.
+    """
+    if not portfolios:
+        return
+    by_key: dict[tuple[str, str], list] = {}
+    for p in portfolios:
+        by_key.setdefault((p.disclosure_type, p.period), []).append(p)
+    for (dtype, period), items in by_key.items():
+        dest_root = out_base or (ROOT / "data" / "parsed" / dtype / period / amc_id)
+        write_amc_schemes_index(dest_root, items)
+
+
 def parse_paths(
     amc_id: str,
     paths: list[Path],
@@ -75,25 +98,33 @@ def parse_paths(
     parser = get_parser(amc_id)
     all_portfolios = []
     errors = []
-    for path in paths:
-        try:
-            portfolios = _call_parser(parser, path, workbook_limit=workbook_limit)
-        except Exception as e:
-            errors.append({"file": path.name, "error": str(e)})
-            continue
-        all_portfolios.extend(portfolios)
-        for p in portfolios:
-            dest_root = out_base or (
-                ROOT / "data" / "parsed" / p.disclosure_type / p.period / p.amc_id
-            )
-            write_scheme_portfolio(dest_root, p)
-
-    by_key: dict[tuple[str, str], list] = {}
-    for p in all_portfolios:
-        by_key.setdefault((p.disclosure_type, p.period), []).append(p)
-    for (dtype, period), items in by_key.items():
-        dest_root = out_base or (ROOT / "data" / "parsed" / dtype / period / amc_id)
-        write_amc_schemes_index(dest_root, items)
+    try:
+        for path in paths:
+            try:
+                portfolios = _call_parser(parser, path, workbook_limit=workbook_limit)
+            except Exception as e:
+                errors.append({"file": path.name, "error": str(e)})
+                continue
+            all_portfolios.extend(portfolios)
+            for p in portfolios:
+                dest_root = out_base or (
+                    ROOT / "data" / "parsed" / p.disclosure_type / p.period / p.amc_id
+                )
+                try:
+                    write_scheme_portfolio(dest_root, p)
+                except Exception as e:
+                    errors.append(
+                        {
+                            "file": path.name,
+                            "scheme": getattr(p, "shortcode", None) or getattr(p, "scheme_name", None),
+                            "error": f"write_scheme_portfolio: {e}",
+                        }
+                    )
+            # Keep schemes.json in sync after every file so a mid-run interrupt
+            # cannot orphan portfolio folders without an enrichable index.
+            _flush_schemes_index(amc_id, all_portfolios, out_base=out_base)
+    finally:
+        _flush_schemes_index(amc_id, all_portfolios, out_base=out_base)
 
     return {
         "amc_id": amc_id,
