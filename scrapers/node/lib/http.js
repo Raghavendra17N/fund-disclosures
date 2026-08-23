@@ -6,7 +6,10 @@ const UA =
  * @param {RequestInit & { timeoutMs?: number, insecure?: boolean }} [opts]
  */
 export async function httpFetch(url, opts = {}) {
-  const { timeoutMs = 30000, headers, insecure, ...rest } = opts;
+  const envTimeout = Number(process.env.FETCH_TIMEOUT_MS);
+  const defaultTimeout =
+    Number.isFinite(envTimeout) && envTimeout > 0 ? envTimeout : 120_000;
+  const { timeoutMs = defaultTimeout, headers, insecure, ...rest } = opts;
   const prev = process.env.NODE_TLS_REJECT_UNAUTHORIZED;
   if (insecure) process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
   try {

@@ -3,10 +3,13 @@
  * Repeatable disclosure fetch for a calendar period.
  *
  * Usage:
- *   node src/fetch-period.js --type=monthly --period=2026-06
- *   node src/fetch-period.js --type=monthly --period=2026-06 --amc=sbi-mutual-fund
- *   node src/fetch-period.js --type=monthly --period=2026-06 --list-only
- *   node src/fetch-period.js --adapters
+ *   node scrapers/node/fetch-period.js --type=monthly --period=2026-06
+ *   node scrapers/node/fetch-period.js --type=monthly --period=2026-06 --amc=sbi-mutual-fund
+ *   node scrapers/node/fetch-period.js --type=monthly --period=2026-06 --list-only
+ *   node scrapers/node/fetch-period.js --type=monthly --period=2026-07 --concurrency=12
+ *   node scrapers/node/fetch-period.js --adapters
+ *
+ * AMCs are independent hosts — fetch them in parallel with --concurrency (default 10).
  */
 import { existsSync, readFileSync, mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -59,10 +62,11 @@ const amcFilter = arg("amc");
 const dryRun = Boolean(arg("dry-run", false));
 const listOnly = Boolean(arg("list-only", false));
 const supportedOnly = arg("supported-only", true) !== "false";
+const concurrency = Math.max(1, Number(arg("concurrency", "10")) || 10);
 
 if (!period) {
   console.error(
-    "Required: --period=YYYY-MM\nExample: node src/fetch-period.js --type=monthly --period=2026-06 --list-only",
+    "Required: --period=YYYY-MM\nExample: node scrapers/node/fetch-period.js --type=monthly --period=2026-06 --list-only",
   );
   process.exit(1);
 }
@@ -86,7 +90,7 @@ if (!amcs.length) {
 }
 
 console.log(
-  `Fetch ${type} ${parsed.period} · ${amcs.length} AMC(s)${dryRun ? " · dry-run" : ""}${listOnly ? " · list-only" : ""}\n`,
+  `Fetch ${type} ${parsed.period} · ${amcs.length} AMC(s) · concurrency=${concurrency}${dryRun ? " · dry-run" : ""}${listOnly ? " · list-only" : ""}\n`,
 );
 
 const run = {
@@ -95,17 +99,17 @@ const run = {
   period: parsed.period,
   dryRun,
   listOnly,
+  concurrency,
   results: [],
 };
 
-for (const amc of amcs) {
+async function fetchOneAmc(amc) {
   const adapterName = amc.fetch?.[type]?.adapter;
   process.stderr.write(`→ ${amc.id} [${adapterName}]\n`);
   try {
     const adapter = resolveAdapter(amc, type);
     if (!adapter) {
-      run.results.push({ id: amc.id, name: amc.name, status: "unsupported" });
-      continue;
+      return { id: amc.id, name: amc.name, status: "unsupported" };
     }
     const listed = await adapter.listFiles({
       amc,
@@ -128,11 +132,12 @@ for (const amc of amcs) {
           dryRun,
         });
         downloads.push({ ...f, ...d });
+        // Small pause between files for the *same* AMC host only.
         await new Promise((r) => setTimeout(r, 100));
       }
     }
 
-    run.results.push({
+    const result = {
       id: amc.id,
       name: amc.name,
       adapter: adapterName,
@@ -140,21 +145,40 @@ for (const amc of amcs) {
       notes: listed.notes,
       fileCount: files.length,
       files: listOnly ? files : downloads,
-    });
+    };
     console.log(
       `  ${amc.name}: ${files.length} file(s)${listed.notes ? ` (${listed.notes})` : ""}`,
     );
+    return result;
   } catch (e) {
-    run.results.push({
+    console.log(`  ${amc.name}: ERROR ${e.message || e}`);
+    return {
       id: amc.id,
       name: amc.name,
       adapter: adapterName,
       status: "error",
       error: String(e.message || e),
-    });
-    console.log(`  ${amc.name}: ERROR ${e.message || e}`);
+    };
   }
 }
+
+/** Run async work over items with a fixed worker pool. */
+async function mapPool(items, poolSize, fn) {
+  const results = new Array(items.length);
+  let next = 0;
+  async function worker() {
+    while (true) {
+      const i = next++;
+      if (i >= items.length) return;
+      results[i] = await fn(items[i], i);
+    }
+  }
+  const n = Math.min(poolSize, items.length);
+  await Promise.all(Array.from({ length: n }, () => worker()));
+  return results;
+}
+
+run.results = await mapPool(amcs, concurrency, fetchOneAmc);
 
 const outDir = join(root, "data/probes");
 mkdirSync(outDir, { recursive: true });

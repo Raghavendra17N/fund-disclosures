@@ -1,0 +1,464 @@
+#!/usr/bin/env node
+/**
+ * Sync unique fund portfolios + AMFI catalog to the public GitHub data repo.
+ *
+ * Dedup model:
+ *   - One JSON per unique portfolio, keyed by portfolio_id
+ *     (AMFI id in B2 paths: …/latest/{amc}/{id}/portfolio.json).
+ *   - Catalog lists all schemes; holdings rows link via portfolio_id.
+ *   - Sibling share-classes share one portfolio object.
+ *
+ * Layout (--out, default .tmp/fund-holdings-data):
+ *   portfolios/latest/{portfolio_id}.json
+ *   portfolios/asof/{yyyy-mm}/{portfolio_id}.json  (with --asof=YYYY-MM)
+ *   catalog/amfi-lookup.json
+ *   meta.json
+ *
+ * Usage:
+ *   node scripts/sync-holdings-to-github.mjs --limit=20 --dry-run
+ *   node scripts/sync-holdings-to-github.mjs --limit=50 --push
+ *   node scripts/sync-holdings-to-github.mjs --push
+ *
+ * Auth for --push: GH_TOKEN or GITHUB_TOKEN. Never commit tokens.
+ */
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  unlinkSync,
+  writeFileSync,
+} from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import { spawnSync } from "node:child_process";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const ROOT = join(__dirname, "..");
+
+const { shapeHoldingsPayload } = await import(
+  pathToFileURL(join(ROOT, "holdings-browser/api/_contract.js")).href,
+);
+
+const OWNER = process.env.HOLDINGS_DATA_OWNER || "kushagra-agarwal-a";
+const REPO = process.env.HOLDINGS_DATA_REPO || "fund-holdings-data";
+const BRANCH = process.env.HOLDINGS_DATA_BRANCH || "main";
+
+function argValue(name, fallback = null) {
+  const prefix = `--${name}=`;
+  const hit = process.argv.find((a) => a.startsWith(prefix));
+  return hit ? hit.slice(prefix.length) : fallback;
+}
+
+function hasFlag(name) {
+  return process.argv.includes(`--${name}`);
+}
+
+const dryRun = hasFlag("dry-run");
+const doPush = hasFlag("push");
+const keepOut = hasFlag("keep");
+const limit = Number(argValue("limit", "0")) || 0;
+const asof = argValue("asof", "");
+const outDir = argValue("out", join(ROOT, ".tmp/fund-holdings-data"));
+const lookupPath = argValue(
+  "lookup",
+  join(ROOT, "holdings-browser/api/amfi-lookup.json"),
+);
+
+function portfolioIdFromRow(row) {
+  // Prefer numeric id from B2 key. Reject scheme-name path segments from bad matches.
+  const key = row?.b2_key || "";
+  const m = String(key).match(/\/latest\/[^/]+\/([^/]+)\/portfolio\.json$/);
+  if (m && /^\d{4,8}$/.test(m[1])) return m[1];
+  for (const candidate of [row?.parent_amfi, row?.amfi_code]) {
+    const id = String(candidate || "");
+    if (/^\d{4,8}$/.test(id)) return id;
+  }
+  return null;
+}
+
+function portfolioObjectKey(id) {
+  return `portfolios/latest/${id}.json`;
+}
+
+function portfolioAsofObjectKey(period, id) {
+  return `portfolios/asof/${period}/${id}.json`;
+}
+
+function cdnUrl(objectKey) {
+  return `https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@${BRANCH}/${objectKey}`;
+}
+
+function ensureDir(p) {
+  mkdirSync(p, { recursive: true });
+}
+
+function writeJson(filePath, value) {
+  ensureDir(dirname(filePath));
+  writeFileSync(filePath, `${JSON.stringify(value)}\n`, "utf8");
+}
+
+function run(cmd, args) {
+  const res = spawnSync(cmd, args, { stdio: "inherit", encoding: "utf8" });
+  if (res.status !== 0) {
+    throw new Error(`${cmd} ${args.join(" ")} failed with status ${res.status}`);
+  }
+}
+
+function gitTokenUrl() {
+  const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
+  if (!token) throw new Error("Set GH_TOKEN or GITHUB_TOKEN for --push");
+  return `https://x-access-token:${token}@github.com/${OWNER}/${REPO}.git`;
+}
+
+function writeReadme() {
+  writeFileSync(
+    join(outDir, "README.md"),
+    `# ${REPO}
+
+Public AMFI mutual-fund holdings (zero paid cloud).
+
+## Dedup model
+
+- **Portfolios** — one JSON per unique book: \`portfolios/latest/{portfolio_id}.json\`
+- **Catalog** — all AMFI schemes; holdings rows link via \`portfolio_id\`
+
+Sibling share-classes share one portfolio object.
+
+## CDN
+
+\`\`\`
+https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@${BRANCH}/catalog/amfi-lookup.json
+https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@${BRANCH}/portfolios/latest/{portfolio_id}.json
+\`\`\`
+
+Resolve: catalog[amfi].portfolio_id → portfolios/latest/{id}.json
+
+Synced via \`scripts/sync-holdings-to-github.mjs\`.
+`,
+    "utf8",
+  );
+}
+
+function initOrClone() {
+  if (existsSync(join(outDir, ".git"))) {
+    if (doPush) {
+      run("git", ["-C", outDir, "fetch", "origin", BRANCH]);
+      run("git", [
+        "-C",
+        outDir,
+        "checkout",
+        "-B",
+        BRANCH,
+        `origin/${BRANCH}`,
+      ]);
+    }
+    return;
+  }
+
+  if (doPush) {
+    ensureDir(dirname(outDir));
+    if (existsSync(outDir)) rmSync(outDir, { recursive: true, force: true });
+    const clone = spawnSync(
+      "git",
+      ["clone", "--branch", BRANCH, "--single-branch", gitTokenUrl(), outDir],
+      { encoding: "utf8" },
+    );
+    if (clone.status === 0) return;
+    ensureDir(outDir);
+    run("git", ["-C", outDir, "init", "-b", BRANCH]);
+    run("git", ["-C", outDir, "remote", "add", "origin", gitTokenUrl()]);
+    writeReadme();
+    return;
+  }
+
+  if (existsSync(outDir) && !keepOut) {
+    rmSync(outDir, { recursive: true, force: true });
+  }
+  ensureDir(outDir);
+  writeReadme();
+}
+
+function schemeFromRow(row) {
+  return {
+    amfi_code: String(row.amfi_code),
+    name: row.name ?? null,
+    amc_name: row.amc_name ?? null,
+    parent_name: row.parent_name ?? null,
+    parent_amfi: row.parent_amfi ?? null,
+    nav: row.nav ?? null,
+    nav_date: row.nav_date ?? null,
+    isin: row.isin ?? null,
+    category: row.category ?? null,
+    shortcode: row.shortcode ?? null,
+    as_of: row.as_of ?? null,
+    source_file: row.source_file ?? null,
+  };
+}
+
+function buildPortfolioIndex(lookup) {
+  const byId = new Map();
+
+  for (const row of Object.values(lookup)) {
+    const id = portfolioIdFromRow(row);
+    if (!id) continue;
+    if (!row.has_holdings && !row.local_path && !row.b2_key) continue;
+
+    let entry = byId.get(id);
+    if (!entry) {
+      entry = {
+        portfolio_id: id,
+        members: [],
+        canonical: null,
+        local_path: null,
+        b2_key: null,
+      };
+      byId.set(id, entry);
+    }
+
+    const amfi = String(row.amfi_code || "");
+    if (amfi && !entry.members.includes(amfi)) entry.members.push(amfi);
+
+    if (row.local_path && existsSync(join(ROOT, row.local_path))) {
+      entry.local_path = row.local_path;
+    }
+    if (row.b2_key) entry.b2_key = row.b2_key;
+
+    // Prefer the scheme whose amfi_code equals portfolio_id as canonical.
+    if (!entry.canonical || String(row.amfi_code) === id) {
+      entry.canonical = row;
+    }
+  }
+
+  for (const entry of byId.values()) {
+    entry.members.sort();
+    if (!entry.canonical && entry.members.length) {
+      entry.canonical = lookup[entry.members[0]] || null;
+    }
+  }
+
+  return byId;
+}
+
+function rewriteCatalog(lookup, byId) {
+  const out = {};
+  for (const [code, row] of Object.entries(lookup)) {
+    const id = portfolioIdFromRow(row);
+    const linked = Boolean(row.has_holdings) && Boolean(id) && byId.has(id);
+    const objectKey = linked ? portfolioObjectKey(id) : null;
+    const { local_path: _local, ...rest } = row;
+    out[code] = {
+      ...rest,
+      portfolio_id: linked ? id : null,
+      portfolio_key: objectKey,
+      portfolio_url: objectKey ? cdnUrl(objectKey) : null,
+      b2_key: row.b2_key ?? null,
+    };
+  }
+  return out;
+}
+
+function shapePortfolioPayload(entry, portfolio) {
+  const scheme = schemeFromRow(
+    entry.canonical || { amfi_code: entry.portfolio_id },
+  );
+  const shaped = shapeHoldingsPayload(scheme, portfolio);
+  return {
+    portfolio_id: entry.portfolio_id,
+    member_amfi_codes: entry.members,
+    scheme: shaped.scheme,
+    meta: {
+      ...shaped.meta,
+      portfolio_id: entry.portfolio_id,
+      member_count: entry.members.length,
+    },
+    holdings: shaped.holdings,
+  };
+}
+
+function removeLegacyHoldingsDir() {
+  const legacy = join(outDir, "holdings");
+  if (existsSync(legacy)) {
+    rmSync(legacy, { recursive: true, force: true });
+    console.log("Removed legacy holdings/ tree (replaced by portfolios/).");
+  }
+}
+
+/** Drop portfolio files not in this sync set (bad ids, removed books). */
+function pruneOrphanPortfolios(keepIds) {
+  const dir = join(outDir, "portfolios/latest");
+  if (!existsSync(dir)) return 0;
+  const keep = new Set([...keepIds].map((id) => `${id}.json`));
+  let removed = 0;
+  for (const name of readdirSync(dir)) {
+    if (!name.endsWith(".json")) continue;
+    if (keep.has(name)) continue;
+    unlinkSync(join(dir, name));
+    removed += 1;
+  }
+  if (removed) console.log(`Pruned ${removed} orphan portfolio file(s).`);
+  return removed;
+}
+
+function main() {
+  const lookup = JSON.parse(readFileSync(lookupPath, "utf8"));
+  const byId = buildPortfolioIndex(lookup);
+
+  let portfolios = [...byId.values()].filter((e) => e.local_path);
+  portfolios.sort((a, b) => a.portfolio_id.localeCompare(b.portfolio_id));
+  if (limit > 0) portfolios = portfolios.slice(0, limit);
+
+  const withLocal = [...byId.values()].filter((e) => e.local_path).length;
+
+  console.log(
+    JSON.stringify(
+      {
+        owner: OWNER,
+        repo: REPO,
+        out: outDir,
+        catalog_schemes: Object.keys(lookup).length,
+        unique_portfolios_in_catalog: byId.size,
+        unique_portfolios_with_local: withLocal,
+        syncing_portfolios: portfolios.length,
+        asof: asof || null,
+        dryRun,
+        push: doPush,
+      },
+      null,
+      2,
+    ),
+  );
+
+  if (dryRun) {
+    for (const e of portfolios.slice(0, 8)) {
+      console.log(
+        `  would write ${portfolioObjectKey(e.portfolio_id)} ← ${e.local_path} (${e.members.length} schemes)`,
+      );
+    }
+    if (portfolios.length > 8) {
+      console.log(`  … ${portfolios.length - 8} more portfolios`);
+    }
+    return;
+  }
+
+  initOrClone();
+  removeLegacyHoldingsDir();
+
+  let written = 0;
+  let failed = 0;
+  const writtenIds = [];
+  for (const entry of portfolios) {
+    try {
+      const portfolio = JSON.parse(
+        readFileSync(join(ROOT, entry.local_path), "utf8"),
+      );
+      const payload = shapePortfolioPayload(entry, portfolio);
+      writeJson(join(outDir, portfolioObjectKey(entry.portfolio_id)), payload);
+      if (asof) {
+        writeJson(
+          join(outDir, portfolioAsofObjectKey(asof, entry.portfolio_id)),
+          payload,
+        );
+      }
+      writtenIds.push(entry.portfolio_id);
+      written += 1;
+      if (written % 100 === 0) {
+        console.log(`  wrote ${written}/${portfolios.length}`);
+      }
+    } catch (err) {
+      failed += 1;
+      console.error(`  FAIL ${entry.portfolio_id}`, err?.message || err);
+    }
+  }
+  pruneOrphanPortfolios(writtenIds);
+
+  const catalog = rewriteCatalog(lookup, byId);
+  writeJson(join(outDir, "catalog/amfi-lookup.json"), catalog);
+  writeJson(join(outDir, "meta.json"), {
+    generated_at: new Date().toISOString(),
+    owner: OWNER,
+    repo: REPO,
+    branch: BRANCH,
+    model: "deduped-portfolios",
+    portfolios_written: written,
+    portfolios_failed: failed,
+    unique_portfolios_in_catalog: byId.size,
+    catalog_schemes: Object.keys(catalog).length,
+    schemes_with_portfolio_link: Object.values(catalog).filter(
+      (r) => r.portfolio_id,
+    ).length,
+    cdn_catalog: cdnUrl("catalog/amfi-lookup.json"),
+    cdn_portfolio_template: cdnUrl("portfolios/latest/{portfolio_id}.json"),
+  });
+  writeReadme();
+
+  console.log(
+    JSON.stringify(
+      { written, failed, catalog: "catalog/amfi-lookup.json", outDir },
+      null,
+      2,
+    ),
+  );
+
+  if (!doPush) return;
+
+  run("git", ["-C", outDir, "add", "-A"]);
+  const status = spawnSync("git", ["-C", outDir, "status", "--porcelain"], {
+    encoding: "utf8",
+  });
+  if (!status.stdout.trim()) {
+    console.log("Nothing to commit.");
+    return;
+  }
+  run("git", [
+    "-C",
+    outDir,
+    "-c",
+    "user.email=holdings-bot@users.noreply.github.com",
+    "-c",
+    "user.name=holdings-sync",
+    "commit",
+    "-m",
+    `sync: ${written} unique portfolios + linked catalog`,
+  ]);
+  run("git", ["-C", outDir, "remote", "set-url", "origin", gitTokenUrl()]);
+  run("git", ["-C", outDir, "push", "-u", "origin", `HEAD:${BRANCH}`]);
+
+  // Pin the content commit in meta.json. GitHub raw @main can lag on large
+  // files (catalog); consumers should fetch catalog/portfolios via this SHA.
+  const shaRes = spawnSync("git", ["-C", outDir, "rev-parse", "HEAD"], {
+    encoding: "utf8",
+  });
+  const commit = (shaRes.stdout || "").trim();
+  if (commit) {
+    const metaPath = join(outDir, "meta.json");
+    const meta = JSON.parse(readFileSync(metaPath, "utf8"));
+    meta.commit = commit;
+    meta.raw_base = `https://raw.githubusercontent.com/${OWNER}/${REPO}/${commit}`;
+    meta.cdn_catalog = `https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@${commit}/catalog/amfi-lookup.json`;
+    meta.cdn_portfolio_template = `https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@${commit}/portfolios/latest/{portfolio_id}.json`;
+    writeJson(metaPath, meta);
+    run("git", ["-C", outDir, "add", "meta.json"]);
+    run("git", [
+      "-C",
+      outDir,
+      "-c",
+      "user.email=holdings-bot@users.noreply.github.com",
+      "-c",
+      "user.name=holdings-sync",
+      "commit",
+      "-m",
+      `meta: pin content commit ${commit.slice(0, 7)}`,
+    ]);
+    run("git", ["-C", outDir, "push", "-u", "origin", `HEAD:${BRANCH}`]);
+  }
+
+  console.log(
+    `Pushed → https://github.com/${OWNER}/${REPO}\nCDN catalog → ${cdnUrl("catalog/amfi-lookup.json")}${
+      commit ? `\nPinned commit → ${commit}` : ""
+    }`,
+  );
+}
+
+main();

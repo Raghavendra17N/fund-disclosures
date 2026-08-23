@@ -3,23 +3,33 @@
 
 Looks up AMFI parent codes from registry/disclosure_shortcode_map.json.
 Keeps the newest as_of per (amc_id, identity) across the given parsed roots.
+
+By default refuses to enrich when disclosure files are missing from schemes.json
+(see scripts/check_parse_completeness.py). Use --allow-incomplete to override.
 """
 from __future__ import annotations
 
+import argparse
 import json
 import re
+import subprocess
 import sys
-from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "parsers"))
+
+from amc_parsers.parse_progress import check_period_completeness  # noqa: E402
+
 MAP_PATH = ROOT / "registry" / "disclosure_shortcode_map.json"
 AMC_PATH = ROOT / "registry" / "amcs.json"
 OUT_MANIFEST = ROOT / "data" / "parsed" / "b2_holdings_manifest.json"
+DISC_ROOT = ROOT / "data" / "disclosures"
+PARSED_ROOT = ROOT / "data" / "parsed"
 
 JUNK_FOLDER = re.compile(
-    r"(?i)^(common notes|index|contents|cover|notes|disclaimer|risk.?o.?meter)$"
+    r"(?i)^(common notes|contents|cover|notes|disclaimer|risk.?o.?meter)$"
 )
 
 
@@ -129,13 +139,89 @@ def iter_schemes(parsed_root: Path):
             yield amc_dir.name, s, pj
 
 
-def main() -> int:
-    roots = [
-        ROOT / "data" / "parsed" / "monthly" / "2026-07",
-        ROOT / "data" / "parsed" / "monthly" / "latest",
-        ROOT / "data" / "parsed" / "fortnightly" / "2026-07",
-        ROOT / "data" / "parsed" / "fortnightly" / "latest",
+def _period_roots() -> list[tuple[str, str, Path]]:
+    """(disclosure_type, period, parsed_root) tuples enrich scans."""
+    return [
+        ("monthly", "2026-07", PARSED_ROOT / "monthly" / "2026-07"),
+        ("monthly", "latest", PARSED_ROOT / "monthly" / "latest"),
+        ("fortnightly", "2026-07", PARSED_ROOT / "fortnightly" / "2026-07"),
+        ("fortnightly", "latest", PARSED_ROOT / "fortnightly" / "latest"),
     ]
+
+
+def _assert_parse_complete(*, allow_incomplete: bool) -> int:
+    """Exit 1 (unless allow_incomplete) when any scanned period has parse gaps."""
+    failures = []
+    for dtype, period, parsed_root in _period_roots():
+        if not parsed_root.exists():
+            continue
+        disc_period = DISC_ROOT / dtype / period
+        if not disc_period.is_dir():
+            continue
+        report = check_period_completeness(
+            disclosure_type=dtype,
+            period=period,
+            disc_root=DISC_ROOT,
+            parsed_root=PARSED_ROOT,
+        )
+        if report["complete"]:
+            continue
+        failures.append(
+            {
+                "disclosure_type": dtype,
+                "period": period,
+                "incomplete_amcs": report["incomplete_amcs"],
+                "incomplete": report["incomplete"][:10],
+            }
+        )
+    if not failures:
+        return 0
+    print(
+        json.dumps(
+            {
+                "error": "parse_incomplete",
+                "hint": (
+                    "Re-run parsers/run_amc_parser.py for the AMC(s) "
+                    "(resume is on by default), then enrich again. "
+                    "Override with --allow-incomplete."
+                ),
+                "failures": failures,
+            },
+            indent=2,
+        ),
+        file=sys.stderr,
+    )
+    return 0 if allow_incomplete else 1
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument(
+        "--allow-incomplete",
+        action="store_true",
+        help="Enrich even when disclosure files are missing from schemes.json",
+    )
+    ap.add_argument(
+        "--skip-completeness-check",
+        action="store_true",
+        help="Do not run parse completeness gate at all",
+    )
+    args = ap.parse_args()
+
+    if not args.skip_completeness_check:
+        rc = _assert_parse_complete(allow_incomplete=args.allow_incomplete)
+        if rc != 0:
+            return rc
+
+    # Refuse enrich if pinned shortcode/alias locks drifted (HDINCF, SILVRFOF, …).
+    lock_cp = subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "assert_holdings_mapping_locks.py")],
+        cwd=ROOT,
+    )
+    if lock_cp.returncode != 0:
+        return lock_cp.returncode
+
+    roots = [parsed_root for _, _, parsed_root in _period_roots()]
     amap = load_shortcode_map()
     amcs = load_amc_names()
     best: dict[tuple[str, str], dict] = {}

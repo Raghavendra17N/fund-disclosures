@@ -239,6 +239,19 @@ def parse_file(
             except Exception:
                 continue
             scheme_sheets = [(n, r) for n, r in sheets if not _is_junk_sheet(n)]
+            # Single-scheme workbooks sometimes title their only tab "Index"
+            # (e.g. ICICI Prudential Nifty 50 Index Fund.xlsx). That name is
+            # normally a TOC skip — keep it when it is the only sheet left.
+            if not scheme_sheets:
+                index_only = [
+                    (n, r)
+                    for n, r in sheets
+                    if r and re.fullmatch(r"(?i)index", (n or "").strip() or "")
+                ]
+                if len(sheets) == 1 and index_only:
+                    scheme_sheets = index_only
+                else:
+                    continue
             if not scheme_sheets:
                 continue
             # single-sheet packs: use the one sheet; multi: all scheme tabs

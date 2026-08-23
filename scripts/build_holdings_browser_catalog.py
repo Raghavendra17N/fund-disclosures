@@ -15,6 +15,7 @@ OUT = ROOT / "holdings-browser" / "public" / "catalog.json"
 LOOKUP_OUT = ROOT / "holdings-browser" / "api" / "amfi-lookup.json"
 MAP_PATH = ROOT / "data" / "sources" / "disclosure_to_amfi_global_mapping.json"
 SHORT_PATH = ROOT / "registry" / "disclosure_shortcode_map.json"
+ALIAS_PATH = ROOT / "registry" / "amfi_holdings_aliases.json"
 
 DATE_TAIL = re.compile(
     r"(?i)[_\s\-]+(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|"
@@ -199,6 +200,16 @@ def main() -> int:
             attached = True
         if attached:
             used.add(id(rec))
+
+    # Orphan AMFI share-class "funds" (Institutional / Div. / Cash) inherit
+    # the parent portfolio when AMFI lists them as separate base funds.
+    if ALIAS_PATH.exists():
+        for orphan, parent in (
+            json.loads(ALIAS_PATH.read_text(encoding="utf-8")).get("aliases") or {}
+        ).items():
+            orphan_s, parent_s = str(orphan), str(parent)
+            if parent_s in holdings_by_plan and orphan_s not in holdings_by_plan:
+                holdings_by_plan[orphan_s] = holdings_by_plan[parent_s]
 
     parent_of_plan: dict[str, dict] = {}
     for f in funds:

@@ -2,10 +2,12 @@
 """Run AMC-wise portfolio parsers.
 
 Examples:
-  .venv/bin/python3 scripts/run_amc_parser.py --all-fixtures
-  .venv/bin/python3 scripts/run_amc_parser.py --amc=nj-mutual-fund --fixtures
-  .venv/bin/python3 scripts/run_amc_parser.py --amc=sbi-mutual-fund --type=monthly --period=latest --limit=2
-  .venv/bin/python3 scripts/run_amc_parser.py --list
+  .venv/bin/python3 parsers/run_amc_parser.py --all-fixtures
+  .venv/bin/python3 parsers/run_amc_parser.py --amc=nj-mutual-fund --fixtures
+  .venv/bin/python3 parsers/run_amc_parser.py --amc=sbi-mutual-fund --type=monthly --period=latest --limit=2
+  .venv/bin/python3 parsers/run_amc_parser.py --amc=mirae-asset-mutual-fund --type=monthly --period=2026-07
+  .venv/bin/python3 parsers/run_amc_parser.py --amc=mirae-asset-mutual-fund --type=monthly --period=2026-07 --force
+  .venv/bin/python3 parsers/run_amc_parser.py --list
 """
 from __future__ import annotations
 
@@ -22,6 +24,10 @@ sys.path.insert(0, str(ROOT / "parsers"))  # canonical parsers win
 from amc_parsers.common import (  # noqa: E402
     write_amc_schemes_index,
     write_scheme_portfolio,
+)
+from amc_parsers.parse_progress import (  # noqa: E402
+    filter_paths_for_resume,
+    load_existing_portfolios,
 )
 from amc_parsers.registry import get_parser, list_amcs  # noqa: E402
 
@@ -46,6 +52,24 @@ def iter_amc_files(amc_id: str, disclosure_type: str, period: str) -> list[Path]
             continue
         files.append(p)
     return files
+
+
+def _default_out_base(amc_id: str, disclosure_type: str, period: str) -> Path:
+    return ROOT / "data" / "parsed" / disclosure_type / period / amc_id
+
+
+def _infer_out_context(paths: list[Path], amc_id: str) -> tuple[str, str, Path]:
+    """Best-effort disclosure_type / period / out dir from input paths."""
+    if not paths:
+        return "monthly", "unknown", _default_out_base(amc_id, "monthly", "unknown")
+    parts = paths[0].parts
+    dtype, period = "monthly", "unknown"
+    for i, p in enumerate(parts):
+        if p in {"monthly", "fortnightly"} and i + 1 < len(parts):
+            dtype = p
+            period = parts[i + 1]
+            break
+    return dtype, period, _default_out_base(amc_id, dtype, period)
 
 
 def _call_parser(parser, path: Path, *, workbook_limit: int | None):
@@ -94,24 +118,45 @@ def parse_paths(
     *,
     out_base: Path | None = None,
     workbook_limit: int | None = None,
+    resume: bool = True,
 ) -> dict:
     parser = get_parser(amc_id)
-    all_portfolios = []
+    dtype, period, inferred_out = _infer_out_context(paths, amc_id)
+    dest_root = out_base or inferred_out
+
+    skipped: list[str] = []
+    to_parse = list(paths)
+    existing: list = []
+    if resume and paths:
+        to_parse, done = filter_paths_for_resume(paths, dest_root)
+        skipped = [p.name for p in done]
+        if done:
+            existing = load_existing_portfolios(
+                dest_root,
+                amc_id=amc_id,
+                disclosure_type=dtype,
+                period=period,
+                only_sources={p.name for p in done},
+            )
+
+    all_portfolios = list(existing)
     errors = []
+    parsed_files = 0
     try:
-        for path in paths:
+        for path in to_parse:
             try:
                 portfolios = _call_parser(parser, path, workbook_limit=workbook_limit)
             except Exception as e:
                 errors.append({"file": path.name, "error": str(e)})
                 continue
+            parsed_files += 1
             all_portfolios.extend(portfolios)
             for p in portfolios:
-                dest_root = out_base or (
+                write_root = out_base or (
                     ROOT / "data" / "parsed" / p.disclosure_type / p.period / p.amc_id
                 )
                 try:
-                    write_scheme_portfolio(dest_root, p)
+                    write_scheme_portfolio(write_root, p)
                 except Exception as e:
                     errors.append(
                         {
@@ -129,6 +174,9 @@ def parse_paths(
     return {
         "amc_id": amc_id,
         "files": len(paths),
+        "parsed_files": parsed_files,
+        "skipped_resume": len(skipped),
+        "skipped_files": skipped[:20],
         "schemes": len(all_portfolios),
         "holdings": sum(len(p.holdings) for p in all_portfolios),
         "errors": errors,
@@ -159,11 +207,22 @@ def main() -> int:
     ap.add_argument("--all-fixtures", action="store_true", help="Parse fixtures for all AMCs")
     ap.add_argument("--list", action="store_true", help="List registered AMC parsers")
     ap.add_argument(
+        "--force",
+        action="store_true",
+        help="Re-parse every file (disable resume). Default resumes complete files.",
+    )
+    ap.add_argument(
+        "--no-resume",
+        action="store_true",
+        help=argparse.SUPPRESS,  # alias for --force
+    )
+    ap.add_argument(
         "--summary-only",
         action="store_true",
         help="Print compact per-AMC summary (used with --all-fixtures)",
     )
     args = ap.parse_args()
+    resume = not (args.force or args.no_resume)
 
     if args.list:
         amcs = list_amcs()
@@ -189,8 +248,10 @@ def main() -> int:
                         print(f"missing fixture: {p}", file=sys.stderr)
                         continue
                     paths.append(p)
-            # Fixture mode: limit zip/mega expansion to 2 workbooks / schemes
-            reports.append(parse_paths(amc_id, paths, workbook_limit=2))
+            # Fixture mode: always fresh parse; limit zip/mega expansion
+            reports.append(
+                parse_paths(amc_id, paths, workbook_limit=2, resume=False)
+            )
     else:
         if args.all:
             if not args.type:
@@ -204,6 +265,9 @@ def main() -> int:
                         {
                             "amc_id": amc_id,
                             "files": 0,
+                            "parsed_files": 0,
+                            "skipped_resume": 0,
+                            "skipped_files": [],
                             "schemes": 0,
                             "holdings": 0,
                             "errors": [],
@@ -211,7 +275,7 @@ def main() -> int:
                         }
                     )
                     continue
-                reports.append(parse_paths(amc_id, paths))
+                reports.append(parse_paths(amc_id, paths, resume=resume))
         elif not args.amc:
             raise SystemExit("Need --amc or --all (or --all-fixtures / --list)")
         else:
@@ -223,7 +287,7 @@ def main() -> int:
                 paths = iter_amc_files(args.amc, args.type, args.period)
                 if args.limit:
                     paths = paths[: args.limit]
-            reports.append(parse_paths(args.amc, paths))
+            reports.append(parse_paths(args.amc, paths, resume=resume))
 
     if args.summary_only:
         summary = []
@@ -232,6 +296,8 @@ def main() -> int:
                 {
                     "amc_id": r["amc_id"],
                     "files": r["files"],
+                    "parsed_files": r.get("parsed_files", r["files"]),
+                    "skipped_resume": r.get("skipped_resume", 0),
                     "schemes": r["schemes"],
                     "holdings": r["holdings"],
                     "errors": len(r["errors"]),

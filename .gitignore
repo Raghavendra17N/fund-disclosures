@@ -41,6 +41,12 @@ web/
 data/exports/
 scripts/*.mjs
 !scripts/upload-holdings-to-b2.mjs
+!scripts/sync-holdings-to-github.mjs
+
+# Local wrangler / probe AMC scratch (never ship)
+.wrangler/
+amcs/
+scrapers/amcs/
 
 
 # Optional large duplicate baseline JSON (Excel + FREEZE kept)
@@ -55,3 +61,4 @@ data/sources/amfi_schemes.json
 data/sources/amfi_schemes_names.txt
 data/sources/amfi_scheme_id_to_name.json
 data/amfi/
+.tmp/

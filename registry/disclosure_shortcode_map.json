@@ -1483,13 +1483,13 @@
       "amc_id": "aditya-birla-sun-life-mutual-fund",
       "shortcode": "SILVRFOF",
       "aliases": [],
-      "canonical_amfi_code": "152150",
-      "amfi_base_name": "Aditya Birla Sun Life US Treasury 3 - 10 Year Bond ETFs Fund Of Funds",
-      "disclosure_label": "SILVRFOF",
-      "confidence": "seeded",
-      "source": "shortcode",
+      "canonical_amfi_code": "149780",
+      "amfi_base_name": "Aditya Birla Sun Life Silver ETF FOF",
+      "disclosure_label": "ADITYA BIRLA SUN LIFE SILVER ETF FUND OF FUND",
+      "confidence": "manual",
+      "source": "gap_fix",
       "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
+      "last_verified_period": "2026-07"
     },
     {
       "amc_id": "angel-one-mutual-fund",
@@ -2601,13 +2601,13 @@
       "amc_id": "axis-mutual-fund",
       "shortcode": "AXISTETF",
       "aliases": [],
-      "canonical_amfi_code": "141545",
-      "amfi_base_name": "Axis Nifty 50 ETF",
-      "disclosure_label": "AXISTETF",
-      "confidence": "seeded",
-      "source": "shortcode",
+      "canonical_amfi_code": "148799",
+      "amfi_base_name": "Axis IT ETF",
+      "disclosure_label": "Axis NIFTY IT ETF",
+      "confidence": "manual",
+      "source": "gap_fix",
       "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
+      "last_verified_period": "2026-07"
     },
     {
       "amc_id": "axis-mutual-fund",
@@ -10177,13 +10177,13 @@
       "amc_id": "hsbc-mutual-fund",
       "shortcode": "HDINCF",
       "aliases": [],
-      "canonical_amfi_code": "150996",
-      "amfi_base_name": "HSBC Corporate Bond Fund",
+      "canonical_amfi_code": "120059",
+      "amfi_base_name": "HSBC Medium to Long Duration Fund",
       "disclosure_label": "HSBC Medium to Long Duration Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
+      "confidence": "manual",
+      "source": "gap_fix",
       "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
+      "last_verified_period": "2026-07"
     },
     {
       "amc_id": "hsbc-mutual-fund",
@@ -18671,13 +18671,13 @@
       "amc_id": "nippon-india-mutual-fund",
       "shortcode": "IJ",
       "aliases": [],
-      "canonical_amfi_code": "152992",
-      "amfi_base_name": "Nippon India CRISIL - IBX AAA Financial Services - Dec 2026 Index Fund",
-      "disclosure_label": "Nippon India CRISIL - IBX AAA Financial",
-      "confidence": "seeded",
-      "source": "shortcode",
+      "canonical_amfi_code": "152996",
+      "amfi_base_name": "Nippon India CRISIL - IBX AAA Financial Services - Jan 2028 Index Fund",
+      "disclosure_label": "Nippon India CRISIL - IBX AAA Financial Services - Jan 2028 Index Fund",
+      "confidence": "manual",
+      "source": "gap_fix",
       "first_seen_period": "latest",
-      "last_verified_period": "latest"
+      "last_verified_period": "2026-07"
     },
     {
       "amc_id": "nippon-india-mutual-fund",
@@ -25936,6 +25936,45 @@
       "source": "shortcode",
       "first_seen_period": "2026-06",
       "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "icici-prudential-mutual-fund",
+      "shortcode": "INDEX",
+      "aliases": [],
+      "canonical_amfi_code": "120620",
+      "amfi_base_name": "ICICI Prudential Nifty 50 Index Fund",
+      "disclosure_label": "ICICI Prudential Nifty 50 Index Fund",
+      "confidence": "manual",
+      "source": "gap_fix",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
+    },
+    {
+      "amc_id": "icici-prudential-mutual-fund",
+      "shortcode": "MONEY MARKET",
+      "aliases": [
+        "MONEYMARKET",
+        "MMF"
+      ],
+      "canonical_amfi_code": "120209",
+      "amfi_base_name": "ICICI Prudential Money Market Fund",
+      "disclosure_label": "ICICI Prudential Money Market Fund",
+      "confidence": "manual",
+      "source": "gap_fix",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
+    },
+    {
+      "amc_id": "aditya-birla-sun-life-mutual-fund",
+      "shortcode": "ABSLUS10",
+      "aliases": [],
+      "canonical_amfi_code": "152150",
+      "amfi_base_name": "Aditya Birla Sun Life US Treasury 3 - 10 Year Bond ETFs Fund Of Funds",
+      "disclosure_label": "ADITYA BIRLA SUN LIFE US TREASURY 3-10 YEAR BONDS ETFS PASSIVE FOF",
+      "confidence": "manual",
+      "source": "gap_fix",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
     }
   ]
 }

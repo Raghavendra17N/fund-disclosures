@@ -23,9 +23,19 @@ npm run fetch -- --type=monthly --period=2026-07
 npm run fetch -- --type=fortnightly --period=2026-07
 
 # 2) Parse holdings (family parsers)
-npm run parse:amc -- --type=monthly --period=latest
+# Resume is ON by default: re-running after a kill only parses missing/stale files.
+# Use --force to re-parse everything.
+npm run parse:amc -- --type=monthly --period=2026-07
+npm run parse:check -- --type=monthly --period=2026-07
 # or fixtures smoke:
 npm run parse:amc:fixtures
+
+# 2b) Enrich + sync gate on completeness (enrich refuses partial AMCs by default)
+npm run holdings:enrich
+# Override only if intentional: npm run holdings:enrich -- --allow-incomplete
+
+# 2c) Guard pinned shortcode/alias fixes (HDINCF, SILVRFOF, INDEX, …)
+npm run holdings:assert-locks
 
 # 3) Refresh AMFI universe
 npm run amfi:catalog          # NAVAll → data/amfi/
@@ -34,12 +44,20 @@ npm run amfi:parents          # populate-scheme active parents
 
 # 4) Match disclosures ↔ AMFI (reuse shortcodes)
 npm run amfi:match:reuse
+npm run holdings:assert-locks   # refuse if pinned HDINCF/SILVRFOF/INDEX/… drifted
 npm run amfi:new-parents      # diff new parents vs map; proposals JSON
 npm run amfi:coverage
 
 # 5) Export mapping workbook
 npm run export:mapping
+
+# 6) Rebuild browser catalog + persist registry to origin (never leave local)
+npm run holdings:catalog
+npm run registry:persist
 ```
+
+Pinned shortcode/alias locks live in `registry/holdings_mapping_locks.json`.
+`npm run holdings:assert-locks` and `npm run registry:persist` both enforce them before push.
 
 ## Mapping grain
 
