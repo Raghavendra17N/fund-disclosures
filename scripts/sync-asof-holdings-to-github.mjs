@@ -36,7 +36,7 @@ const { shapeHoldingsPayload } = await import(
   pathToFileURL(join(ROOT, "holdings-browser/api/_contract.js")).href,
 );
 
-const OWNER = process.env.HOLDINGS_DATA_OWNER || "subscriptionmanager26-png";
+const OWNER = process.env.HOLDINGS_DATA_OWNER || "kushagra-agarwal-a";
 const REPO = process.env.HOLDINGS_DATA_REPO || "fund-holdings-data";
 const BRANCH = process.env.HOLDINGS_DATA_BRANCH || "main";
 
