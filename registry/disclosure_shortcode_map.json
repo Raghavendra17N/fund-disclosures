@@ -1493,18 +1493,6 @@
     },
     {
       "amc_id": "angel-one-mutual-fund",
-      "shortcode": "Angel One Gold ETF FOF",
-      "aliases": [],
-      "canonical_amfi_code": "153827",
-      "amfi_base_name": "ANGEL ONE GOLD ETF FOF",
-      "disclosure_label": "Angel One Gold ETF FOF",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-07",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "angel-one-mutual-fund",
       "shortcode": "Angel One Gold ETF",
       "aliases": [],
       "canonical_amfi_code": "153826",
@@ -1517,13 +1505,11 @@
     },
     {
       "amc_id": "angel-one-mutual-fund",
-      "shortcode": "AngelOne Nifty 1D Rate Liquid ETF GROWTH",
-      "aliases": [
-        "Angel One Nifty 1D Rate Liquid ETF GROWTH"
-      ],
-      "canonical_amfi_code": "153451",
-      "amfi_base_name": "ANGEL ONE NIFTY 1D RATE LIQUID ETF - GROWTH",
-      "disclosure_label": "AngelOne Nifty 1D Rate Liquid ETF GROWTH",
+      "shortcode": "Angel One Gold ETF FOF",
+      "aliases": [],
+      "canonical_amfi_code": "153827",
+      "amfi_base_name": "ANGEL ONE GOLD ETF FOF",
+      "disclosure_label": "Angel One Gold ETF FOF",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "2026-07",
@@ -1603,6 +1589,18 @@
     },
     {
       "amc_id": "angel-one-mutual-fund",
+      "shortcode": "Angel One Silver ETF",
+      "aliases": [],
+      "canonical_amfi_code": "154205",
+      "amfi_base_name": "ANGEL ONE SILVER ETF",
+      "disclosure_label": "Angel One Silver ETF",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "angel-one-mutual-fund",
       "shortcode": "Angel One Silver ETF FOF",
       "aliases": [],
       "canonical_amfi_code": "154206",
@@ -1615,11 +1613,13 @@
     },
     {
       "amc_id": "angel-one-mutual-fund",
-      "shortcode": "Angel One Silver ETF",
-      "aliases": [],
-      "canonical_amfi_code": "154205",
-      "amfi_base_name": "ANGEL ONE SILVER ETF",
-      "disclosure_label": "Angel One Silver ETF",
+      "shortcode": "AngelOne Nifty 1D Rate Liquid ETF GROWTH",
+      "aliases": [
+        "Angel One Nifty 1D Rate Liquid ETF GROWTH"
+      ],
+      "canonical_amfi_code": "153451",
+      "amfi_base_name": "ANGEL ONE NIFTY 1D RATE LIQUID ETF - GROWTH",
+      "disclosure_label": "AngelOne Nifty 1D Rate Liquid ETF GROWTH",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "2026-07",
@@ -5203,18 +5203,6 @@
     },
     {
       "amc_id": "dsp-mutual-fund",
-      "shortcode": "ARBITRAGE",
-      "aliases": [],
-      "canonical_amfi_code": "142283",
-      "amfi_base_name": "DSP Arbitrage Fund",
-      "disclosure_label": "DSP Arbitrage Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "dsp-mutual-fund",
       "shortcode": "Aggressive Hybrid",
       "aliases": [],
       "canonical_amfi_code": "119019",
@@ -5227,11 +5215,35 @@
     },
     {
       "amc_id": "dsp-mutual-fund",
+      "shortcode": "ARBITRAGE",
+      "aliases": [],
+      "canonical_amfi_code": "142283",
+      "amfi_base_name": "DSP Arbitrage Fund",
+      "disclosure_label": "DSP Arbitrage Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "dsp-mutual-fund",
       "shortcode": "BANKING & PSU",
       "aliases": [],
       "canonical_amfi_code": "124175",
       "amfi_base_name": "DSP Banking & PSU Debt Fund",
       "disclosure_label": "DSP Banking and PSU Debt Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "latest",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "dsp-mutual-fund",
+      "shortcode": "Banking and Financial Services",
+      "aliases": [],
+      "canonical_amfi_code": "152206",
+      "amfi_base_name": "DSP Banking & Financial Services Fund",
+      "disclosure_label": "DSP Banking & Financial Services Fund",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "latest",
@@ -5287,11 +5299,11 @@
     },
     {
       "amc_id": "dsp-mutual-fund",
-      "shortcode": "Banking and Financial Services",
+      "shortcode": "Business Cycle Fund",
       "aliases": [],
-      "canonical_amfi_code": "152206",
-      "amfi_base_name": "DSP Banking & Financial Services Fund",
-      "disclosure_label": "DSP Banking & Financial Services Fund",
+      "canonical_amfi_code": "153121",
+      "amfi_base_name": "DSP Business Cycle Fund",
+      "disclosure_label": "DSP Business Cycle Fund",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "latest",
@@ -5299,11 +5311,11 @@
     },
     {
       "amc_id": "dsp-mutual-fund",
-      "shortcode": "Business Cycle Fund",
+      "shortcode": "Corporate Bond",
       "aliases": [],
-      "canonical_amfi_code": "153121",
-      "amfi_base_name": "DSP Business Cycle Fund",
-      "disclosure_label": "DSP Business Cycle Fund",
+      "canonical_amfi_code": "144646",
+      "amfi_base_name": "DSP Corporate Bond Fund",
+      "disclosure_label": "DSP Corporate Bond Fund",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "latest",
@@ -5328,18 +5340,6 @@
       "canonical_amfi_code": "151329",
       "amfi_base_name": "DSP CRISIL - IBX 50:50 Gilt Plus SDL - April 2033 Index Fund",
       "disclosure_label": "DSP CRISIL-IBX 50:50 Gilt Plus SDL - April 2033 Index Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "latest",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "dsp-mutual-fund",
-      "shortcode": "Corporate Bond",
-      "aliases": [],
-      "canonical_amfi_code": "144646",
-      "amfi_base_name": "DSP Corporate Bond Fund",
-      "disclosure_label": "DSP Corporate Bond Fund",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "latest",
@@ -5419,6 +5419,18 @@
     },
     {
       "amc_id": "dsp-mutual-fund",
+      "shortcode": "Flexi Cap",
+      "aliases": [],
+      "canonical_amfi_code": "119076",
+      "amfi_base_name": "DSP Flexi Cap Fund",
+      "disclosure_label": "DSP Flexi Cap Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "latest",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "dsp-mutual-fund",
       "shortcode": "FLOATER",
       "aliases": [],
       "canonical_amfi_code": "148771",
@@ -5467,18 +5479,6 @@
     },
     {
       "amc_id": "dsp-mutual-fund",
-      "shortcode": "Flexi Cap",
-      "aliases": [],
-      "canonical_amfi_code": "119076",
-      "amfi_base_name": "DSP Flexi Cap Fund",
-      "disclosure_label": "DSP Flexi Cap Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "latest",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "dsp-mutual-fund",
       "shortcode": "GILT",
       "aliases": [],
       "canonical_amfi_code": "119099",
@@ -5487,30 +5487,6 @@
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "dsp-mutual-fund",
-      "shortcode": "GOLD ETF",
-      "aliases": [],
-      "canonical_amfi_code": "151737",
-      "amfi_base_name": "DSP Gold ETF",
-      "disclosure_label": "DSP Gold ETF",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "latest",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "dsp-mutual-fund",
-      "shortcode": "GOLD ETF FOF",
-      "aliases": [],
-      "canonical_amfi_code": "152183",
-      "amfi_base_name": "DSP Gold ETF Fund of Fund",
-      "disclosure_label": "DSP Gold ETF Fund of Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "latest",
       "last_verified_period": "latest"
     },
     {
@@ -5532,6 +5508,30 @@
       "canonical_amfi_code": "149816",
       "amfi_base_name": "DSP Global Innovation Overseas Equity Omni FoF",
       "disclosure_label": "DSP Global Innovation Overseas Equity Omni FoF",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "latest",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "dsp-mutual-fund",
+      "shortcode": "GOLD ETF",
+      "aliases": [],
+      "canonical_amfi_code": "151737",
+      "amfi_base_name": "DSP Gold ETF",
+      "disclosure_label": "DSP Gold ETF",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "latest",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "dsp-mutual-fund",
+      "shortcode": "GOLD ETF FOF",
+      "aliases": [],
+      "canonical_amfi_code": "152183",
+      "amfi_base_name": "DSP Gold ETF Fund of Fund",
+      "disclosure_label": "DSP Gold ETF Fund of Fund",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "latest",
@@ -5575,6 +5575,30 @@
     },
     {
       "amc_id": "dsp-mutual-fund",
+      "shortcode": "Large & Mid Cap",
+      "aliases": [],
+      "canonical_amfi_code": "119218",
+      "amfi_base_name": "DSP Large & Mid Cap Fund",
+      "disclosure_label": "DSP Large & Mid Cap Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "latest",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "dsp-mutual-fund",
+      "shortcode": "Large Cap",
+      "aliases": [],
+      "canonical_amfi_code": "119250",
+      "amfi_base_name": "DSP Large Cap Fund",
+      "disclosure_label": "DSP Large Cap Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "latest",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "dsp-mutual-fund",
       "shortcode": "LDF",
       "aliases": [],
       "canonical_amfi_code": "133925",
@@ -5611,30 +5635,6 @@
     },
     {
       "amc_id": "dsp-mutual-fund",
-      "shortcode": "Large & Mid Cap",
-      "aliases": [],
-      "canonical_amfi_code": "119218",
-      "amfi_base_name": "DSP Large & Mid Cap Fund",
-      "disclosure_label": "DSP Large & Mid Cap Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "latest",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "dsp-mutual-fund",
-      "shortcode": "Large Cap",
-      "aliases": [],
-      "canonical_amfi_code": "119250",
-      "amfi_base_name": "DSP Large Cap Fund",
-      "disclosure_label": "DSP Large Cap Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "latest",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "dsp-mutual-fund",
       "shortcode": "MIDCAP",
       "aliases": [],
       "canonical_amfi_code": "119071",
@@ -5647,11 +5647,11 @@
     },
     {
       "amc_id": "dsp-mutual-fund",
-      "shortcode": "MSCI India ETF",
+      "shortcode": "Midcap 150 Quality 50 ETF",
       "aliases": [],
-      "canonical_amfi_code": "153975",
-      "amfi_base_name": "DSP MSCI INDIA ETF",
-      "disclosure_label": "DSP MSCI India ETF",
+      "canonical_amfi_code": "149403",
+      "amfi_base_name": "DSP Nifty Midcap 150 Quality 50 ETF",
+      "disclosure_label": "DSP NIFTY MIDCAP 150 QUALITY 50 ETF",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "latest",
@@ -5659,11 +5659,11 @@
     },
     {
       "amc_id": "dsp-mutual-fund",
-      "shortcode": "Midcap 150 Quality 50 ETF",
+      "shortcode": "MSCI India ETF",
       "aliases": [],
-      "canonical_amfi_code": "149403",
-      "amfi_base_name": "DSP Nifty Midcap 150 Quality 50 ETF",
-      "disclosure_label": "DSP NIFTY MIDCAP 150 QUALITY 50 ETF",
+      "canonical_amfi_code": "153975",
+      "amfi_base_name": "DSP MSCI INDIA ETF",
+      "disclosure_label": "DSP MSCI India ETF",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "latest",
@@ -5707,74 +5707,14 @@
     },
     {
       "amc_id": "dsp-mutual-fund",
-      "shortcode": "NIFTY FMCG ETF",
+      "shortcode": "Nifty 50 Equal ETF",
       "aliases": [],
-      "canonical_amfi_code": "154357",
-      "amfi_base_name": "DSP Nifty FMCG ETF",
-      "disclosure_label": "DSP NIFTY FMCG ETF",
+      "canonical_amfi_code": "149286",
+      "amfi_base_name": "DSP Nifty 50 Equal Weight ETF",
+      "disclosure_label": "DSP Nifty 50 Equal Weight ETF",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "latest",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "dsp-mutual-fund",
-      "shortcode": "NIFTY MIDCAP 150 Q50",
-      "aliases": [],
-      "canonical_amfi_code": "150428",
-      "amfi_base_name": "DSP Nifty Midcap 150 Quality 50 Index Fund",
-      "disclosure_label": "DSP Nifty Midcap 150 Quality 50 Index Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "latest",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "dsp-mutual-fund",
-      "shortcode": "NIFTY SDL Gsec 2027",
-      "aliases": [],
-      "canonical_amfi_code": "151373",
-      "amfi_base_name": "DSP Nifty SDL Plus G - Sec Sep 2027 50:50 Index Fund",
-      "disclosure_label": "DSP Nifty SDL Plus G-Sec Sep 2027 50:50 Index Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "latest",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "dsp-mutual-fund",
-      "shortcode": "NIFTY50INDEX",
-      "aliases": [],
-      "canonical_amfi_code": "146376",
-      "amfi_base_name": "DSP Nifty 50 Index Fund",
-      "disclosure_label": "DSP Nifty 50 Index Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "dsp-mutual-fund",
-      "shortcode": "NIFTYNEXT50INDEX",
-      "aliases": [],
-      "canonical_amfi_code": "146381",
-      "amfi_base_name": "DSP Nifty Next 50 Index Fund",
-      "disclosure_label": "DSP Nifty Next 50 Index Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "dsp-mutual-fund",
-      "shortcode": "NRNEF",
-      "aliases": [],
-      "canonical_amfi_code": "119028",
-      "amfi_base_name": "DSP Natural Resources and New Energy Fund",
-      "disclosure_label": "DSP Natural Resources & New Energy Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
       "last_verified_period": "latest"
     },
     {
@@ -5784,18 +5724,6 @@
       "canonical_amfi_code": "149392",
       "amfi_base_name": "DSP Nifty 50 ETF",
       "disclosure_label": "DSP NIFTY 50 ETF",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "latest",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "dsp-mutual-fund",
-      "shortcode": "Nifty 50 Equal ETF",
-      "aliases": [],
-      "canonical_amfi_code": "149286",
-      "amfi_base_name": "DSP Nifty 50 Equal Weight ETF",
-      "disclosure_label": "DSP Nifty 50 Equal Weight ETF",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "latest",
@@ -5832,6 +5760,18 @@
       "canonical_amfi_code": "152654",
       "amfi_base_name": "DSP Nifty Bank Index Fund",
       "disclosure_label": "DSP Nifty Bank Index Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "latest",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "dsp-mutual-fund",
+      "shortcode": "NIFTY FMCG ETF",
+      "aliases": [],
+      "canonical_amfi_code": "154357",
+      "amfi_base_name": "DSP Nifty FMCG ETF",
+      "disclosure_label": "DSP NIFTY FMCG ETF",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "latest",
@@ -5899,11 +5839,11 @@
     },
     {
       "amc_id": "dsp-mutual-fund",
-      "shortcode": "Nifty Next 50 ETF",
+      "shortcode": "NIFTY MIDCAP 150 Q50",
       "aliases": [],
-      "canonical_amfi_code": "154087",
-      "amfi_base_name": "DSP Nifty Next 50 ETF",
-      "disclosure_label": "DSP Nifty Next 50 ETF",
+      "canonical_amfi_code": "150428",
+      "amfi_base_name": "DSP Nifty Midcap 150 Quality 50 Index Fund",
+      "disclosure_label": "DSP Nifty Midcap 150 Quality 50 Index Fund",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "latest",
@@ -5911,11 +5851,11 @@
     },
     {
       "amc_id": "dsp-mutual-fund",
-      "shortcode": "Nifty PSU Bank ETF",
+      "shortcode": "Nifty Next 50 ETF",
       "aliases": [],
-      "canonical_amfi_code": "151888",
-      "amfi_base_name": "DSP Nifty PSU Bank ETF",
-      "disclosure_label": "DSP NIFTY PSU BANK ETF",
+      "canonical_amfi_code": "154087",
+      "amfi_base_name": "DSP Nifty Next 50 ETF",
+      "disclosure_label": "DSP Nifty Next 50 ETF",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "latest",
@@ -5935,11 +5875,35 @@
     },
     {
       "amc_id": "dsp-mutual-fund",
+      "shortcode": "Nifty PSU Bank ETF",
+      "aliases": [],
+      "canonical_amfi_code": "151888",
+      "amfi_base_name": "DSP Nifty PSU Bank ETF",
+      "disclosure_label": "DSP NIFTY PSU BANK ETF",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "latest",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "dsp-mutual-fund",
       "shortcode": "Nifty Pvt Bank Index",
       "aliases": [],
       "canonical_amfi_code": "153348",
       "amfi_base_name": "DSP Nifty Private Bank Index Fund",
       "disclosure_label": "DSP Nifty Private Bank Index Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "latest",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "dsp-mutual-fund",
+      "shortcode": "NIFTY SDL Gsec 2027",
+      "aliases": [],
+      "canonical_amfi_code": "151373",
+      "amfi_base_name": "DSP Nifty SDL Plus G - Sec Sep 2027 50:50 Index Fund",
+      "disclosure_label": "DSP Nifty SDL Plus G-Sec Sep 2027 50:50 Index Fund",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "latest",
@@ -6043,6 +6007,42 @@
     },
     {
       "amc_id": "dsp-mutual-fund",
+      "shortcode": "NIFTY50INDEX",
+      "aliases": [],
+      "canonical_amfi_code": "146376",
+      "amfi_base_name": "DSP Nifty 50 Index Fund",
+      "disclosure_label": "DSP Nifty 50 Index Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "dsp-mutual-fund",
+      "shortcode": "NIFTYNEXT50INDEX",
+      "aliases": [],
+      "canonical_amfi_code": "146381",
+      "amfi_base_name": "DSP Nifty Next 50 Index Fund",
+      "disclosure_label": "DSP Nifty Next 50 Index Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "dsp-mutual-fund",
+      "shortcode": "NRNEF",
+      "aliases": [],
+      "canonical_amfi_code": "119028",
+      "amfi_base_name": "DSP Natural Resources and New Energy Fund",
+      "disclosure_label": "DSP Natural Resources & New Energy Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "dsp-mutual-fund",
       "shortcode": "OVERNIGHT",
       "aliases": [],
       "canonical_amfi_code": "146062",
@@ -6079,11 +6079,47 @@
     },
     {
       "amc_id": "dsp-mutual-fund",
+      "shortcode": "Sensex Next 30 ETF",
+      "aliases": [],
+      "canonical_amfi_code": "153228",
+      "amfi_base_name": "DSP BSE SENSEX Next 30 ETF",
+      "disclosure_label": "DSP BSE Sensex Next 30 ETF",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "latest",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "dsp-mutual-fund",
+      "shortcode": "Sensex Next 30 Index",
+      "aliases": [],
+      "canonical_amfi_code": "153219",
+      "amfi_base_name": "DSP BSE SENSEX Next 30 Index Fund",
+      "disclosure_label": "DSP BSE Sensex Next 30 Index Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "latest",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "dsp-mutual-fund",
       "shortcode": "SILVER ETF",
       "aliases": [],
       "canonical_amfi_code": "150523",
       "amfi_base_name": "DSP Silver ETF",
       "disclosure_label": "DSP SILVER ETF",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "latest",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "dsp-mutual-fund",
+      "shortcode": "Silver ETF FOF",
+      "aliases": [],
+      "canonical_amfi_code": "153487",
+      "amfi_base_name": "DSP Silver ETF Fund of Fund",
+      "disclosure_label": "DSP Silver ETF Fund of Fund",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "latest",
@@ -6123,42 +6159,6 @@
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "dsp-mutual-fund",
-      "shortcode": "Sensex Next 30 ETF",
-      "aliases": [],
-      "canonical_amfi_code": "153228",
-      "amfi_base_name": "DSP BSE SENSEX Next 30 ETF",
-      "disclosure_label": "DSP BSE Sensex Next 30 ETF",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "latest",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "dsp-mutual-fund",
-      "shortcode": "Sensex Next 30 Index",
-      "aliases": [],
-      "canonical_amfi_code": "153219",
-      "amfi_base_name": "DSP BSE SENSEX Next 30 Index Fund",
-      "disclosure_label": "DSP BSE Sensex Next 30 Index Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "latest",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "dsp-mutual-fund",
-      "shortcode": "Silver ETF FOF",
-      "aliases": [],
-      "canonical_amfi_code": "153487",
-      "amfi_base_name": "DSP Silver ETF Fund of Fund",
-      "disclosure_label": "DSP Silver ETF Fund of Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "latest",
       "last_verified_period": "latest"
     },
     {
@@ -6259,6 +6259,42 @@
     },
     {
       "amc_id": "edelweiss-mutual-fund",
+      "shortcode": "EDBE30",
+      "aliases": [],
+      "canonical_amfi_code": "147849",
+      "amfi_base_name": "Bharat Bond ETF - April 2030",
+      "disclosure_label": "Bharat Bond ETF - April 2030",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
+    },
+    {
+      "amc_id": "edelweiss-mutual-fund",
+      "shortcode": "EDBE31",
+      "aliases": [],
+      "canonical_amfi_code": "148445",
+      "amfi_base_name": "BHARAT Bond ETF - April 2031",
+      "disclosure_label": "BHARAT Bond ETF - April 2031",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
+    },
+    {
+      "amc_id": "edelweiss-mutual-fund",
+      "shortcode": "EDBE32",
+      "aliases": [],
+      "canonical_amfi_code": "149398",
+      "amfi_base_name": "BHARAT Bond ETF - April 2032",
+      "disclosure_label": "BHARAT Bond ETF - April 2032",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
+    },
+    {
+      "amc_id": "edelweiss-mutual-fund",
       "shortcode": "EDBE33",
       "aliases": [],
       "canonical_amfi_code": "150987",
@@ -6352,6 +6388,42 @@
       "source": "shortcode",
       "first_seen_period": "2026-06",
       "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "edelweiss-mutual-fund",
+      "shortcode": "EDFF30",
+      "aliases": [],
+      "canonical_amfi_code": "147857",
+      "amfi_base_name": "Bharat Bond FOF - April 2030",
+      "disclosure_label": "Bharat Bond FOF - April 2030",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
+    },
+    {
+      "amc_id": "edelweiss-mutual-fund",
+      "shortcode": "EDFF31",
+      "aliases": [],
+      "canonical_amfi_code": "148450",
+      "amfi_base_name": "BHARAT Bond FOF - April 2031",
+      "disclosure_label": "BHARAT Bond FOF - April 2031",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
+    },
+    {
+      "amc_id": "edelweiss-mutual-fund",
+      "shortcode": "EDFF32",
+      "aliases": [],
+      "canonical_amfi_code": "149401",
+      "amfi_base_name": "BHARAT Bond ETF FOF - April 2032",
+      "disclosure_label": "BHARAT Bond ETF FOF - April 2032",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
     },
     {
       "amc_id": "edelweiss-mutual-fund",
@@ -6496,6 +6568,30 @@
       "source": "shortcode",
       "first_seen_period": "2026-06",
       "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "edelweiss-mutual-fund",
+      "shortcode": "EEBSDE",
+      "aliases": [],
+      "canonical_amfi_code": "154535",
+      "amfi_base_name": "Edelweiss BSE LargeMid (60:40) Stable dividend 50 ETF",
+      "disclosure_label": "Edelweiss BSE LargeMid (60:40) Stable dividend 50 ETF",
+      "confidence": "seeded",
+      "source": "ingest_new_launch",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
+    },
+    {
+      "amc_id": "edelweiss-mutual-fund",
+      "shortcode": "EEBTBE",
+      "aliases": [],
+      "canonical_amfi_code": "154524",
+      "amfi_base_name": "Edelweiss BSE Top 10 Bank ETF",
+      "disclosure_label": "Edelweiss BSE Top 10 Bank ETF",
+      "confidence": "seeded",
+      "source": "ingest_new_launch",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
     },
     {
       "amc_id": "edelweiss-mutual-fund",
@@ -6784,6 +6880,18 @@
       "source": "shortcode",
       "first_seen_period": "2026-06",
       "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "edelweiss-mutual-fund",
+      "shortcode": "EENMET",
+      "aliases": [],
+      "canonical_amfi_code": "154461",
+      "amfi_base_name": "Edelweiss Nifty Metal ETF",
+      "disclosure_label": "Edelweiss Nifty Metal ETF",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
     },
     {
       "amc_id": "edelweiss-mutual-fund",
@@ -7507,314 +7615,6 @@
     },
     {
       "amc_id": "groww-mutual-fund",
-      "shortcode": "BC",
-      "aliases": [
-        "IB01"
-      ],
-      "canonical_amfi_code": "119133",
-      "amfi_base_name": "Groww Largecap Fund",
-      "disclosure_label": "Groww Large Cap Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "LF",
-      "aliases": [
-        "IB02"
-      ],
-      "canonical_amfi_code": "119135",
-      "amfi_base_name": "Groww Liquid Fund",
-      "disclosure_label": "Groww Liquid Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "EH",
-      "aliases": [
-        "IB03"
-      ],
-      "canonical_amfi_code": "145599",
-      "amfi_base_name": "Groww Aggressive Hybrid Fund",
-      "disclosure_label": "Groww Aggressive Hybrid Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "DB",
-      "aliases": [
-        "IB05"
-      ],
-      "canonical_amfi_code": "145589",
-      "amfi_base_name": "Groww Dynamic Term Fund",
-      "disclosure_label": "Groww Dynamic Term Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "ST",
-      "aliases": [
-        "IB10"
-      ],
-      "canonical_amfi_code": "123704",
-      "amfi_base_name": "Groww Short Term Fund",
-      "disclosure_label": "Groww Short Term Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "TS",
-      "aliases": [
-        "IB11"
-      ],
-      "canonical_amfi_code": "141808",
-      "amfi_base_name": "Groww ELSS Tax Saver Fund",
-      "disclosure_label": "Groww ELSS Tax Saver Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "VD",
-      "aliases": [
-        "IB13"
-      ],
-      "canonical_amfi_code": "135341",
-      "amfi_base_name": "Groww Value Fund",
-      "disclosure_label": "Groww Value Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "OF",
-      "aliases": [
-        "IB16"
-      ],
-      "canonical_amfi_code": "147450",
-      "amfi_base_name": "Groww Overnight Fund",
-      "disclosure_label": "Groww Overnight Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "NI",
-      "aliases": [
-        "IB18"
-      ],
-      "canonical_amfi_code": "152092",
-      "amfi_base_name": "Groww Nifty Total Market Index Fund",
-      "disclosure_label": "Groww Nifty Total Market Index Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "BS",
-      "aliases": [
-        "IB19"
-      ],
-      "canonical_amfi_code": "152254",
-      "amfi_base_name": "Groww Banking & Financial Services Fund",
-      "disclosure_label": "Groww Banking & Financial Services Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "NS",
-      "aliases": [
-        "IB20"
-      ],
-      "canonical_amfi_code": "152431",
-      "amfi_base_name": "Groww Nifty Smallcap 250 Index Fund",
-      "disclosure_label": "Groww Nifty Smallcap 250 Index Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "NC",
-      "aliases": [
-        "IB21"
-      ],
-      "canonical_amfi_code": "152637",
-      "amfi_base_name": "Groww Nifty Non - Cyclical Consumer Index Fund",
-      "disclosure_label": "Groww Nifty Non-Cyclical Consumer Index Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "EV",
-      "aliases": [
-        "IB22"
-      ],
-      "canonical_amfi_code": "152770",
-      "amfi_base_name": "Groww Nifty EV & New Age Automotive ETF FOF",
-      "disclosure_label": "Groww Nifty EV & New Age Automotive ETF FOF",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "EE",
-      "aliases": [
-        "IB23"
-      ],
-      "canonical_amfi_code": "152764",
-      "amfi_base_name": "GROWW NIFTY EV & NEW AGE AUTOMOTIVE ETF",
-      "disclosure_label": "GROWW NIFTY EV & NEW AGE AUTOMOTIVE ETF",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "LE",
-      "aliases": [
-        "IB24"
-      ],
-      "canonical_amfi_code": "152891",
-      "amfi_base_name": "Groww Nifty 1D Rate Liquid ETF",
-      "disclosure_label": "GROWW NIFTY 1D Rate Liquid ETF",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "DE",
-      "aliases": [
-        "IB25"
-      ],
-      "canonical_amfi_code": "152845",
-      "amfi_base_name": "Groww Nifty India Defence ETF",
-      "disclosure_label": "Groww Nifty India Defence ETF",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "DF",
-      "aliases": [
-        "IB26"
-      ],
-      "canonical_amfi_code": "152925",
-      "amfi_base_name": "Groww Nifty India Defence ETF FOF",
-      "disclosure_label": "Groww Nifty India Defence ETF FOF",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "GE",
-      "aliases": [
-        "IB27"
-      ],
-      "canonical_amfi_code": "152957",
-      "amfi_base_name": "Groww Gold ETF",
-      "disclosure_label": "GROWW Gold ETF",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "GG",
-      "aliases": [
-        "IB28"
-      ],
-      "canonical_amfi_code": "152980",
-      "amfi_base_name": "Groww Gold ETF FOF",
-      "disclosure_label": "Groww Gold ETF FOF",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "MU",
-      "aliases": [
-        "IB29"
-      ],
-      "canonical_amfi_code": "153034",
-      "amfi_base_name": "Groww Multicap Fund",
-      "disclosure_label": "Groww Multicap Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "RI",
-      "aliases": [
-        "IB31"
-      ],
-      "canonical_amfi_code": "153230",
-      "amfi_base_name": "Groww Nifty India Railways PSU Index Fund",
-      "disclosure_label": "Groww Nifty India Railways PSU Index Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "RE",
-      "aliases": [
-        "IB32"
-      ],
-      "canonical_amfi_code": "153229",
-      "amfi_base_name": "Groww Nifty India Railways PSU ETF",
-      "disclosure_label": "Groww Nifty India Railways PSU ETF",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
       "shortcode": "2E",
       "aliases": [
         "IB33"
@@ -7864,20 +7664,6 @@
       "canonical_amfi_code": "153453",
       "amfi_base_name": "Groww Nifty 500 Momentum 50 ETF FOF",
       "disclosure_label": "Groww Nifty 500 Momentum 50 ETF FOF",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "GL",
-      "aliases": [
-        "IB37"
-      ],
-      "canonical_amfi_code": "153477",
-      "amfi_base_name": "Groww Gilt Fund",
-      "disclosure_label": "Groww Gilt Fund",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "2026-06",
@@ -7955,20 +7741,6 @@
     },
     {
       "amc_id": "groww-mutual-fund",
-      "shortcode": "7F",
-      "aliases": [
-        "IB43"
-      ],
-      "canonical_amfi_code": "153704",
-      "amfi_base_name": "Groww Nifty 50 Index Fund",
-      "disclosure_label": "Groww Nifty 50 Index Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
       "shortcode": "7E",
       "aliases": [
         "IB44"
@@ -7976,6 +7748,20 @@
       "canonical_amfi_code": "153699",
       "amfi_base_name": "Groww Nifty 50 ETF",
       "disclosure_label": "Groww Nifty 50 ETF",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "7F",
+      "aliases": [
+        "IB43"
+      ],
+      "canonical_amfi_code": "153704",
+      "amfi_base_name": "Groww Nifty 50 Index Fund",
+      "disclosure_label": "Groww Nifty 50 Index Fund",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "2026-06",
@@ -8039,6 +7825,202 @@
     },
     {
       "amc_id": "groww-mutual-fund",
+      "shortcode": "AR",
+      "aliases": [
+        "IB67"
+      ],
+      "canonical_amfi_code": "154320",
+      "amfi_base_name": "Groww Arbitrage Fund",
+      "disclosure_label": "Groww Arbitrage Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "BC",
+      "aliases": [
+        "IB01"
+      ],
+      "canonical_amfi_code": "119133",
+      "amfi_base_name": "Groww Largecap Fund",
+      "disclosure_label": "Groww Large Cap Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "BS",
+      "aliases": [
+        "IB19"
+      ],
+      "canonical_amfi_code": "152254",
+      "amfi_base_name": "Groww Banking & Financial Services Fund",
+      "disclosure_label": "Groww Banking & Financial Services Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "DB",
+      "aliases": [
+        "IB05"
+      ],
+      "canonical_amfi_code": "145589",
+      "amfi_base_name": "Groww Dynamic Term Fund",
+      "disclosure_label": "Groww Dynamic Term Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "DE",
+      "aliases": [
+        "IB25"
+      ],
+      "canonical_amfi_code": "152845",
+      "amfi_base_name": "Groww Nifty India Defence ETF",
+      "disclosure_label": "Groww Nifty India Defence ETF",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "DF",
+      "aliases": [
+        "IB26"
+      ],
+      "canonical_amfi_code": "152925",
+      "amfi_base_name": "Groww Nifty India Defence ETF FOF",
+      "disclosure_label": "Groww Nifty India Defence ETF FOF",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "EE",
+      "aliases": [
+        "IB23"
+      ],
+      "canonical_amfi_code": "152764",
+      "amfi_base_name": "GROWW NIFTY EV & NEW AGE AUTOMOTIVE ETF",
+      "disclosure_label": "GROWW NIFTY EV & NEW AGE AUTOMOTIVE ETF",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "EH",
+      "aliases": [
+        "IB03"
+      ],
+      "canonical_amfi_code": "145599",
+      "amfi_base_name": "Groww Aggressive Hybrid Fund",
+      "disclosure_label": "Groww Aggressive Hybrid Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "EV",
+      "aliases": [
+        "IB22"
+      ],
+      "canonical_amfi_code": "152770",
+      "amfi_base_name": "Groww Nifty EV & New Age Automotive ETF FOF",
+      "disclosure_label": "Groww Nifty EV & New Age Automotive ETF FOF",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "GE",
+      "aliases": [
+        "IB27"
+      ],
+      "canonical_amfi_code": "152957",
+      "amfi_base_name": "Groww Gold ETF",
+      "disclosure_label": "GROWW Gold ETF",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "GG",
+      "aliases": [
+        "IB28"
+      ],
+      "canonical_amfi_code": "152980",
+      "amfi_base_name": "Groww Gold ETF FOF",
+      "disclosure_label": "Groww Gold ETF FOF",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "GL",
+      "aliases": [
+        "IB37"
+      ],
+      "canonical_amfi_code": "153477",
+      "amfi_base_name": "Groww Gilt Fund",
+      "disclosure_label": "Groww Gilt Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "LE",
+      "aliases": [
+        "IB24"
+      ],
+      "canonical_amfi_code": "152891",
+      "amfi_base_name": "Groww Nifty 1D Rate Liquid ETF",
+      "disclosure_label": "GROWW NIFTY 1D Rate Liquid ETF",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "LF",
+      "aliases": [
+        "IB02"
+      ],
+      "canonical_amfi_code": "119135",
+      "amfi_base_name": "Groww Liquid Fund",
+      "disclosure_label": "Groww Liquid Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
       "shortcode": "MA",
       "aliases": [
         "IB49"
@@ -8046,6 +8028,174 @@
       "canonical_amfi_code": "153821",
       "amfi_base_name": "Groww Multi Asset Allocation Fund",
       "disclosure_label": "Groww Multi Asset Allocation Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "MM",
+      "aliases": [
+        "IB55"
+      ],
+      "canonical_amfi_code": "153982",
+      "amfi_base_name": "Groww Money Market Fund",
+      "disclosure_label": "Groww Money Market Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "MU",
+      "aliases": [
+        "IB29"
+      ],
+      "canonical_amfi_code": "153034",
+      "amfi_base_name": "Groww Multicap Fund",
+      "disclosure_label": "Groww Multicap Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "NC",
+      "aliases": [
+        "IB21"
+      ],
+      "canonical_amfi_code": "152637",
+      "amfi_base_name": "Groww Nifty Non - Cyclical Consumer Index Fund",
+      "disclosure_label": "Groww Nifty Non-Cyclical Consumer Index Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "NI",
+      "aliases": [
+        "IB18"
+      ],
+      "canonical_amfi_code": "152092",
+      "amfi_base_name": "Groww Nifty Total Market Index Fund",
+      "disclosure_label": "Groww Nifty Total Market Index Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "NS",
+      "aliases": [
+        "IB20"
+      ],
+      "canonical_amfi_code": "152431",
+      "amfi_base_name": "Groww Nifty Smallcap 250 Index Fund",
+      "disclosure_label": "Groww Nifty Smallcap 250 Index Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "OF",
+      "aliases": [
+        "IB16"
+      ],
+      "canonical_amfi_code": "147450",
+      "amfi_base_name": "Groww Overnight Fund",
+      "disclosure_label": "Groww Overnight Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "RE",
+      "aliases": [
+        "IB32"
+      ],
+      "canonical_amfi_code": "153229",
+      "amfi_base_name": "Groww Nifty India Railways PSU ETF",
+      "disclosure_label": "Groww Nifty India Railways PSU ETF",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "RI",
+      "aliases": [
+        "IB31"
+      ],
+      "canonical_amfi_code": "153230",
+      "amfi_base_name": "Groww Nifty India Railways PSU Index Fund",
+      "disclosure_label": "Groww Nifty India Railways PSU Index Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "SC",
+      "aliases": [
+        "IB60"
+      ],
+      "canonical_amfi_code": "154063",
+      "amfi_base_name": "Groww Small Cap Fund",
+      "disclosure_label": "Groww Small Cap Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "ST",
+      "aliases": [
+        "IB10"
+      ],
+      "canonical_amfi_code": "123704",
+      "amfi_base_name": "Groww Short Term Fund",
+      "disclosure_label": "Groww Short Term Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "TS",
+      "aliases": [
+        "IB11"
+      ],
+      "canonical_amfi_code": "141808",
+      "amfi_base_name": "Groww ELSS Tax Saver Fund",
+      "disclosure_label": "Groww ELSS Tax Saver Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "VD",
+      "aliases": [
+        "IB13"
+      ],
+      "canonical_amfi_code": "135341",
+      "amfi_base_name": "Groww Value Fund",
+      "disclosure_label": "Groww Value Fund",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "2026-06",
@@ -8109,48 +8259,6 @@
     },
     {
       "amc_id": "groww-mutual-fund",
-      "shortcode": "YD",
-      "aliases": [
-        "IB54"
-      ],
-      "canonical_amfi_code": "153939",
-      "amfi_base_name": "Groww Nifty Midcap 150 Index Fund",
-      "disclosure_label": "Groww Nifty Midcap 150 Index Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "MM",
-      "aliases": [
-        "IB55"
-      ],
-      "canonical_amfi_code": "153982",
-      "amfi_base_name": "Groww Money Market Fund",
-      "disclosure_label": "Groww Money Market Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "YB",
-      "aliases": [
-        "IB56"
-      ],
-      "canonical_amfi_code": "153908",
-      "amfi_base_name": "Groww Nifty Capital Markets ETF FOF",
-      "disclosure_label": "Groww Nifty Capital Markets ETF FOF",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
       "shortcode": "XE",
       "aliases": [
         "IB57"
@@ -8158,20 +8266,6 @@
       "canonical_amfi_code": "154034",
       "amfi_base_name": "Groww Nifty Metal ETF",
       "disclosure_label": "Groww Nifty Metal ETF",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "YE",
-      "aliases": [
-        "IB58"
-      ],
-      "canonical_amfi_code": "154028",
-      "amfi_base_name": "Groww Multi Asset Omni FOF",
-      "disclosure_label": "Groww Multi Asset Omni FOF",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "2026-06",
@@ -8193,20 +8287,6 @@
     },
     {
       "amc_id": "groww-mutual-fund",
-      "shortcode": "SC",
-      "aliases": [
-        "IB60"
-      ],
-      "canonical_amfi_code": "154063",
-      "amfi_base_name": "Groww Small Cap Fund",
-      "disclosure_label": "Groww Small Cap Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
       "shortcode": "XG",
       "aliases": [
         "IB61"
@@ -8221,20 +8301,6 @@
     },
     {
       "amc_id": "groww-mutual-fund",
-      "shortcode": "YG",
-      "aliases": [
-        "IB62"
-      ],
-      "canonical_amfi_code": "154164",
-      "amfi_base_name": "Groww Nifty PSE ETF FOF",
-      "disclosure_label": "Groww Nifty PSE ETF FOF",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
       "shortcode": "XH",
       "aliases": [
         "IB63"
@@ -8242,6 +8308,118 @@
       "canonical_amfi_code": "154199",
       "amfi_base_name": "Groww BSE Hospitals ETF",
       "disclosure_label": "Groww BSE Hospitals ETF",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "XI",
+      "aliases": [
+        "IB66"
+      ],
+      "canonical_amfi_code": "154277",
+      "amfi_base_name": "Groww Nifty PSU Bank ETF",
+      "disclosure_label": "Groww Nifty PSU Bank ETF",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "XJ",
+      "aliases": [
+        "IB68"
+      ],
+      "canonical_amfi_code": "154345",
+      "amfi_base_name": "Groww Nifty Private Bank ETF",
+      "disclosure_label": "Groww Nifty Private Bank ETF",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "XK",
+      "aliases": [
+        "IB70"
+      ],
+      "canonical_amfi_code": "154384",
+      "amfi_base_name": "Groww Nifty Smallcap 250 Momentum Quality 100 ETF",
+      "disclosure_label": "Groww Nifty Smallcap 250 Momentum Quality 100 ETF",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "XL",
+      "aliases": [
+        "IB72"
+      ],
+      "canonical_amfi_code": "154476",
+      "amfi_base_name": "Groww Nifty Cements ETF",
+      "disclosure_label": "Groww Nifty Cements ETF",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "YB",
+      "aliases": [
+        "IB56"
+      ],
+      "canonical_amfi_code": "153908",
+      "amfi_base_name": "Groww Nifty Capital Markets ETF FOF",
+      "disclosure_label": "Groww Nifty Capital Markets ETF FOF",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "YD",
+      "aliases": [
+        "IB54"
+      ],
+      "canonical_amfi_code": "153939",
+      "amfi_base_name": "Groww Nifty Midcap 150 Index Fund",
+      "disclosure_label": "Groww Nifty Midcap 150 Index Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "YE",
+      "aliases": [
+        "IB58"
+      ],
+      "canonical_amfi_code": "154028",
+      "amfi_base_name": "Groww Multi Asset Omni FOF",
+      "disclosure_label": "Groww Multi Asset Omni FOF",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "groww-mutual-fund",
+      "shortcode": "YG",
+      "aliases": [
+        "IB62"
+      ],
+      "canonical_amfi_code": "154164",
+      "amfi_base_name": "Groww Nifty PSE ETF FOF",
+      "disclosure_label": "Groww Nifty PSE ETF FOF",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "2026-06",
@@ -8277,48 +8455,6 @@
     },
     {
       "amc_id": "groww-mutual-fund",
-      "shortcode": "XI",
-      "aliases": [
-        "IB66"
-      ],
-      "canonical_amfi_code": "154277",
-      "amfi_base_name": "Groww Nifty PSU Bank ETF",
-      "disclosure_label": "Groww Nifty PSU Bank ETF",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "AR",
-      "aliases": [
-        "IB67"
-      ],
-      "canonical_amfi_code": "154320",
-      "amfi_base_name": "Groww Arbitrage Fund",
-      "disclosure_label": "Groww Arbitrage Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "XJ",
-      "aliases": [
-        "IB68"
-      ],
-      "canonical_amfi_code": "154345",
-      "amfi_base_name": "Groww Nifty Private Bank ETF",
-      "disclosure_label": "Groww Nifty Private Bank ETF",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
       "shortcode": "YJ",
       "aliases": [
         "IB69"
@@ -8326,20 +8462,6 @@
       "canonical_amfi_code": "154346",
       "amfi_base_name": "Groww Nifty Private Bank Index Fund",
       "disclosure_label": "Groww Nifty Private Bank Index Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "XK",
-      "aliases": [
-        "IB70"
-      ],
-      "canonical_amfi_code": "154384",
-      "amfi_base_name": "Groww Nifty Smallcap 250 Momentum Quality 100 ETF",
-      "disclosure_label": "Groww Nifty Smallcap 250 Momentum Quality 100 ETF",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "2026-06",
@@ -8357,32 +8479,6 @@
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "groww-mutual-fund",
-      "shortcode": "XL",
-      "aliases": [
-        "IB72"
-      ],
-      "canonical_amfi_code": "154476",
-      "amfi_base_name": "Groww Nifty Cements ETF",
-      "disclosure_label": "Groww Nifty Cements ETF",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-07",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "hdfc-mutual-fund",
-      "shortcode": "DERIVATIVEMY2005",
-      "aliases": [],
-      "canonical_amfi_code": "119131",
-      "amfi_base_name": "HDFC Multi - Asset Fund",
-      "disclosure_label": "HDFC Multi Asset Fund",
-      "confidence": "seeded",
-      "source": "name_match",
-      "first_seen_period": "latest",
       "last_verified_period": "latest"
     },
     {
@@ -8615,6 +8711,18 @@
     },
     {
       "amc_id": "hdfc-mutual-fund",
+      "shortcode": "DERIVATIVEMY2005",
+      "aliases": [],
+      "canonical_amfi_code": "119131",
+      "amfi_base_name": "HDFC Multi - Asset Fund",
+      "disclosure_label": "HDFC Multi Asset Fund",
+      "confidence": "seeded",
+      "source": "name_match",
+      "first_seen_period": "latest",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "hdfc-mutual-fund",
       "shortcode": "FEB2638D23",
       "aliases": [],
       "canonical_amfi_code": "151470",
@@ -8672,6 +8780,21 @@
       "source": "shortcode",
       "first_seen_period": "2026-06",
       "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "hdfc-mutual-fund",
+      "shortcode": "HDFCAR",
+      "aliases": [
+        "DerivativeHDFCAR",
+        "HDFC Arbitrage Fund"
+      ],
+      "canonical_amfi_code": "129052",
+      "amfi_base_name": "HDFC ARBITRAGE FUND",
+      "disclosure_label": "HDFC ARBITRAGE FUND",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
     },
     {
       "amc_id": "hdfc-mutual-fund",
@@ -8900,6 +9023,21 @@
       "source": "shortcode",
       "first_seen_period": "2026-06",
       "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "hdfc-mutual-fund",
+      "shortcode": "HDFCGR",
+      "aliases": [
+        "DerivativeHDFC Balanced Advanta",
+        "HDFC Balanced Advantage Fund"
+      ],
+      "canonical_amfi_code": "118968",
+      "amfi_base_name": "HDFC Balanced Advantage Fund",
+      "disclosure_label": "HDFC Balanced Advantage Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
     },
     {
       "amc_id": "hdfc-mutual-fund",
@@ -9191,6 +9329,21 @@
     },
     {
       "amc_id": "hdfc-mutual-fund",
+      "shortcode": "HDFCMY",
+      "aliases": [
+        "DerivativeHDFCMY",
+        "HDFC Equity Savings Fund"
+      ],
+      "canonical_amfi_code": "119128",
+      "amfi_base_name": "HDFC Equity Savings Fund",
+      "disclosure_label": "HDFC Equity Savings Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
+    },
+    {
+      "amc_id": "hdfc-mutual-fund",
       "shortcode": "HDFCN100ET",
       "aliases": [],
       "canonical_amfi_code": "150476",
@@ -9392,6 +9545,21 @@
       "source": "shortcode",
       "first_seen_period": "2026-06",
       "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "hdfc-mutual-fund",
+      "shortcode": "HDFCPM",
+      "aliases": [
+        "DerivativeHDFC Hybrid Equity Fu",
+        "HDFC Hybrid Equity Fund"
+      ],
+      "canonical_amfi_code": "119062",
+      "amfi_base_name": "HDFC Hybrid Equity Fund",
+      "disclosure_label": "HDFC Hybrid Equity Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
     },
     {
       "amc_id": "hdfc-mutual-fund",
@@ -9860,66 +10028,6 @@
       "source": "shortcode",
       "first_seen_period": "2026-06",
       "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "hdfc-mutual-fund",
-      "shortcode": "HDFCAR",
-      "aliases": [
-        "DerivativeHDFCAR",
-        "HDFC Arbitrage Fund"
-      ],
-      "canonical_amfi_code": "129052",
-      "amfi_base_name": "HDFC ARBITRAGE FUND",
-      "disclosure_label": "HDFC ARBITRAGE FUND",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-07",
-      "last_verified_period": "2026-07"
-    },
-    {
-      "amc_id": "hdfc-mutual-fund",
-      "shortcode": "HDFCGR",
-      "aliases": [
-        "DerivativeHDFC Balanced Advanta",
-        "HDFC Balanced Advantage Fund"
-      ],
-      "canonical_amfi_code": "118968",
-      "amfi_base_name": "HDFC Balanced Advantage Fund",
-      "disclosure_label": "HDFC Balanced Advantage Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-07",
-      "last_verified_period": "2026-07"
-    },
-    {
-      "amc_id": "hdfc-mutual-fund",
-      "shortcode": "HDFCMY",
-      "aliases": [
-        "DerivativeHDFCMY",
-        "HDFC Equity Savings Fund"
-      ],
-      "canonical_amfi_code": "119128",
-      "amfi_base_name": "HDFC Equity Savings Fund",
-      "disclosure_label": "HDFC Equity Savings Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-07",
-      "last_verified_period": "2026-07"
-    },
-    {
-      "amc_id": "hdfc-mutual-fund",
-      "shortcode": "HDFCPM",
-      "aliases": [
-        "DerivativeHDFC Hybrid Equity Fu",
-        "HDFC Hybrid Equity Fund"
-      ],
-      "canonical_amfi_code": "119062",
-      "amfi_base_name": "HDFC Hybrid Equity Fund",
-      "disclosure_label": "HDFC Hybrid Equity Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-07",
-      "last_verified_period": "2026-07"
     },
     {
       "amc_id": "helios-mutual-fund",
@@ -12360,14 +12468,18 @@
     {
       "amc_id": "invesco-mutual-fund",
       "shortcode": "IENEFOF",
-      "aliases": [],
+      "aliases": [
+        "NASDAQ",
+        "EQQQ",
+        "Invesco EQQQ NASDAQ-100 UCITS ETF"
+      ],
       "canonical_amfi_code": "149961",
       "amfi_base_name": "Invesco India - Invesco EQQQ Nasdaq - 100 ETF Fund of Fund",
       "disclosure_label": "Invesco India - Invesco EQQQ NASDAQ-100 ETF Fund of Fund",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
+      "last_verified_period": "2026-07"
     },
     {
       "amc_id": "invesco-mutual-fund",
@@ -13333,11 +13445,11 @@
     },
     {
       "amc_id": "jm-financial-mutual-fund",
-      "shortcode": "JM Large Cap Fund",
+      "shortcode": "JM Large and Midcap Fund",
       "aliases": [],
-      "canonical_amfi_code": "120490",
-      "amfi_base_name": "JM Large Cap Fund",
-      "disclosure_label": "JM Large Cap Fund",
+      "canonical_amfi_code": "153629",
+      "amfi_base_name": "JM Large & Mid Cap Fund",
+      "disclosure_label": "JM Large and Midcap Fund",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "latest",
@@ -13345,11 +13457,11 @@
     },
     {
       "amc_id": "jm-financial-mutual-fund",
-      "shortcode": "JM Large and Midcap Fund",
+      "shortcode": "JM Large Cap Fund",
       "aliases": [],
-      "canonical_amfi_code": "153629",
-      "amfi_base_name": "JM Large & Mid Cap Fund",
-      "disclosure_label": "JM Large and Midcap Fund",
+      "canonical_amfi_code": "120490",
+      "amfi_base_name": "JM Large Cap Fund",
+      "disclosure_label": "JM Large Cap Fund",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "latest",
@@ -13765,6 +13877,18 @@
     },
     {
       "amc_id": "kotak-mahindra-mutual-fund",
+      "shortcode": "Common Notes",
+      "aliases": [],
+      "canonical_amfi_code": "151286",
+      "amfi_base_name": "Kotak FMP Series 304",
+      "disclosure_label": "Kotak FMP Series 183",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "latest",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "kotak-mahindra-mutual-fund",
       "shortcode": "CON",
       "aliases": [],
       "canonical_amfi_code": "119769",
@@ -13809,18 +13933,6 @@
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "kotak-mahindra-mutual-fund",
-      "shortcode": "Common Notes",
-      "aliases": [],
-      "canonical_amfi_code": "151286",
-      "amfi_base_name": "Kotak FMP Series 304",
-      "disclosure_label": "Kotak FMP Series 183",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "latest",
       "last_verified_period": "latest"
     },
     {
@@ -15913,6 +16025,30 @@
     },
     {
       "amc_id": "mirae-asset-mutual-fund",
+      "shortcode": "HYBETF",
+      "aliases": [],
+      "canonical_amfi_code": "154497",
+      "amfi_base_name": "Mirae Asset Nifty200 Momentum 30 Plus 8 - 13 yr G - Sec 50:50 ETF",
+      "disclosure_label": "Mirae Asset Nifty200 Momentum 30 Plus 8-13 yr G-Sec 50:50 ETF",
+      "confidence": "manual",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
+    },
+    {
+      "amc_id": "mirae-asset-mutual-fund",
+      "shortcode": "HYBIF",
+      "aliases": [],
+      "canonical_amfi_code": "154493",
+      "amfi_base_name": "Mirae Asset Nifty200 Momentum 30 Plus 8 - 13yr G - Sec 75:25 Index Fund",
+      "disclosure_label": "Mirae Asset Nifty200 Momentum 30 Plus 8-13yr G-Sec 75:25 Index Fund",
+      "confidence": "manual",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
+    },
+    {
+      "amc_id": "mirae-asset-mutual-fund",
       "shortcode": "INFRA",
       "aliases": [],
       "canonical_amfi_code": "153983",
@@ -16630,6 +16766,30 @@
       "source": "shortcode",
       "first_seen_period": "2026-06",
       "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "mirae-asset-mutual-fund",
+      "shortcode": "MIDMFOF",
+      "aliases": [],
+      "canonical_amfi_code": "154474",
+      "amfi_base_name": "Mirae Asset BSE Midcap 150 Momentum 30 ETF FOF",
+      "disclosure_label": "Mirae Asset BSE Midcap 150 Momentum 30 ETF FOF",
+      "confidence": "manual",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
+    },
+    {
+      "amc_id": "mirae-asset-mutual-fund",
+      "shortcode": "MIDMOM",
+      "aliases": [],
+      "canonical_amfi_code": "154471",
+      "amfi_base_name": "Mirae Asset BSE Midcap 150 Momentum 30 ETF",
+      "disclosure_label": "Mirae Asset BSE Midcap 150 Momentum 30 ETF",
+      "confidence": "manual",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
     },
     {
       "amc_id": "mirae-asset-mutual-fund",
@@ -18005,18 +18165,6 @@
     },
     {
       "amc_id": "navi-mutual-fund",
-      "shortcode": "Navi Nifty IT Index Fund",
-      "aliases": [],
-      "canonical_amfi_code": "152535",
-      "amfi_base_name": "Navi NiftyIT Index Fund",
-      "disclosure_label": "Navi Nifty IT Index Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "latest",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "navi-mutual-fund",
       "shortcode": "Navi Nifty India Manufacturing Index Fund",
       "aliases": [],
       "canonical_amfi_code": "150515",
@@ -18029,11 +18177,11 @@
     },
     {
       "amc_id": "navi-mutual-fund",
-      "shortcode": "Navi Nifty MidSmallcap 400 Index Fund",
+      "shortcode": "Navi Nifty IT Index Fund",
       "aliases": [],
-      "canonical_amfi_code": "154027",
-      "amfi_base_name": "Navi Nifty Midsmall 400 Index Fund",
-      "disclosure_label": "Navi Nifty MidSmallcap 400 Index Fund",
+      "canonical_amfi_code": "152535",
+      "amfi_base_name": "Navi NiftyIT Index Fund",
+      "disclosure_label": "Navi Nifty IT Index Fund",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "latest",
@@ -18046,6 +18194,18 @@
       "canonical_amfi_code": "149892",
       "amfi_base_name": "Navi Nifty Midcap 150 Index Fund",
       "disclosure_label": "Navi Nifty Midcap 150 Index fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "latest",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "navi-mutual-fund",
+      "shortcode": "Navi Nifty MidSmallcap 400 Index Fund",
+      "aliases": [],
+      "canonical_amfi_code": "154027",
+      "amfi_base_name": "Navi Nifty Midsmall 400 Index Fund",
+      "disclosure_label": "Navi Nifty MidSmallcap 400 Index Fund",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "latest",
@@ -19625,18 +19785,6 @@
     },
     {
       "amc_id": "pgim-india-mutual-fund",
-      "shortcode": "LIQUID",
-      "aliases": [],
-      "canonical_amfi_code": "138299",
-      "amfi_base_name": "PGIM India Liquid Fund",
-      "disclosure_label": "PGIM INDIA LIQUID FUND",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "latest",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "pgim-india-mutual-fund",
       "shortcode": "Large Cap",
       "aliases": [],
       "canonical_amfi_code": "138312",
@@ -19661,14 +19809,14 @@
     },
     {
       "amc_id": "pgim-india-mutual-fund",
-      "shortcode": "MULTICAP",
+      "shortcode": "LIQUID",
       "aliases": [],
-      "canonical_amfi_code": "152815",
-      "amfi_base_name": "PGIM India Multi Cap Fund",
-      "disclosure_label": "PGIM INDIA MULTI CAP FUND",
+      "canonical_amfi_code": "138299",
+      "amfi_base_name": "PGIM India Liquid Fund",
+      "disclosure_label": "PGIM INDIA LIQUID FUND",
       "confidence": "seeded",
       "source": "shortcode",
-      "first_seen_period": "2026-06",
+      "first_seen_period": "latest",
       "last_verified_period": "latest"
     },
     {
@@ -19685,11 +19833,11 @@
     },
     {
       "amc_id": "pgim-india-mutual-fund",
-      "shortcode": "OVERNIGHT",
+      "shortcode": "MULTICAP",
       "aliases": [],
-      "canonical_amfi_code": "147606",
-      "amfi_base_name": "PGIM India Overnight Fund",
-      "disclosure_label": "PGIM INDIA OVERNIGHT FUND",
+      "canonical_amfi_code": "152815",
+      "amfi_base_name": "PGIM India Multi Cap Fund",
+      "disclosure_label": "PGIM INDIA MULTI CAP FUND",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "2026-06",
@@ -19697,11 +19845,11 @@
     },
     {
       "amc_id": "pgim-india-mutual-fund",
-      "shortcode": "RETIREMENT",
+      "shortcode": "OVERNIGHT",
       "aliases": [],
-      "canonical_amfi_code": "152537",
-      "amfi_base_name": "PGIM India Retirement Fund",
-      "disclosure_label": "PGIM INDIA RETIREMENT FUND",
+      "canonical_amfi_code": "147606",
+      "amfi_base_name": "PGIM India Overnight Fund",
+      "disclosure_label": "PGIM INDIA OVERNIGHT FUND",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "2026-06",
@@ -19717,6 +19865,18 @@
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "latest",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "pgim-india-mutual-fund",
+      "shortcode": "RETIREMENT",
+      "aliases": [],
+      "canonical_amfi_code": "152537",
+      "amfi_base_name": "PGIM India Retirement Fund",
+      "disclosure_label": "PGIM INDIA RETIREMENT FUND",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
       "last_verified_period": "latest"
     },
     {
@@ -20165,18 +20325,6 @@
     },
     {
       "amc_id": "quant-mutual-fund",
-      "shortcode": "QVF",
-      "aliases": [],
-      "canonical_amfi_code": "149335",
-      "amfi_base_name": "Quant Value Fund",
-      "disclosure_label": "quant Value Fund",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "quant-mutual-fund",
       "shortcode": "quant Large & Mid Cap Fund",
       "aliases": [],
       "canonical_amfi_code": "120826",
@@ -20185,6 +20333,18 @@
       "confidence": "seeded",
       "source": "name_match",
       "first_seen_period": "latest",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "quant-mutual-fund",
+      "shortcode": "QVF",
+      "aliases": [],
+      "canonical_amfi_code": "149335",
+      "amfi_base_name": "Quant Value Fund",
+      "disclosure_label": "quant Value Fund",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
       "last_verified_period": "latest"
     },
     {
@@ -23961,18 +24121,6 @@
     },
     {
       "amc_id": "union-mutual-fund",
-      "shortcode": "FOD",
-      "aliases": [],
-      "canonical_amfi_code": "153575",
-      "amfi_base_name": "Union Income Plus Arbitrage Active FOF",
-      "disclosure_label": "UNION INCOME PLUS ARBITRAGE ACTIVE FOF",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "union-mutual-fund",
       "shortcode": "Flexi Cap Fund",
       "aliases": [],
       "canonical_amfi_code": "119292",
@@ -23993,6 +24141,18 @@
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "latest",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "union-mutual-fund",
+      "shortcode": "FOD",
+      "aliases": [],
+      "canonical_amfi_code": "153575",
+      "amfi_base_name": "Union Income Plus Arbitrage Active FOF",
+      "disclosure_label": "UNION INCOME PLUS ARBITRAGE ACTIVE FOF",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-06",
       "last_verified_period": "latest"
     },
     {
@@ -24033,6 +24193,18 @@
     },
     {
       "amc_id": "union-mutual-fund",
+      "shortcode": "Large & Midcap",
+      "aliases": [],
+      "canonical_amfi_code": "147750",
+      "amfi_base_name": "Union Large & Midcap Fund",
+      "disclosure_label": "UNION LARGE & MIDCAP FUND",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "latest",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "union-mutual-fund",
       "shortcode": "LARGECAP",
       "aliases": [
         "Largecap",
@@ -24044,18 +24216,6 @@
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "union-mutual-fund",
-      "shortcode": "Large & Midcap",
-      "aliases": [],
-      "canonical_amfi_code": "147750",
-      "amfi_base_name": "Union Large & Midcap Fund",
-      "disclosure_label": "UNION LARGE & MIDCAP FUND",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "latest",
       "last_verified_period": "latest"
     },
     {
@@ -25239,6 +25399,18 @@
     },
     {
       "amc_id": "uti-mutual-fund",
+      "shortcode": "exposure",
+      "aliases": [],
+      "canonical_amfi_code": "120784",
+      "amfi_base_name": "UTI - Unit Linked Insurance",
+      "disclosure_label": "SCHEME: UTI - Unit Linked Insurance Plan",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "latest",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "uti-mutual-fund",
       "shortcode": "SHEET0",
       "aliases": [],
       "canonical_amfi_code": "120656",
@@ -25259,18 +25431,6 @@
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "2026-06",
-      "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "uti-mutual-fund",
-      "shortcode": "exposure",
-      "aliases": [],
-      "canonical_amfi_code": "120784",
-      "amfi_base_name": "UTI - Unit Linked Insurance",
-      "disclosure_label": "SCHEME: UTI - Unit Linked Insurance Plan",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "latest",
       "last_verified_period": "latest"
     },
     {
@@ -25623,6 +25783,30 @@
     },
     {
       "amc_id": "zerodha-mutual-fund",
+      "shortcode": "ZLC36",
+      "aliases": [],
+      "canonical_amfi_code": "154436",
+      "amfi_base_name": "Zerodha Life Cycle Fund 2036",
+      "disclosure_label": "Zerodha Life Cycle Fund 2036",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
+    },
+    {
+      "amc_id": "zerodha-mutual-fund",
+      "shortcode": "ZLC41",
+      "aliases": [],
+      "canonical_amfi_code": "154437",
+      "amfi_base_name": "Zerodha Life Cycle Fund 2041",
+      "disclosure_label": "Zerodha Life Cycle Fund 2041",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
+      "last_verified_period": "2026-07"
+    },
+    {
+      "amc_id": "zerodha-mutual-fund",
       "shortcode": "ZLIQD",
       "aliases": [],
       "canonical_amfi_code": "152327",
@@ -25752,138 +25936,6 @@
       "source": "shortcode",
       "first_seen_period": "2026-06",
       "last_verified_period": "latest"
-    },
-    {
-      "amc_id": "zerodha-mutual-fund",
-      "shortcode": "ZLC36",
-      "aliases": [],
-      "canonical_amfi_code": "154436",
-      "amfi_base_name": "Zerodha Life Cycle Fund 2036",
-      "disclosure_label": "Zerodha Life Cycle Fund 2036",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-07",
-      "last_verified_period": "2026-07"
-    },
-    {
-      "amc_id": "zerodha-mutual-fund",
-      "shortcode": "ZLC41",
-      "aliases": [],
-      "canonical_amfi_code": "154437",
-      "amfi_base_name": "Zerodha Life Cycle Fund 2041",
-      "disclosure_label": "Zerodha Life Cycle Fund 2041",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-07",
-      "last_verified_period": "2026-07"
-    },
-    {
-      "amc_id": "edelweiss-mutual-fund",
-      "shortcode": "EEBTBE",
-      "aliases": [],
-      "canonical_amfi_code": "154524",
-      "amfi_base_name": "Edelweiss BSE Top 10 Bank ETF",
-      "disclosure_label": "Edelweiss BSE Top 10 Bank ETF",
-      "confidence": "seeded",
-      "source": "ingest_new_launch",
-      "first_seen_period": "2026-07",
-      "last_verified_period": "2026-07"
-    },
-    {
-      "amc_id": "edelweiss-mutual-fund",
-      "shortcode": "EEBSDE",
-      "aliases": [],
-      "canonical_amfi_code": "154535",
-      "amfi_base_name": "Edelweiss BSE LargeMid (60:40) Stable dividend 50 ETF",
-      "disclosure_label": "Edelweiss BSE LargeMid (60:40) Stable dividend 50 ETF",
-      "confidence": "seeded",
-      "source": "ingest_new_launch",
-      "first_seen_period": "2026-07",
-      "last_verified_period": "2026-07"
-    },
-    {
-      "amc_id": "edelweiss-mutual-fund",
-      "shortcode": "EDBE30",
-      "aliases": [],
-      "canonical_amfi_code": "147849",
-      "amfi_base_name": "Bharat Bond ETF - April 2030",
-      "disclosure_label": "Bharat Bond ETF - April 2030",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-07",
-      "last_verified_period": "2026-07"
-    },
-    {
-      "amc_id": "edelweiss-mutual-fund",
-      "shortcode": "EDBE31",
-      "aliases": [],
-      "canonical_amfi_code": "148445",
-      "amfi_base_name": "BHARAT Bond ETF - April 2031",
-      "disclosure_label": "BHARAT Bond ETF - April 2031",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-07",
-      "last_verified_period": "2026-07"
-    },
-    {
-      "amc_id": "edelweiss-mutual-fund",
-      "shortcode": "EDBE32",
-      "aliases": [],
-      "canonical_amfi_code": "149398",
-      "amfi_base_name": "BHARAT Bond ETF - April 2032",
-      "disclosure_label": "BHARAT Bond ETF - April 2032",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-07",
-      "last_verified_period": "2026-07"
-    },
-    {
-      "amc_id": "edelweiss-mutual-fund",
-      "shortcode": "EDFF30",
-      "aliases": [],
-      "canonical_amfi_code": "147857",
-      "amfi_base_name": "Bharat Bond FOF - April 2030",
-      "disclosure_label": "Bharat Bond FOF - April 2030",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-07",
-      "last_verified_period": "2026-07"
-    },
-    {
-      "amc_id": "edelweiss-mutual-fund",
-      "shortcode": "EDFF31",
-      "aliases": [],
-      "canonical_amfi_code": "148450",
-      "amfi_base_name": "BHARAT Bond FOF - April 2031",
-      "disclosure_label": "BHARAT Bond FOF - April 2031",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-07",
-      "last_verified_period": "2026-07"
-    },
-    {
-      "amc_id": "edelweiss-mutual-fund",
-      "shortcode": "EDFF32",
-      "aliases": [],
-      "canonical_amfi_code": "149401",
-      "amfi_base_name": "BHARAT Bond ETF FOF - April 2032",
-      "disclosure_label": "BHARAT Bond ETF FOF - April 2032",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-07",
-      "last_verified_period": "2026-07"
-    },
-    {
-      "amc_id": "edelweiss-mutual-fund",
-      "shortcode": "EENMET",
-      "aliases": [],
-      "canonical_amfi_code": "154461",
-      "amfi_base_name": "Edelweiss Nifty Metal ETF",
-      "disclosure_label": "Edelweiss Nifty Metal ETF",
-      "confidence": "seeded",
-      "source": "shortcode",
-      "first_seen_period": "2026-07",
-      "last_verified_period": "2026-07"
     }
   ]
 }

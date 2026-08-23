@@ -113,20 +113,51 @@ def _shortcode_from_cell(value: str | None) -> str | None:
 
 
 def _scheme_shortcode(sheet_name: str, rows: list[list[str]]) -> str | None:
-    """Sheet tab → A1 → B1 (ticker or multi-word sheet label)."""
+    """Resolve scheme shortcode from sheet tab and header cells.
+
+    Priority:
+      1. Tab that already looks like an AMC ticker (``IFCF``, ``RLF``)
+      2. Ticker in A1/B1 (Invesco: tab ``Flexi Cap``, A1 ``IFCF``)
+      3. Human sheet label (Union: ``Aggressive Hybrid``) when no cell ticker
+    """
     tab = (sheet_name or "").strip()
-    if tab and not _GENERIC_SHEET_RE.fullmatch(tab):
-        if _looks_like_shortcode(tab):
-            return tab.upper()
-        if _looks_like_sheet_label(tab):
-            return tab
+    if tab and not _GENERIC_SHEET_RE.fullmatch(tab) and _looks_like_shortcode(tab):
+        return tab.upper()
+
+    cell_code = None
     if rows and rows[0]:
         a1 = rows[0][0] if len(rows[0]) > 0 else None
         b1 = rows[0][1] if len(rows[0]) > 1 else None
         for cand in (_shortcode_from_cell(a1), _shortcode_from_cell(b1)):
             if cand:
-                return cand
+                cell_code = cand
+                break
+    # Prefer explicit A1/B1 ticker over a human-readable sheet label.
+    if cell_code:
+        return cell_code
+
+    if tab and not _GENERIC_SHEET_RE.fullmatch(tab) and _looks_like_sheet_label(tab):
+        return tab
     return None
+
+
+def _dedupe_by_shortcode(portfolios: list[SchemePortfolio]) -> list[SchemePortfolio]:
+    """Keep one portfolio per shortcode, preferring the sheet with more holdings.
+
+    Invesco monthly books ship a label sheet (full holdings, A1=ticker) plus a
+    thin ticker-named sheet; after shortcode fix both resolve to the same code.
+    """
+    best: dict[str, SchemePortfolio] = {}
+    passthrough: list[SchemePortfolio] = []
+    for p in portfolios:
+        key = (p.shortcode or "").strip().upper() or None
+        if not key:
+            passthrough.append(p)
+            continue
+        prev = best.get(key)
+        if prev is None or len(p.holdings) > len(prev.holdings):
+            best[key] = p
+    return passthrough + list(best.values())
 
 
 def _expand_zip(path: Path, dest: Path) -> list[Path]:
@@ -248,4 +279,4 @@ def parse_file(
                     break
             # For zip fixture runs with workbook_limit, don't explode into every sheet of every file
             # unless multi_sheet; already handled per workbook.
-    return out
+    return _dedupe_by_shortcode(out)
