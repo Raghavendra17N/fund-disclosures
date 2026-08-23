@@ -42,6 +42,7 @@ data/exports/
 scripts/*.mjs
 !scripts/upload-holdings-to-b2.mjs
 !scripts/sync-holdings-to-github.mjs
+!scripts/sync-asof-holdings-to-github.mjs
 
 # Local wrangler / probe AMC scratch (never ship)
 .wrangler/

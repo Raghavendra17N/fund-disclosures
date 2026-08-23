@@ -4,20 +4,21 @@
  *
  * Dedup model:
  *   - One JSON per unique portfolio, keyed by portfolio_id
- *     (AMFI id in B2 paths: …/latest/{amc}/{id}/portfolio.json).
- *   - Catalog lists all schemes; holdings rows link via portfolio_id.
- *   - Sibling share-classes share one portfolio object.
+ *   - Catalog lists all schemes; holdings rows link via portfolio_id
+ *   - Sibling share-classes share one portfolio object
  *
  * Layout (--out, default .tmp/fund-holdings-data):
  *   portfolios/latest/{portfolio_id}.json
- *   portfolios/asof/{yyyy-mm}/{portfolio_id}.json  (with --asof=YYYY-MM)
+ *   portfolios/asof/{yyyy-mm-dd}/{portfolio_id}.json  (--asof=YYYY-MM-DD)
  *   catalog/amfi-lookup.json
+ *   catalog/filings.json
  *   meta.json
  *
  * Usage:
- *   node scripts/sync-holdings-to-github.mjs --limit=20 --dry-run
- *   node scripts/sync-holdings-to-github.mjs --limit=50 --push
  *   node scripts/sync-holdings-to-github.mjs --push
+ *   node scripts/sync-holdings-to-github.mjs --asof=2026-08-15 --cadence=fortnightly --push
+ *   node scripts/sync-holdings-to-github.mjs --asof=2026-06-30 --cadence=monthly --push
+ *   node scripts/sync-holdings-to-github.mjs --asof=2026-08-15 --cadence=fortnightly --update-latest --push
  *
  * Auth for --push: GH_TOKEN or GITHUB_TOKEN. Never commit tokens.
  */
@@ -33,6 +34,14 @@ import {
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { spawnSync } from "node:child_process";
+import {
+  attachAvailableAsOf,
+  collectAsOfPortfolios,
+  mergeFilings,
+  normalizeAsOf,
+  scanExistingAsOfDirs,
+  sourcePeriodFromAsOf,
+} from "./lib/asof-portfolios.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -41,7 +50,7 @@ const { shapeHoldingsPayload } = await import(
   pathToFileURL(join(ROOT, "holdings-browser/api/_contract.js")).href,
 );
 
-const OWNER = process.env.HOLDINGS_DATA_OWNER || "kushagra-agarwal-a";
+const OWNER = process.env.HOLDINGS_DATA_OWNER || "subscriptionmanager26-png";
 const REPO = process.env.HOLDINGS_DATA_REPO || "fund-holdings-data";
 const BRANCH = process.env.HOLDINGS_DATA_BRANCH || "main";
 
@@ -58,8 +67,13 @@ function hasFlag(name) {
 const dryRun = hasFlag("dry-run");
 const doPush = hasFlag("push");
 const keepOut = hasFlag("keep");
+const updateLatest = hasFlag("update-latest");
 const limit = Number(argValue("limit", "0")) || 0;
-const asof = argValue("asof", "");
+const asofRaw = argValue("asof", "");
+const asof = normalizeAsOf(asofRaw);
+const cadence = argValue("cadence", asof ? "monthly" : "");
+const sourcePeriod =
+  argValue("source-period", "") || (asof ? sourcePeriodFromAsOf(asof) : "");
 const outDir = argValue("out", join(ROOT, ".tmp/fund-holdings-data"));
 const lookupPath = argValue(
   "lookup",
@@ -301,8 +315,282 @@ function pruneOrphanPortfolios(keepIds) {
   return removed;
 }
 
+function loadExistingFilings() {
+  const p = join(outDir, "catalog/filings.json");
+  if (!existsSync(p)) return { filings: [] };
+  try {
+    return JSON.parse(readFileSync(p, "utf8"));
+  } catch {
+    return { filings: [] };
+  }
+}
+
+function writeFilingsAndCatalogAvailability(catalog) {
+  const asOfMap = scanExistingAsOfDirs(outDir);
+  const withDates = attachAvailableAsOf(catalog, asOfMap);
+  writeJson(join(outDir, "catalog/amfi-lookup.json"), withDates);
+
+  // Rebuild filings index from on-disk asof dirs + any prior cadence tags
+  const prior = loadExistingFilings();
+  const priorByDate = new Map(
+    (prior.filings || []).map((f) => [`${f.as_of}::${f.cadence || ""}`, f]),
+  );
+  const asofRoot = join(outDir, "portfolios", "asof");
+  if (existsSync(asofRoot)) {
+    for (const date of readdirSync(asofRoot)) {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) continue;
+      const dir = join(asofRoot, date);
+      let count = 0;
+      try {
+        count = readdirSync(dir).filter((n) => n.endsWith(".json")).length;
+      } catch {
+        continue;
+      }
+      // Prefer cadence from this run when matching asof
+      const cadenceGuess =
+        asof === date && cadence
+          ? cadence
+          : priorByDate.get(`${date}::monthly`)?.cadence ||
+            priorByDate.get(`${date}::fortnightly`)?.cadence ||
+            (date.endsWith("-15") ? "fortnightly" : "monthly");
+      priorByDate.set(`${date}::${cadenceGuess}`, {
+        as_of: date,
+        cadence: cadenceGuess,
+        portfolio_count: count,
+      });
+    }
+  }
+  const filingsDoc = mergeFilings(
+    { filings: [...priorByDate.values()] },
+    null,
+  );
+  // mergeFilings ignores null next — pass empty merge of values:
+  const merged = {
+    generated_at: new Date().toISOString(),
+    filings: [...priorByDate.values()].sort((a, b) =>
+      String(b.as_of).localeCompare(String(a.as_of)),
+    ),
+  };
+  writeJson(join(outDir, "catalog/filings.json"), merged);
+  return { catalog: withDates, filings: merged };
+}
+
+function syncHistoricalAsOf(lookup) {
+  if (!asof) throw new Error("--asof=YYYY-MM-DD required for historical sync");
+  if (!cadence || !["monthly", "fortnightly"].includes(cadence)) {
+    throw new Error("--cadence=monthly|fortnightly required with --asof");
+  }
+
+  const collected = collectAsOfPortfolios({
+    root: ROOT,
+    cadence,
+    sourcePeriod,
+    asOf: asof,
+    catalogLookup: lookup,
+  });
+
+  let entries = [...collected.values()];
+  entries.sort((a, b) => a.portfolio_id.localeCompare(b.portfolio_id));
+  if (limit > 0) entries = entries.slice(0, limit);
+
+  console.log(
+    JSON.stringify(
+      {
+        mode: "historical-asof",
+        owner: OWNER,
+        repo: REPO,
+        out: outDir,
+        asof,
+        cadence,
+        source_period: sourcePeriod,
+        portfolios_found: collected.size,
+        syncing: entries.length,
+        update_latest: updateLatest,
+        dryRun,
+        push: doPush,
+      },
+      null,
+      2,
+    ),
+  );
+
+  if (dryRun) {
+    for (const e of entries.slice(0, 8)) {
+      console.log(
+        `  would write ${portfolioAsofObjectKey(asof, e.portfolio_id)} ← ${e.local_path}`,
+      );
+    }
+    if (entries.length > 8) console.log(`  … ${entries.length - 8} more`);
+    return;
+  }
+
+  initOrClone();
+
+  let written = 0;
+  let failed = 0;
+  for (const entry of entries) {
+    try {
+      const portfolio =
+        entry.payload ||
+        JSON.parse(readFileSync(join(ROOT, entry.local_path), "utf8"));
+      const fakeRow = {
+        amfi_code: entry.portfolio_id,
+        name: entry.meta?.scheme_name || entry.meta?.amfi_name || null,
+        amc_name: entry.meta?.amc_name || null,
+        parent_name: entry.meta?.amfi_name || entry.meta?.scheme_name || null,
+        parent_amfi: entry.portfolio_id,
+        shortcode: entry.meta?.shortcode || null,
+        as_of: asof,
+        source_file: entry.meta?.source_file || null,
+      };
+      const shaped = shapeHoldingsPayload(schemeFromRow(fakeRow), portfolio);
+      const payload = {
+        portfolio_id: entry.portfolio_id,
+        member_amfi_codes: entry.members,
+        scheme: shaped.scheme,
+        meta: {
+          ...shaped.meta,
+          portfolio_id: entry.portfolio_id,
+          member_count: entry.members.length,
+          as_of: asof,
+          cadence,
+        },
+        holdings: shaped.holdings,
+      };
+      writeJson(
+        join(outDir, portfolioAsofObjectKey(asof, entry.portfolio_id)),
+        payload,
+      );
+      if (updateLatest) {
+        writeJson(join(outDir, portfolioObjectKey(entry.portfolio_id)), payload);
+      }
+      written += 1;
+      if (written % 100 === 0) console.log(`  wrote ${written}/${entries.length}`);
+    } catch (err) {
+      failed += 1;
+      console.error(`  FAIL ${entry.portfolio_id}`, err?.message || err);
+    }
+  }
+
+  // Keep existing latest catalog links; only refresh availability + filings
+  let catalog = lookup;
+  const catalogPath = join(outDir, "catalog/amfi-lookup.json");
+  if (existsSync(catalogPath)) {
+    try {
+      catalog = JSON.parse(readFileSync(catalogPath, "utf8"));
+    } catch {
+      catalog = lookup;
+    }
+  }
+  const { filings } = writeFilingsAndCatalogAvailability(catalog);
+
+  writeJson(join(outDir, "meta.json"), {
+    generated_at: new Date().toISOString(),
+    owner: OWNER,
+    repo: REPO,
+    branch: BRANCH,
+    model: "deduped-portfolios",
+    last_asof_sync: {
+      as_of: asof,
+      cadence,
+      source_period: sourcePeriod,
+      portfolios_written: written,
+      portfolios_failed: failed,
+      update_latest: updateLatest,
+    },
+    filings_count: filings.filings.length,
+    cdn_catalog: cdnUrl("catalog/amfi-lookup.json"),
+    cdn_filings: cdnUrl("catalog/filings.json"),
+    cdn_portfolio_template: cdnUrl("portfolios/latest/{portfolio_id}.json"),
+    cdn_asof_template: cdnUrl("portfolios/asof/{as_of}/{portfolio_id}.json"),
+  });
+
+  console.log(
+    JSON.stringify(
+      {
+        written,
+        failed,
+        asof,
+        filings: filings.filings.length,
+        outDir,
+      },
+      null,
+      2,
+    ),
+  );
+
+  if (!doPush) return;
+  pushWithMetaPin(
+    `sync(asof=${asof}/${cadence}): ${written} portfolios`,
+  );
+}
+
+function pushWithMetaPin(commitMessage) {
+  run("git", ["-C", outDir, "add", "-A"]);
+  const status = spawnSync("git", ["-C", outDir, "status", "--porcelain"], {
+    encoding: "utf8",
+  });
+  if (!status.stdout.trim()) {
+    console.log("Nothing to commit.");
+    return;
+  }
+  run("git", [
+    "-C",
+    outDir,
+    "-c",
+    "user.email=holdings-bot@users.noreply.github.com",
+    "-c",
+    "user.name=holdings-sync",
+    "commit",
+    "-m",
+    commitMessage,
+  ]);
+  run("git", ["-C", outDir, "remote", "set-url", "origin", gitTokenUrl()]);
+  run("git", ["-C", outDir, "push", "-u", "origin", `HEAD:${BRANCH}`]);
+
+  const shaRes = spawnSync("git", ["-C", outDir, "rev-parse", "HEAD"], {
+    encoding: "utf8",
+  });
+  const commit = (shaRes.stdout || "").trim();
+  if (commit) {
+    const metaPath = join(outDir, "meta.json");
+    const meta = JSON.parse(readFileSync(metaPath, "utf8"));
+    meta.commit = commit;
+    meta.raw_base = `https://raw.githubusercontent.com/${OWNER}/${REPO}/${commit}`;
+    meta.cdn_catalog = `https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@${commit}/catalog/amfi-lookup.json`;
+    meta.cdn_filings = `https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@${commit}/catalog/filings.json`;
+    meta.cdn_portfolio_template = `https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@${commit}/portfolios/latest/{portfolio_id}.json`;
+    meta.cdn_asof_template = `https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@${commit}/portfolios/asof/{as_of}/{portfolio_id}.json`;
+    writeJson(metaPath, meta);
+    run("git", ["-C", outDir, "add", "meta.json"]);
+    run("git", [
+      "-C",
+      outDir,
+      "-c",
+      "user.email=holdings-bot@users.noreply.github.com",
+      "-c",
+      "user.name=holdings-sync",
+      "commit",
+      "-m",
+      `meta: pin content commit ${commit.slice(0, 7)}`,
+    ]);
+    run("git", ["-C", outDir, "push", "-u", "origin", `HEAD:${BRANCH}`]);
+  }
+  console.log(
+    `Pushed → https://github.com/${OWNER}/${REPO}${
+      commit ? `\nPinned commit → ${commit}` : ""
+    }`,
+  );
+}
+
 function main() {
   const lookup = JSON.parse(readFileSync(lookupPath, "utf8"));
+
+  if (asof) {
+    syncHistoricalAsOf(lookup);
+    return;
+  }
+
   const byId = buildPortfolioIndex(lookup);
 
   let portfolios = [...byId.values()].filter((e) => e.local_path);
@@ -314,6 +602,7 @@ function main() {
   console.log(
     JSON.stringify(
       {
+        mode: "latest",
         owner: OWNER,
         repo: REPO,
         out: outDir,
@@ -321,7 +610,6 @@ function main() {
         unique_portfolios_in_catalog: byId.size,
         unique_portfolios_with_local: withLocal,
         syncing_portfolios: portfolios.length,
-        asof: asof || null,
         dryRun,
         push: doPush,
       },
@@ -355,12 +643,6 @@ function main() {
       );
       const payload = shapePortfolioPayload(entry, portfolio);
       writeJson(join(outDir, portfolioObjectKey(entry.portfolio_id)), payload);
-      if (asof) {
-        writeJson(
-          join(outDir, portfolioAsofObjectKey(asof, entry.portfolio_id)),
-          payload,
-        );
-      }
       writtenIds.push(entry.portfolio_id);
       written += 1;
       if (written % 100 === 0) {
@@ -374,7 +656,7 @@ function main() {
   pruneOrphanPortfolios(writtenIds);
 
   const catalog = rewriteCatalog(lookup, byId);
-  writeJson(join(outDir, "catalog/amfi-lookup.json"), catalog);
+  const { filings } = writeFilingsAndCatalogAvailability(catalog);
   writeJson(join(outDir, "meta.json"), {
     generated_at: new Date().toISOString(),
     owner: OWNER,
@@ -388,8 +670,11 @@ function main() {
     schemes_with_portfolio_link: Object.values(catalog).filter(
       (r) => r.portfolio_id,
     ).length,
+    filings_count: filings.filings.length,
     cdn_catalog: cdnUrl("catalog/amfi-lookup.json"),
+    cdn_filings: cdnUrl("catalog/filings.json"),
     cdn_portfolio_template: cdnUrl("portfolios/latest/{portfolio_id}.json"),
+    cdn_asof_template: cdnUrl("portfolios/asof/{as_of}/{portfolio_id}.json"),
   });
   writeReadme();
 
@@ -402,63 +687,7 @@ function main() {
   );
 
   if (!doPush) return;
-
-  run("git", ["-C", outDir, "add", "-A"]);
-  const status = spawnSync("git", ["-C", outDir, "status", "--porcelain"], {
-    encoding: "utf8",
-  });
-  if (!status.stdout.trim()) {
-    console.log("Nothing to commit.");
-    return;
-  }
-  run("git", [
-    "-C",
-    outDir,
-    "-c",
-    "user.email=holdings-bot@users.noreply.github.com",
-    "-c",
-    "user.name=holdings-sync",
-    "commit",
-    "-m",
-    `sync: ${written} unique portfolios + linked catalog`,
-  ]);
-  run("git", ["-C", outDir, "remote", "set-url", "origin", gitTokenUrl()]);
-  run("git", ["-C", outDir, "push", "-u", "origin", `HEAD:${BRANCH}`]);
-
-  // Pin the content commit in meta.json. GitHub raw @main can lag on large
-  // files (catalog); consumers should fetch catalog/portfolios via this SHA.
-  const shaRes = spawnSync("git", ["-C", outDir, "rev-parse", "HEAD"], {
-    encoding: "utf8",
-  });
-  const commit = (shaRes.stdout || "").trim();
-  if (commit) {
-    const metaPath = join(outDir, "meta.json");
-    const meta = JSON.parse(readFileSync(metaPath, "utf8"));
-    meta.commit = commit;
-    meta.raw_base = `https://raw.githubusercontent.com/${OWNER}/${REPO}/${commit}`;
-    meta.cdn_catalog = `https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@${commit}/catalog/amfi-lookup.json`;
-    meta.cdn_portfolio_template = `https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@${commit}/portfolios/latest/{portfolio_id}.json`;
-    writeJson(metaPath, meta);
-    run("git", ["-C", outDir, "add", "meta.json"]);
-    run("git", [
-      "-C",
-      outDir,
-      "-c",
-      "user.email=holdings-bot@users.noreply.github.com",
-      "-c",
-      "user.name=holdings-sync",
-      "commit",
-      "-m",
-      `meta: pin content commit ${commit.slice(0, 7)}`,
-    ]);
-    run("git", ["-C", outDir, "push", "-u", "origin", `HEAD:${BRANCH}`]);
-  }
-
-  console.log(
-    `Pushed → https://github.com/${OWNER}/${REPO}\nCDN catalog → ${cdnUrl("catalog/amfi-lookup.json")}${
-      commit ? `\nPinned commit → ${commit}` : ""
-    }`,
-  );
+  pushWithMetaPin(`sync: ${written} unique portfolios + linked catalog`);
 }
 
 main();

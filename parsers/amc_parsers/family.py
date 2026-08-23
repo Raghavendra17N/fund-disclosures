@@ -32,9 +32,12 @@ MEGA_NAME = re.compile(
     r"(?i)all[-_\s]?schemes|consolidated|combined[-_\s]?portfolio|"
     r"debt-schemes-fortnightly-portfolio---as-on"
 )
-# Marketing / summary packs that are not SEBI scheme portfolios (Zerodha Top 10 etc.)
+# Marketing / summary packs that are not SEBI scheme portfolios
+# (Zerodha Top 10, Shriram issuer/sector/top-holdings sheets, etc.)
 SKIP_FILE_RE = re.compile(
-    r"(?i)top\s*\d+\s*holdings(?:\s+by\s+issuer)?|holdings\s+by\s+issuer"
+    r"(?i)top\s*\d+\s*holdings(?:\s+by\s+issuer)?|holdings\s+by\s+issuer|"
+    r"issuer[-_\s]+sector[-_\s]+and[-_\s]+top[-_\s]+holdings|"
+    r"portfolio[-_\s]?disclosure[-_\s]?issuer"
 )
 
 

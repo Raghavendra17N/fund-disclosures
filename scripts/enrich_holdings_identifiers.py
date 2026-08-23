@@ -143,7 +143,9 @@ def _period_roots() -> list[tuple[str, str, Path]]:
     """(disclosure_type, period, parsed_root) tuples enrich scans."""
     return [
         ("monthly", "2026-07", PARSED_ROOT / "monthly" / "2026-07"),
+        ("monthly", "2026-06", PARSED_ROOT / "monthly" / "2026-06"),
         ("monthly", "latest", PARSED_ROOT / "monthly" / "latest"),
+        ("fortnightly", "2026-08", PARSED_ROOT / "fortnightly" / "2026-08"),
         ("fortnightly", "2026-07", PARSED_ROOT / "fortnightly" / "2026-07"),
         ("fortnightly", "latest", PARSED_ROOT / "fortnightly" / "latest"),
     ]
@@ -247,16 +249,6 @@ def main() -> int:
                 or folder.casefold()
             )
             key = (amc_id, identity)
-            prev = best.get(key)
-            if prev:
-                prev_as = prev.get("as_of") or ""
-                new_as = as_of or ""
-                if new_as < prev_as:
-                    continue
-                if new_as == prev_as and prev.get("disclosure_type") == "monthly" and dtype != "monthly":
-                    continue
-                if new_as == prev_as and prev.get("period") != "latest" and period == "latest":
-                    continue
             amfi = resolve_amfi(amap, amc_id, shortcode, scheme_name, folder, s.get("scheme"))
             amc_info = amcs.get(amc_id) or {}
             scheme_id = (amfi or {}).get("amfi_code") or shortcode or folder
@@ -280,6 +272,23 @@ def main() -> int:
             }
             meta.update({k: v for k, v in ident.items() if v is not None})
             payload["meta"] = meta
+            # Always stamp this period's file so historical as-of sync can resolve
+            # AMFI ids even when a newer book wins the "best" contest.
+            pj.write_text(
+                json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
+                encoding="utf-8",
+            )
+
+            prev = best.get(key)
+            if prev:
+                prev_as = prev.get("as_of") or ""
+                new_as = as_of or ""
+                if new_as < prev_as:
+                    continue
+                if new_as == prev_as and prev.get("disclosure_type") == "monthly" and dtype != "monthly":
+                    continue
+                if new_as == prev_as and prev.get("period") != "latest" and period == "latest":
+                    continue
             best[key] = {
                 **ident,
                 "local_path": str(pj.relative_to(ROOT)),

@@ -28,7 +28,9 @@
     "amfi:coverage": ".venv/bin/python3 matching/rebuild_catalog_coverage.py",
     "export:mapping": ".venv/bin/python3 matching/export_mapping_xlsx.py",
     "holdings:catalog": ".venv/bin/python3 scripts/build_holdings_browser_catalog.py",
-    "holdings:browse": ".venv/bin/python3 holdings-browser/server.py"
+    "holdings:browse": ".venv/bin/python3 holdings-browser/server.py",
+    "holdings:sync": "node scripts/sync-holdings-to-github.mjs",
+    "holdings:sync:asof": "node scripts/sync-asof-holdings-to-github.mjs"
   },
   "engines": {
     "node": ">=20"
