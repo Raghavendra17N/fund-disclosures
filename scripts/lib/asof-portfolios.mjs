@@ -31,6 +31,15 @@ export function sourcePeriodFromAsOf(asOf) {
   return String(asOf || "").slice(0, 7);
 }
 
+/** True when as-of is the last calendar day of its month. */
+export function isMonthEndAsOf(asOf) {
+  const s = normalizeAsOf(asOf);
+  if (!AS_OF_RE.test(s)) return false;
+  const [y, m, d] = s.split("-").map(Number);
+  const last = new Date(Date.UTC(y, m, 0)).getUTCDate();
+  return d === last;
+}
+
 function walkPortfolioFiles(dir, out = []) {
   if (!existsSync(dir)) return out;
   for (const name of readdirSync(dir)) {
@@ -250,8 +259,18 @@ export function countDedupedAsOfDir(asOfDir, catalog) {
   return count;
 }
 
-/** Remove stale asof JSON not in keepIds (and always drop child-AMFI duplicate keys). */
-export function pruneOrphanAsOfPortfolios(outDir, asOf, keepIds, catalog = null) {
+/**
+ * Remove stale asof JSON not in keepIds (and always drop child-AMFI duplicate keys).
+ * When mergeExisting is true, keep portfolios already on disk that are not in keepIds
+ * (used for fortnightly month-end sync before monthly overwrites with full universe).
+ */
+export function pruneOrphanAsOfPortfolios(
+  outDir,
+  asOf,
+  keepIds,
+  catalog = null,
+  { mergeExisting = false } = {},
+) {
   const dir = join(outDir, "portfolios", "asof", asOf);
   if (!existsSync(dir)) return 0;
   const keep = new Set([...keepIds].map((id) => `${id}.json`));
@@ -261,7 +280,8 @@ export function pruneOrphanAsOfPortfolios(outDir, asOf, keepIds, catalog = null)
     if (!name.endsWith(".json")) continue;
     const id = name.replace(/\.json$/, "");
     const isChildDuplicate = parentIds?.size && !parentIds.has(id);
-    if (!keep.has(name) || isChildDuplicate) {
+    const isOrphan = !mergeExisting && !keep.has(name);
+    if (isOrphan || isChildDuplicate) {
       unlinkSync(join(dir, name));
       removed += 1;
     }

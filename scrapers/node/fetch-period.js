@@ -27,6 +27,7 @@ import {
 import { downloadDisclosureFile } from "./lib/download.js";
 import { getAdapter, listAdapterIds, adapters } from "./adapters/index.js";
 import { createPythonRefAdapter } from "./adapters/pythonRef.js";
+import { filterFilesForStorageKey } from "./lib/asofFileFilter.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "../..");
 const registry = JSON.parse(
@@ -133,7 +134,13 @@ async function fetchOneAmc(amc) {
       period: parsed.period,
       storageKey,
     });
-    const files = listed.files ?? [];
+    const rawFiles = listed.files ?? [];
+    const files = filterFilesForStorageKey(rawFiles, storageKey, type);
+    const filteredOut = rawFiles.length - files.length;
+    const notesExtra = filteredOut
+      ? `filtered ${filteredOut} wrong as-of`
+      : "";
+    const notes = [listed.notes, notesExtra].filter(Boolean).join(" · ");
 
     const downloads = [];
     if (!listOnly) {
@@ -159,12 +166,12 @@ async function fetchOneAmc(amc) {
       name: amc.name,
       adapter: adapterName,
       status: files.length ? "ok" : "empty",
-      notes: listed.notes,
+      notes,
       fileCount: files.length,
       files: listOnly ? files : downloads,
     };
     console.log(
-      `  ${amc.name}: ${files.length} file(s)${listed.notes ? ` (${listed.notes})` : ""}`,
+      `  ${amc.name}: ${files.length} file(s)${notes ? ` (${notes})` : ""}`,
     );
     return result;
   } catch (e) {

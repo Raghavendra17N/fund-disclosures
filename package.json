@@ -32,6 +32,7 @@
     "holdings:browse": ".venv/bin/python3 holdings-browser/server.py",
     "holdings:sync": "node scripts/sync-holdings-to-github.mjs",
     "holdings:sync-asof": "node scripts/sync-asof-holdings-to-github.mjs",
+    "holdings:sync-window": "node scripts/sync-asof-window.mjs",
     "holdings:prune-retention": "node scripts/prune-retention-asof.mjs"
   },
   "engines": {

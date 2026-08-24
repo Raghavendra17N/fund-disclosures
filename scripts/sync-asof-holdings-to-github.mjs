@@ -7,6 +7,9 @@
  *   node scripts/sync-asof-holdings-to-github.mjs --asof=2026-08-15 --cadence=fortnightly --dry-run
  *   node scripts/sync-asof-holdings-to-github.mjs --asof=2026-07-15 --cadence=fortnightly --push
  *
+ * Month-end dates: fortnightly sync merges (--merge default); monthly sync replaces.
+ * Prefer scripts/sync-asof-window.mjs for multi-date pushes in safe order.
+ *
  * Auth for --push: GH_TOKEN or GITHUB_TOKEN.
  */
 import {
@@ -24,6 +27,7 @@ import {
   buildFilingsFromAsOfDirs,
   collectAsOfPortfolios,
   normalizeAsOf,
+  isMonthEndAsOf,
   pruneOrphanAsOfPortfolios,
   scanExistingAsOfDirs,
   sourcePeriodFromAsOf,
@@ -302,8 +306,19 @@ const pruned = pruneOrphanAsOfPortfolios(
   asof,
   entries.map((e) => e.portfolio_id),
   lookup,
+  {
+    mergeExisting:
+      hasFlag("merge") ||
+      (cadence === "fortnightly" &&
+        isMonthEndAsOf(asof) &&
+        !hasFlag("no-merge")),
+  },
 );
-if (pruned) console.log(`Pruned ${pruned} stale asof file(s) for ${asof}.`);
+if (pruned) {
+  const mode =
+    cadence === "fortnightly" && isMonthEndAsOf(asof) ? "merge" : "replace";
+  console.log(`Pruned ${pruned} stale asof file(s) for ${asof} (${mode}).`);
+}
 
 let catalog = lookup;
 const catalogPath = join(outDir, "catalog/amfi-lookup.json");

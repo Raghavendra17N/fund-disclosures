@@ -53,3 +53,5 @@ node scripts/sync-holdings-to-github.mjs --push
 ```
 
 Each asof sync **prunes** stale files in that date folder (including legacy child-AMFI duplicate keys).
+
+**Month-end order:** sync fortnightly first (merge — keeps existing books), then monthly last (replace — full universe). Use `npm run holdings:sync-window -- --push` or `scripts/sync-asof-window.mjs`.
