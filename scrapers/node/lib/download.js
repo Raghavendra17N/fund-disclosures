@@ -9,7 +9,7 @@ import { httpFetch, fetchBuffer } from "./http.js";
  * @param {object} args
  * @param {string} args.root
  * @param {'monthly'|'fortnightly'} args.type
- * @param {string} args.period YYYY-MM
+ * @param {string} args.period Disclosure folder key (YYYY-MM-DD or legacy YYYY-MM)
  * @param {string} args.amcId
  * @param {string} args.url
  * @param {string} [args.filename]

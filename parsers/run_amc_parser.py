@@ -25,6 +25,9 @@ from amc_parsers.common import (  # noqa: E402
     write_amc_schemes_index,
     write_scheme_portfolio,
 )
+from amc_parsers.disclosure_period import (  # noqa: E402
+    disclosure_search_keys,
+)
 from amc_parsers.parse_progress import (  # noqa: E402
     filter_paths_for_resume,
     load_existing_portfolios,
@@ -41,16 +44,21 @@ def load_fixtures() -> dict:
 
 
 def iter_amc_files(amc_id: str, disclosure_type: str, period: str) -> list[Path]:
-    d = ROOT / "data" / "disclosures" / disclosure_type / period / amc_id
-    if not d.is_dir():
-        return []
-    files = []
-    for p in sorted(d.iterdir()):
-        if not p.is_file():
+    files: list[Path] = []
+    seen: set[str] = set()
+    for key in disclosure_search_keys(period, disclosure_type):
+        d = ROOT / "data" / "disclosures" / disclosure_type / key / amc_id
+        if not d.is_dir():
             continue
-        if p.suffix.lower() not in {".xlsx", ".xls", ".xlsm", ".xlsb", ".zip"}:
-            continue
-        files.append(p)
+        for p in sorted(d.iterdir()):
+            if not p.is_file():
+                continue
+            if p.suffix.lower() not in {".xlsx", ".xls", ".xlsm", ".xlsb", ".zip"}:
+                continue
+            if p.name in seen:
+                continue
+            seen.add(p.name)
+            files.append(p)
     return files
 
 
@@ -200,7 +208,7 @@ def main() -> int:
     ap.add_argument("--amc", help="AMC id (e.g. nj-mutual-fund)")
     ap.add_argument("--all", action="store_true", help="Parse every registered AMC for --type/--period")
     ap.add_argument("--type", choices=["monthly", "fortnightly"], help="Disclosure cadence")
-    ap.add_argument("--period", default="latest", help="YYYY-MM or latest")
+    ap.add_argument("--period", default="latest", help="YYYY-MM, YYYY-MM-DD, or latest")
     ap.add_argument("--limit", type=int, default=0, help="Max files to parse (0=all)")
     ap.add_argument("--file", action="append", default=[], help="Explicit file path(s)")
     ap.add_argument("--fixtures", action="store_true", help="Parse fixture files for --amc")

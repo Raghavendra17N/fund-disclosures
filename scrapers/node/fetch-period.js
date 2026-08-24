@@ -2,6 +2,11 @@
 /**
  * Repeatable disclosure fetch for a calendar period.
  *
+ * Raw files land in date-keyed folders so mid-month and month-end never mix:
+ *   fortnightly + --period=2026-07  → data/disclosures/fortnightly/2026-07-15/
+ *   monthly     + --period=2026-07  → data/disclosures/monthly/2026-07-31/
+ *   explicit    + --period=2026-07-15 → data/disclosures/fortnightly/2026-07-15/
+ *
  * Usage:
  *   node scrapers/node/fetch-period.js --type=monthly --period=2026-06
  *   node scrapers/node/fetch-period.js --type=monthly --period=2026-06 --amc=sbi-mutual-fund
@@ -15,6 +20,10 @@ import { existsSync, readFileSync, mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parsePeriod } from "./lib/period.js";
+import {
+  parsePeriodInput,
+  disclosureStorageKey,
+} from "./lib/disclosurePeriod.js";
 import { downloadDisclosureFile } from "./lib/download.js";
 import { getAdapter, listAdapterIds, adapters } from "./adapters/index.js";
 import { createPythonRefAdapter } from "./adapters/pythonRef.js";
@@ -66,7 +75,7 @@ const concurrency = Math.max(1, Number(arg("concurrency", "10")) || 10);
 
 if (!period) {
   console.error(
-    "Required: --period=YYYY-MM\nExample: node scrapers/node/fetch-period.js --type=monthly --period=2026-06 --list-only",
+    "Required: --period=YYYY-MM or YYYY-MM-DD\nExample: node scrapers/node/fetch-period.js --type=fortnightly --period=2026-07 --list-only",
   );
   process.exit(1);
 }
@@ -75,7 +84,13 @@ if (!["monthly", "fortnightly"].includes(type)) {
   process.exit(1);
 }
 
-const parsed = parsePeriod(period);
+const periodInput = String(period);
+const parsedInput = parsePeriodInput(periodInput);
+const storageKey = disclosureStorageKey(parsedInput, type);
+// Adapters match filenames by calendar month (YYYY-MM).
+const parsed = parsePeriod(
+  parsedInput.isFullDate ? periodInput.slice(0, 7) : periodInput,
+);
 const amcs = (registry.amcs ?? []).filter((a) => {
   if (amcFilter && a.id !== amcFilter) return false;
   const adapterName = a.fetch?.[type]?.adapter;
@@ -90,13 +105,14 @@ if (!amcs.length) {
 }
 
 console.log(
-  `Fetch ${type} ${parsed.period} · ${amcs.length} AMC(s) · concurrency=${concurrency}${dryRun ? " · dry-run" : ""}${listOnly ? " · list-only" : ""}\n`,
+  `Fetch ${type} ${periodInput} → ${storageKey} · ${amcs.length} AMC(s) · concurrency=${concurrency}${dryRun ? " · dry-run" : ""}${listOnly ? " · list-only" : ""}\n`,
 );
 
 const run = {
   ran_at: new Date().toISOString(),
   type,
   period: parsed.period,
+  storageKey,
   dryRun,
   listOnly,
   concurrency,
@@ -115,6 +131,7 @@ async function fetchOneAmc(amc) {
       amc,
       type,
       period: parsed.period,
+      storageKey,
     });
     const files = listed.files ?? [];
 
@@ -124,7 +141,7 @@ async function fetchOneAmc(amc) {
         const d = await downloadDisclosureFile({
           root,
           type,
-          period: parsed.period,
+          period: storageKey,
           amcId: amc.id,
           url: f.url,
           filename: f.filename,
@@ -182,7 +199,7 @@ run.results = await mapPool(amcs, concurrency, fetchOneAmc);
 
 const outDir = join(root, "data/probes");
 mkdirSync(outDir, { recursive: true });
-const outPath = join(outDir, `fetch-${type}-${parsed.period}.json`);
+const outPath = join(outDir, `fetch-${type}-${storageKey}.json`);
 writeFileSync(outPath, JSON.stringify(run, null, 2) + "\n");
 
 const ok = run.results.filter((r) => r.status === "ok").length;

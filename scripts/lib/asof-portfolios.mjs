@@ -7,6 +7,7 @@
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { disclosurePeriodCandidates } from "../../scrapers/node/lib/disclosurePeriod.js";
 
 const AS_OF_RE = /^\d{4}-\d{2}-\d{2}$/;
 const PERIOD_RE = /^\d{4}-\d{2}$/;
@@ -53,46 +54,54 @@ export function collectAsOfPortfolios({
   asOf,
   catalogLookup = null,
 }) {
-  const period = sourcePeriod || sourcePeriodFromAsOf(asOf);
-  const base = join(root, "data", "parsed", cadence, period);
+  const periodKeys = disclosurePeriodCandidates(asOf, cadence);
+  if (sourcePeriod && !periodKeys.includes(sourcePeriod)) {
+    periodKeys.push(sourcePeriod);
+  }
   const byId = new Map();
-  if (!existsSync(base)) return byId;
 
-  for (const abs of walkPortfolioFiles(base)) {
-    let payload;
-    try {
-      payload = JSON.parse(readFileSync(abs, "utf8"));
-    } catch {
-      continue;
-    }
-    const meta = payload?.meta || {};
-    const fileAsOf = String(meta.as_of || meta.as_of || "").slice(0, 10);
-    if (fileAsOf !== asOf) continue;
-    const id = String(meta.amfi_code || meta.scheme_id || "").trim();
-    if (!/^\d{4,8}$/.test(id)) continue;
+  for (const periodKey of periodKeys) {
+    const base = join(root, "data", "parsed", cadence, periodKey);
+    if (!existsSync(base)) continue;
 
-    const rel = abs.startsWith(root) ? abs.slice(root.length + 1) : abs;
-    let entry = byId.get(id);
-    if (!entry) {
-      entry = {
-        portfolio_id: id,
-        local_path: rel,
-        meta,
-        members: [],
-        payload,
-      };
-      byId.set(id, entry);
-    } else {
-      // Prefer richer books
-      const prevN = (entry.payload?.holdings || []).length;
-      const nextN = (payload.holdings || []).length;
-      if (nextN >= prevN) {
-        entry.local_path = rel;
-        entry.meta = meta;
-        entry.payload = payload;
+    for (const abs of walkPortfolioFiles(base)) {
+      let payload;
+      try {
+        payload = JSON.parse(readFileSync(abs, "utf8"));
+      } catch {
+        continue;
+      }
+      const meta = payload?.meta || {};
+      const fileAsOf = String(meta.as_of || meta.as_of || "").slice(0, 10);
+      if (fileAsOf !== asOf) continue;
+      const id = String(meta.amfi_code || meta.scheme_id || "").trim();
+      if (!/^\d{4,8}$/.test(id)) continue;
+
+      const rel = abs.startsWith(root) ? abs.slice(root.length + 1) : abs;
+      let entry = byId.get(id);
+      if (!entry) {
+        entry = {
+          portfolio_id: id,
+          local_path: rel,
+          meta,
+          members: [],
+          payload,
+        };
+        byId.set(id, entry);
+      } else {
+        // Prefer richer books
+        const prevN = (entry.payload?.holdings || []).length;
+        const nextN = (payload.holdings || []).length;
+        if (nextN >= prevN) {
+          entry.local_path = rel;
+          entry.meta = meta;
+          entry.payload = payload;
+        }
       }
     }
   }
+
+  if (!byId.size) return byId;
 
   // Attach sibling share-classes from catalog when available
   if (catalogLookup) {

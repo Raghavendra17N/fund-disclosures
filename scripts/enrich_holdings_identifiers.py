@@ -20,6 +20,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "parsers"))
 
+from amc_parsers.disclosure_period import discover_period_dirs  # noqa: E402
 from amc_parsers.parse_progress import check_period_completeness  # noqa: E402
 
 MAP_PATH = ROOT / "registry" / "disclosure_shortcode_map.json"
@@ -83,9 +84,13 @@ def load_shortcode_map() -> dict[str, dict]:
 
 
 DATE_TAIL = re.compile(
-    r"(?i)[_\s\-]+(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|"
+    r"(?i)[_\s\-]+(?:"
+    r"(?:\d{1,2}(?:st|nd|rd|th)?\s+)?"
+    r"(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|"
     r"jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|"
-    r"nov(?:ember)?|dec(?:ember)?)\s*\d{1,2},?\s*\d{4}\s*$"
+    r"nov(?:ember)?|dec(?:ember)?)"
+    r"(?:\s+\d{1,2}(?:st|nd|rd|th)?)?,?\s*\d{4}"
+    r")\s*$"
 )
 
 
@@ -141,14 +146,19 @@ def iter_schemes(parsed_root: Path):
 
 def _period_roots() -> list[tuple[str, str, Path]]:
     """(disclosure_type, period, parsed_root) tuples enrich scans."""
-    return [
-        ("monthly", "2026-07", PARSED_ROOT / "monthly" / "2026-07"),
-        ("monthly", "2026-06", PARSED_ROOT / "monthly" / "2026-06"),
-        ("monthly", "latest", PARSED_ROOT / "monthly" / "latest"),
-        ("fortnightly", "2026-08", PARSED_ROOT / "fortnightly" / "2026-08"),
-        ("fortnightly", "2026-07", PARSED_ROOT / "fortnightly" / "2026-07"),
-        ("fortnightly", "latest", PARSED_ROOT / "fortnightly" / "latest"),
-    ]
+    out: list[tuple[str, str, Path]] = []
+    for dtype in ("monthly", "fortnightly"):
+        for period in discover_period_dirs(PARSED_ROOT, dtype):
+            parsed_root = PARSED_ROOT / dtype / period
+            if parsed_root.is_dir():
+                out.append((dtype, period, parsed_root))
+    latest = PARSED_ROOT / "monthly" / "latest"
+    if latest.is_dir():
+        out.append(("monthly", "latest", latest))
+    fortnightly_latest = PARSED_ROOT / "fortnightly" / "latest"
+    if fortnightly_latest.is_dir():
+        out.append(("fortnightly", "latest", fortnightly_latest))
+    return out
 
 
 def _assert_parse_complete(*, allow_incomplete: bool) -> int:
