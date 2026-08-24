@@ -16,7 +16,7 @@
  *
  * AMCs are independent hosts — fetch them in parallel with --concurrency (default 10).
  */
-import { existsSync, readFileSync, mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, mkdirSync, writeFileSync, rmSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parsePeriod } from "./lib/period.js";
@@ -71,6 +71,7 @@ const period = arg("period");
 const amcFilter = arg("amc");
 const dryRun = Boolean(arg("dry-run", false));
 const listOnly = Boolean(arg("list-only", false));
+const cleanDir = Boolean(arg("clean", false));
 const supportedOnly = arg("supported-only", true) !== "false";
 const concurrency = Math.max(1, Number(arg("concurrency", "10")) || 10);
 
@@ -106,8 +107,16 @@ if (!amcs.length) {
 }
 
 console.log(
-  `Fetch ${type} ${periodInput} → ${storageKey} · ${amcs.length} AMC(s) · concurrency=${concurrency}${dryRun ? " · dry-run" : ""}${listOnly ? " · list-only" : ""}\n`,
+  `Fetch ${type} ${periodInput} → ${storageKey} · ${amcs.length} AMC(s) · concurrency=${concurrency}${dryRun ? " · dry-run" : ""}${listOnly ? " · list-only" : ""}${cleanDir ? " · clean" : ""}\n`,
 );
+
+if (cleanDir && !dryRun && !listOnly) {
+  const target = join(root, "data/disclosures", type, storageKey);
+  if (existsSync(target)) {
+    rmSync(target, { recursive: true, force: true });
+    console.log(`Cleaned ${target}\n`);
+  }
+}
 
 const run = {
   ran_at: new Date().toISOString(),

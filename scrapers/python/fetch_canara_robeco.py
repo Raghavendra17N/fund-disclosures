@@ -22,8 +22,12 @@ import argparse
 import hashlib
 import json
 import re
+import sys
 from pathlib import Path
 from urllib.parse import quote, unquote, urlencode, urljoin, urlparse, urlunparse
+
+sys.path.insert(0, str(Path(__file__).resolve().parent / "lib"))
+from asof_filter import file_matches_storage_key, parse_as_of  # noqa: E402
 
 BASE_URL = "https://www.canararobeco.com"
 PAGE_URL_MONTHLY = (
@@ -298,6 +302,11 @@ def main() -> None:
         action="store_true",
         help="Use debt fortnightly listing page instead of scheme-monthly.",
     )
+    ap.add_argument(
+        "--as-of",
+        default="",
+        help="Calendar as-of YYYY-MM-DD (filters fortnightly filenames to mid vs month-end)",
+    )
     args = ap.parse_args()
 
     page_url = PAGE_URL_FORTNIGHTLY if args.fortnightly else PAGE_URL_MONTHLY
@@ -324,6 +333,24 @@ def main() -> None:
 
         print(f"\n{month_key}: GET filtered {kind} pages (regex xlsx) …", flush=True)
         urls = fetch_xlsx_links_for_month(year, month, page_url=page_url)
+        as_of = args.as_of.strip()
+        if args.fortnightly and not as_of:
+            as_of = f"{year}-{month}-15"
+        cadence = "fortnightly" if args.fortnightly else "monthly"
+        if as_of and parse_as_of(as_of):
+            before = len(urls)
+            urls = [
+                u
+                for u in urls
+                if file_matches_storage_key(
+                    safe_filename(u), u, as_of, cadence
+                )
+            ]
+            if before != len(urls):
+                print(
+                    f"  … as-of {as_of}: kept {len(urls)}/{before} link(s)",
+                    flush=True,
+                )
         if args.limit > 0:
             urls = urls[: args.limit]
 

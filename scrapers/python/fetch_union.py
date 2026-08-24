@@ -22,7 +22,7 @@ from urllib.parse import unquote, urljoin
 from urllib.request import Request, urlopen
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from lib.asof_filter import default_as_of_for_month, filename_matches_as_of
+from lib import asof_filter
 
 FOLDER_ID = "b6cafa81-47fb-4935-bc54-b752b9e7d797"
 API_URL = (
@@ -141,7 +141,7 @@ def load_fortnightly_docs(as_of: str | None) -> list[dict]:
     docs = load_page_docs(FORTNIGHTLY_PAGE_URL, FORTNIGHTLY_URL_RE)
     if not as_of:
         return docs
-    return [d for d in docs if filename_matches_as_of(str(d.get("Url") or ""), as_of)]
+    return [d for d in docs if asof_filter.filename_matches_asof(str(d.get("Url") or ""), as_of)]
 
 
 def load_api_docs() -> list[dict]:
@@ -258,7 +258,7 @@ def main() -> None:
         try:
             page_docs = load_fortnightly_docs(as_of)
             if not as_of and args.months:
-                as_of = default_as_of_for_month(args.months[0], fortnightly=True)
+                as_of = asof_filter.default_as_of_for_month(args.months[0], fortnightly=True)
                 page_docs = load_fortnightly_docs(as_of)
             print(
                 f"  HTML indexed {len(page_docs)} fortnightly link(s)"

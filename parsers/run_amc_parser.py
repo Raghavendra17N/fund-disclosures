@@ -20,6 +20,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))  # compat shim
 sys.path.insert(0, str(ROOT / "parsers"))  # canonical parsers win
+sys.path.insert(0, str(ROOT / "scrapers" / "python" / "lib"))
+
+from asof_filter import (  # noqa: E402
+    canonical_as_of_for_folder,
+    filter_paths_for_storage_key,
+)
 
 from amc_parsers.common import (  # noqa: E402
     write_amc_schemes_index,
@@ -50,6 +56,7 @@ def iter_amc_files(amc_id: str, disclosure_type: str, period: str) -> list[Path]
         d = ROOT / "data" / "disclosures" / disclosure_type / key / amc_id
         if not d.is_dir():
             continue
+        batch: list[Path] = []
         for p in sorted(d.iterdir()):
             if not p.is_file():
                 continue
@@ -58,7 +65,10 @@ def iter_amc_files(amc_id: str, disclosure_type: str, period: str) -> list[Path]
             if p.name in seen:
                 continue
             seen.add(p.name)
-            files.append(p)
+            batch.append(p)
+        if key == period and len(key) == 10 and key[4] == "-" and key[7] == "-":
+            batch = filter_paths_for_storage_key(batch, key, disclosure_type)
+        files.extend(batch)
     return files
 
 
@@ -160,6 +170,10 @@ def parse_paths(
             parsed_files += 1
             all_portfolios.extend(portfolios)
             for p in portfolios:
+                folder_period = period if period and len(period) == 10 else p.period
+                p.as_of = canonical_as_of_for_folder(
+                    p.as_of, folder_period, p.disclosure_type
+                )
                 write_root = out_base or (
                     ROOT / "data" / "parsed" / p.disclosure_type / p.period / p.amc_id
                 )

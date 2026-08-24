@@ -53,8 +53,8 @@ function monthEndHints(meta) {
     new RegExp(`\\b${monthLong}\\s+${d}(?:st|th|nd|rd)?\\b`, "i"),
     new RegExp(`\\b${monthShort}\\s+${d}(?:st|th|nd|rd)?\\b`, "i"),
     new RegExp(`${d}[-_./]${mm}[-_./]${year}`, "i"),
-    new RegExp(`${d}-${monthShort}(?:-${year})?`, "i"),
-    new RegExp(`${d}-${monthLong}(?:-${year})?`, "i"),
+    new RegExp(`${d}(?:st|th|nd|rd)?-${monthShort}(?:-${year})?`, "i"),
+    new RegExp(`${d}(?:st|th|nd|rd)?-${monthLong}(?:-${year})?`, "i"),
     new RegExp(`${String(lastDay).padStart(2, "0")}${mm}${year}`, "i"),
     new RegExp(`as on ${d}\\b`, "i"),
     new RegExp(`\\b${d}${mm}${year}\\b`, "i"),
@@ -74,12 +74,14 @@ function midMonthHints(meta) {
   if (!meta) return [];
   const { mm, monthShort, monthLong, year } = meta;
   return [
-    new RegExp(`\\b15(?:th)?\\s*${monthLong}\\b`, "i"),
-    new RegExp(`\\b15(?:th)?\\s*${monthShort}\\b`, "i"),
-    new RegExp(`\\b${monthLong}\\s+15(?:th)?\\b`, "i"),
-    new RegExp(`\\b${monthShort}\\s+15(?:th)?\\b`, "i"),
-    new RegExp(`[-_.]15[-_.]${mm}[-_.]${year}\\b`, "i"),
-    new RegExp(`\\b15[-_.]${mm}[-_.]${year}\\b`, "i"),
+    new RegExp(`\\b15(?:st|th|nd|rd)?\\s*${monthLong}\\b`, "i"),
+    new RegExp(`\\b15(?:st|th|nd|rd)?\\s*${monthShort}\\b`, "i"),
+    new RegExp(`\\b${monthLong}\\s+15(?:st|th|nd|rd)?\\b`, "i"),
+    new RegExp(`\\b${monthShort}\\s+15(?:st|th|nd|rd)?\\b`, "i"),
+    new RegExp(`15(?:st|th|nd|rd)?[-_./]${mm}[-_./]${year}`, "i"),
+    new RegExp(`15(?:st|th|nd|rd)?[-_./]${mm}[-_./]${String(year).slice(-2)}`, "i"),
+    new RegExp(`\\b${monthShort}\\s+15(?:st|th|nd|rd)?,?\\s+${year}\\b`, "i"),
+    new RegExp(`\\b${monthLong}\\s+15(?:st|th|nd|rd)?,?\\s+${year}\\b`, "i"),
     new RegExp(`1-15\\s+${monthShort}\\b`, "i"),
     /\bmid[-\s]?month\b/i,
     /\bmidmonth\b/i,
@@ -123,8 +125,34 @@ export function fileMatchesStorageKey(file, storageKey, cadence = "fortnightly")
   return true;
 }
 
+/**
+ * Positive date match when an AMC page lists many historical files (Union, etc.).
+ */
+export function fileMatchesAsOfStrict(file, asOf) {
+  if (!asOf || !AS_OF_RE.test(asOf)) return true;
+  const meta = monthMeta(asOf);
+  if (!meta) return true;
+  const blob = `${file.filename || ""} ${file.url || ""}`.toLowerCase();
+  if (/monthly portfolio/.test(blob)) return false;
+  const isMid = meta.day <= 15;
+  const endHints = monthEndHints(meta);
+  const midHints = midMonthHints(meta);
+  const d = meta.day;
+  const mm = meta.mm;
+  const year = meta.year;
+  const numeric = [
+    new RegExp(`(?<!\\d)${String(d).padStart(2, "0")}[-_./]${mm}[-_./]${year}(?!\\d)`, "i"),
+    new RegExp(`(?<!\\d)${d}[-_./]${mm}[-_./]${year}(?!\\d)`, "i"),
+  ];
+  const hints = (isMid ? midHints : endHints).concat(numeric);
+  return hints.some((re) => re.test(blob));
+}
+
 export function filterFilesForStorageKey(files, storageKey, cadence) {
   if (!storageKey || !AS_OF_RE.test(storageKey)) return files;
+  if (cadence === "fortnightly") {
+    return files.filter((f) => fileMatchesAsOfStrict(f, storageKey));
+  }
   return files.filter((f) => fileMatchesStorageKey(f, storageKey, cadence));
 }
 
