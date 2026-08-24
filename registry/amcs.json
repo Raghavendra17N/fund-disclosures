@@ -313,20 +313,20 @@
       "amc_website": "https://www.bandhanmutual.com",
       "disclosures": {
         "fortnightly": {
-          "page_url": "https://bandhanmutual.com/downloads/disclosures",
-          "status": "unknown"
+          "page_url": "https://bandhanmutual.com/statutory-disclosures/scheme-portfolios/fortnightly",
+          "status": "ok"
         },
         "monthly": {
-          "page_url": "https://bandhanmutual.com/downloads/disclosures",
-          "status": "unknown"
+          "page_url": "https://bandhanmutual.com/statutory-disclosures/scheme-portfolios/monthly-and-half-yearly",
+          "status": "ok"
         },
         "semi_annually": {
           "page_url": "https://bandhanmutual.com/downloads/disclosures",
           "status": "deferred"
         }
       },
-      "status": "unknown",
-      "notes": "",
+      "status": "ok",
+      "notes": "Fortnightly: CMS /posts/fortnightly?bypass_pagination=true (keep day=15). Monthly: /posts/monthly-portfolios.",
       "fetch": {
         "monthly": {
           "adapter": "python_ref",
@@ -338,7 +338,7 @@
             "--expected-per-month",
             "100"
           ],
-          "notes": "via reference/python-fetchers (AMC-direct)"
+          "notes": "CMS monthly-portfolios API"
         },
         "fortnightly": {
           "adapter": "python_ref",
@@ -350,7 +350,7 @@
             "--expected-per-month",
             "100"
           ],
-          "notes": "python_ref fortnightly (fallback after empty HTML)"
+          "notes": "CMS fortnightly API; mid-month (15th) only"
         }
       }
     },
