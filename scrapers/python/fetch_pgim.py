@@ -104,6 +104,41 @@ def parse_date_month_year(s: str) -> tuple[int, int] | None:
     return int(m.group(3)), month
 
 
+def parse_date_full(s: str) -> tuple[int, int, int] | None:
+    """'15 July 2026' -> (2026, 7, 15)."""
+    m = DATE_MONTH_YEAR_RE.search((s or "").strip())
+    if not m:
+        return None
+    month = MONTHS.get(m.group(2).lower())
+    if not month:
+        return None
+    return int(m.group(3)), month, int(m.group(1))
+
+
+def parse_as_of(as_of: str) -> tuple[int, int, int] | None:
+    parts = as_of.strip().split("-")
+    if len(parts) != 3:
+        return None
+    try:
+        y, m, d = int(parts[0]), int(parts[1]), int(parts[2])
+    except ValueError:
+        return None
+    return y, m, d
+
+
+def row_matches_as_of(row: dict, as_of: str) -> bool:
+    target = parse_as_of(as_of)
+    if not target:
+        return True
+    full = parse_date_full(str(row.get("dateMonthYear") or ""))
+    if full:
+        return full == target
+    title = str(row.get("title") or "")
+    y, m, d = target
+    token = f"{d:02d}{m:02d}{y}"
+    return token in title.replace(" ", "")
+
+
 def fetch_json(url: str, *, ctx: ssl.SSLContext) -> dict:
     req = urllib.request.Request(url, headers=HEADERS, method="GET")
     with urllib.request.urlopen(req, timeout=120, context=ctx) as resp:
@@ -121,20 +156,29 @@ def post_json(url: str, payload: dict, *, ctx: ssl.SSLContext) -> dict:
         return json.loads(resp.read().decode("utf-8", errors="ignore"))
 
 
-def get_monthly_portfolio_section_id(*, ctx: ssl.SSLContext) -> str:
+def get_portfolio_section_id(section_path: str, *, ctx: ssl.SSLContext) -> str:
+    want = section_path.strip().lower()
     obj = fetch_json(SECTIONS_URL, ctx=ctx)
     for header in obj.get("data") or []:
         if str(header.get("path", "")).strip().lower() != "portfolios":
             continue
         for section in header.get("Sections") or []:
-            if str(section.get("path", "")).strip().lower() == "monthly portfolio":
+            if str(section.get("path", "")).strip().lower() == want:
                 sid = str(section.get("SectionId") or "").strip()
                 if sid:
                     return sid
-    raise RuntimeError("Could not locate Monthly Portfolio section id")
+    raise RuntimeError(f"Could not locate {section_path!r} section id")
 
 
-def fetch_monthly_portfolio_rows(section_id: str, *, ctx: ssl.SSLContext) -> list[dict]:
+def get_monthly_portfolio_section_id(*, ctx: ssl.SSLContext) -> str:
+    return get_portfolio_section_id("monthly portfolio", ctx=ctx)
+
+
+def get_fortnightly_portfolio_section_id(*, ctx: ssl.SSLContext) -> str:
+    return get_portfolio_section_id("fortnightly portfolio", ctx=ctx)
+
+
+def fetch_disclosure_rows(section_id: str, *, ctx: ssl.SSLContext) -> list[dict]:
     payload = {
         "sectionId": section_id,
         "source": "W",
@@ -173,16 +217,36 @@ def main() -> None:
         action="store_true",
         help="Disable TLS verification if your Python lacks CA certs",
     )
+    parser.add_argument(
+        "--fortnightly",
+        action="store_true",
+        help="Fetch Fortnightly portfolio section (per-scheme debt disclosures)",
+    )
+    parser.add_argument(
+        "--as-of",
+        default="",
+        help="Calendar as-of YYYY-MM-DD (filters fortnightly rows by dateMonthYear)",
+    )
+    parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
     ctx = _ssl_context(args.insecure_ssl)
     amc_dir = args.root / "amcs" / "pgim-india-mutual-fund"
     targets = {month_key_to_ym(mk): mk for mk in args.months}
+    label = "fortnightly" if args.fortnightly else "monthly"
+    referer = (
+        f"{BASE}/mutual-funds/disclosures/Portfolios/Fortnightly-portfolio"
+        if args.fortnightly
+        else f"{BASE}/mutual-funds/disclosures/Portfolios/Monthly-Portfolio"
+    )
 
     print(f"GET {SECTIONS_URL} …", flush=True)
     try:
-        section_id = get_monthly_portfolio_section_id(ctx=ctx)
-        rows = fetch_monthly_portfolio_rows(section_id, ctx=ctx)
+        if args.fortnightly:
+            section_id = get_fortnightly_portfolio_section_id(ctx=ctx)
+        else:
+            section_id = get_monthly_portfolio_section_id(ctx=ctx)
+        rows = fetch_disclosure_rows(section_id, ctx=ctx)
     except urllib.error.URLError as e:
         if not args.insecure_ssl and "CERTIFICATE_VERIFY_FAILED" in str(e).upper():
             raise SystemExit(
@@ -190,13 +254,22 @@ def main() -> None:
             ) from e
         raise
 
-    print(f"  Section: {section_id}", flush=True)
+    print(f"  Section: {section_id} ({label})", flush=True)
     print(f"  Indexed {len(rows)} disclosure row(s)", flush=True)
+
+    as_of = args.as_of.strip()
+    if args.fortnightly and not as_of and args.months:
+        as_of = f"{args.months[0]}-15"
 
     by_month: dict[tuple[int, int], list[dict]] = {}
     seen: set[str] = set()
     for row in rows:
-        ym = parse_date_month_year(str(row.get("dateMonthYear") or ""))
+        if args.fortnightly:
+            if as_of and not row_matches_as_of(row, as_of):
+                continue
+            ym = parse_date_month_year(str(row.get("dateMonthYear") or ""))
+        else:
+            ym = parse_date_month_year(str(row.get("dateMonthYear") or ""))
         if ym is None or ym not in targets:
             continue
         url = str(row.get("pdfPath") or "").strip()
@@ -211,14 +284,16 @@ def main() -> None:
     for ym, mk in targets.items():
         out_dir = amc_dir / mk
         out_dir.mkdir(parents=True, exist_ok=True)
-        for p in out_dir.iterdir():
-            if p.is_file():
-                p.unlink()
+        if not args.dry_run:
+            for p in out_dir.iterdir():
+                if p.is_file():
+                    p.unlink()
         manifest: list[dict] = []
         selected = by_month.get(ym, [])
-        print(f"\n{mk}: {len(selected)} file(s)", flush=True)
+        suffix = f" as_of={as_of}" if args.fortnightly and as_of else ""
+        print(f"\n{mk} [{label}{suffix}]: {len(selected)} file(s)", flush=True)
         if not selected:
-            print("  No monthly portfolio rows found for this month.", flush=True)
+            print(f"  No {label} portfolio rows found for this month.", flush=True)
             (out_dir / "manifest.json").write_text("[]\n", encoding="utf-8")
             continue
 
@@ -232,12 +307,17 @@ def main() -> None:
             fn = safe_filename(raw_name or f"pgim_{mk}.xlsx")
             rec = {
                 "month": mk,
+                "as_of": as_of or None,
                 "tab": tab_name,
                 "title": title,
                 "dateMonthYear": date_my,
                 "download_url": url,
                 "saved_as": fn,
             }
+            if args.dry_run:
+                manifest.append({**rec, "dry_run": True})
+                print(f"  DRY {fn}", flush=True)
+                continue
             try:
                 body = download(url, ctx=ctx)
                 h = hashlib.sha256(body).hexdigest()

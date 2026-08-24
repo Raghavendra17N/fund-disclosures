@@ -16,9 +16,13 @@ import calendar
 import hashlib
 import json
 import re
+import sys
 from pathlib import Path
 from urllib.parse import unquote, urljoin
 from urllib.request import Request, urlopen
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from lib.asof_filter import default_as_of_for_month, filename_matches_as_of
 
 FOLDER_ID = "b6cafa81-47fb-4935-bc54-b752b9e7d797"
 API_URL = (
@@ -27,6 +31,7 @@ API_URL = (
 )
 BASE = "https://www.unionmf.com/"
 PAGE_URL = "https://www.unionmf.com/about-us/downloads/monthly-portfolio"
+FORTNIGHTLY_PAGE_URL = "https://www.unionmf.com/about-us/downloads/fortnightly-portfolio"
 REFERER = PAGE_URL
 
 MONTH_SLUG = {
@@ -47,6 +52,13 @@ MONTH_SLUG = {
 URL_RE = re.compile(
     r"https?://www\.unionmf\.com/docs/default-source/funddetail-downloads/"
     r"fund-portfolio/([a-z]+-\d{4})/[^\"'\s<>]+\.(?:xlsx|xls|xlsb)(?:\?[^\"'\s<>]*)?",
+    re.I,
+)
+
+FORTNIGHTLY_URL_RE = re.compile(
+    r"https?://www\.unionmf\.com/docs/default-source/downloads/"
+    r"scheme-disclosures/portfolios-disclosure/fortnightly-portfolio/"
+    r"[^\"'\s<>]+\.(?:xlsx|xls|xlsb)(?:\?[^\"'\s<>]*)?",
     re.I,
 )
 
@@ -90,9 +102,9 @@ def safe_filename(url_path: str) -> str:
     return re.sub(r"[^\w.\-() ]", "_", base).strip()[:200] or "download.bin"
 
 
-def load_page_docs() -> list[dict]:
+def load_page_docs(page_url: str, url_re: re.Pattern[str]) -> list[dict]:
     req = Request(
-        PAGE_URL,
+        page_url,
         headers={
             "User-Agent": "Mozilla/5.0",
             "Accept": "text/html,application/xhtml+xml,*/*",
@@ -103,10 +115,9 @@ def load_page_docs() -> list[dict]:
         html = resp.read().decode("utf-8", "ignore")
     docs: list[dict] = []
     seen: set[str] = set()
-    for m in URL_RE.finditer(html):
+    for m in url_re.finditer(html):
         url = m.group(0)
-        seg = m.group(1).lower()
-        # normalize without query for de-dupe by path
+        seg = m.group(1).lower() if m.lastindex else ""
         path = url.split("?")[0]
         if path in seen:
             continue
@@ -124,6 +135,13 @@ def load_page_docs() -> list[dict]:
             }
         )
     return docs
+
+
+def load_fortnightly_docs(as_of: str | None) -> list[dict]:
+    docs = load_page_docs(FORTNIGHTLY_PAGE_URL, FORTNIGHTLY_URL_RE)
+    if not as_of:
+        return docs
+    return [d for d in docs if filename_matches_as_of(str(d.get("Url") or ""), as_of)]
 
 
 def load_api_docs() -> list[dict]:
@@ -204,7 +222,7 @@ def derive_docs_from_reference_month(
     return derived
 
 
-def download(url: str) -> bytes:
+def download(url: str, referer: str = REFERER) -> bytes:
     req = Request(
         url,
         headers={"User-Agent": "Mozilla/5.0", "Accept": "*/*", "Referer": REFERER},
@@ -220,13 +238,85 @@ def main() -> None:
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--limit", type=int, default=0)
     parser.add_argument("--no-derive-from-next-month", action="store_true")
+    parser.add_argument(
+        "--fortnightly",
+        action="store_true",
+        help="Fetch fortnightly portfolio files (mid-month / month-end by --as-of)",
+    )
+    parser.add_argument(
+        "--as-of",
+        default="",
+        help="Calendar as-of YYYY-MM-DD (filters fortnightly filenames)",
+    )
     args = parser.parse_args()
 
     amc_dir = args.root / "amcs" / "union-mutual-fund"
 
+    if args.fortnightly:
+        as_of = args.as_of.strip() or None
+        print(f"GET {FORTNIGHTLY_PAGE_URL}", flush=True)
+        try:
+            page_docs = load_fortnightly_docs(as_of)
+            if not as_of and args.months:
+                as_of = default_as_of_for_month(args.months[0], fortnightly=True)
+                page_docs = load_fortnightly_docs(as_of)
+            print(
+                f"  HTML indexed {len(page_docs)} fortnightly link(s)"
+                + (f" for as_of={as_of}" if as_of else ""),
+                flush=True,
+            )
+        except Exception as e:
+            print(f"  HTML scrape failed: {e}", flush=True)
+            page_docs = []
+        api_docs: list[dict] = []
+
+        for month_key in args.months:
+            selected = list(page_docs)
+            if args.limit > 0:
+                selected = selected[: args.limit]
+
+            out_dir = amc_dir / month_key
+            out_dir.mkdir(parents=True, exist_ok=True)
+            manifest: list[dict] = []
+            print(
+                f"\n{month_key} [fortnightly as_of={as_of}]: {len(selected)} file(s)",
+                flush=True,
+            )
+
+            for i, doc in enumerate(selected, 1):
+                rel = str(doc.get("Url") or "").strip()
+                file_url = rel if rel.startswith("http") else urljoin(BASE, rel)
+                fname = safe_filename(rel)
+                rec = {
+                    "month": month_key,
+                    "as_of": as_of,
+                    "download_url": file_url,
+                    "saved_as": fname,
+                    "Title": doc.get("Title"),
+                    "source": "html_fortnightly",
+                }
+                if args.dry_run:
+                    print(f"  [{i}] {fname}", flush=True)
+                    manifest.append({**rec, "dry_run": True})
+                    continue
+                try:
+                    body = download(file_url, FORTNIGHTLY_PAGE_URL)
+                    (out_dir / fname).write_bytes(body)
+                    print(f"  [{i}] OK {fname} ({len(body)} bytes)", flush=True)
+                    manifest.append(
+                        {**rec, "sha256": hashlib.sha256(body).hexdigest(), "bytes": len(body)}
+                    )
+                except Exception as e:
+                    print(f"  [{i}] ERR {fname}: {e}", flush=True)
+                    manifest.append({**rec, "error": str(e)})
+
+            (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
+            print(f"Wrote {out_dir / 'manifest.json'}", flush=True)
+        return
+
     print(f"GET {PAGE_URL}", flush=True)
     try:
-        page_docs = load_page_docs()
+        page_docs = load_page_docs(PAGE_URL, URL_RE)
         print(f"  HTML indexed {len(page_docs)} portfolio link(s)", flush=True)
     except Exception as e:
         print(f"  HTML scrape failed: {e}", flush=True)

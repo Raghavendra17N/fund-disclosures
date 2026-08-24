@@ -35,6 +35,11 @@ FUND_PORTFOLIO_SECTION_RE = re.compile(
     r'<section[^>]+id="tabpanel-1797700734"[^>]*>(.*?)</section>',
     re.I | re.S,
 )
+# Accordion #9 — Fortnightly portfolio of debt schemes (registry page_url hash …=9)
+FORTNIGHTLY_SECTION_RE = re.compile(
+    r'id="tabpanel-1884516352"[^>]*>(.*?)(?=id="tabpanel-\d+"|\Z)',
+    re.I | re.S,
+)
 MONTH_RE = re.compile(
     r"\b(january|february|march|april|may|june|july|august|september|october|november|december)\b[\s,\-]+(\d{4})",
     re.I,
@@ -71,6 +76,54 @@ def text_to_month_key(text: str) -> str | None:
         return f"{dt.year:04d}-{dt.month:02d}"
     except ValueError:
         return None
+
+
+FORTNIGHTLY_LINK_RE = re.compile(
+    r'href="([^"]*fortnightly-debt-portfolio/document-\d{8}/[^"]+\.(?:xlsx|xls))"',
+    re.I,
+)
+
+
+def as_of_to_document_token(as_of: str) -> str | None:
+    """YYYY-MM-DD -> DDMMYYYY for HSBC document-15072026 paths."""
+    parts = as_of.strip().split("-")
+    if len(parts) != 3:
+        return None
+    y, m, d = parts[0], parts[1], parts[2]
+    return f"{int(d):02d}{m}{y}"
+
+
+def extract_fortnightly_rows(html: str, as_of: str = "") -> list[dict]:
+    sec = FORTNIGHTLY_SECTION_RE.search(html)
+    block = sec.group(1) if sec else html
+    if not sec:
+        print("  ⚠ Fortnightly accordion (tabpanel-1884516352) not found; scanning full page", flush=True)
+    doc_token = as_of_to_document_token(as_of) if as_of else ""
+    rows: list[dict] = []
+    for m in FORTNIGHTLY_LINK_RE.finditer(block):
+        href = m.group(1)
+        href_l = href.lower()
+        if doc_token and f"document-{doc_token}/" not in href_l:
+            continue
+        url = urljoin(BASE_URL, href)
+        fname = safe_filename(url)
+        rows.append(
+            {
+                "download_url": url,
+                "title": fname,
+                "as_of": as_of or None,
+                "document_token": doc_token or None,
+            }
+        )
+    seen: set[str] = set()
+    out: list[dict] = []
+    for r in rows:
+        u = r["download_url"]
+        if u in seen:
+            continue
+        seen.add(u)
+        out.append(r)
+    return out
 
 
 def extract_rows(html: str) -> list[dict]:
@@ -156,11 +209,63 @@ def main() -> None:
         help="mf-monthly-holdings root",
     )
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--fortnightly",
+        action="store_true",
+        help="Fetch per-scheme fortnightly debt portfolios from information-library",
+    )
+    parser.add_argument(
+        "--as-of",
+        default="",
+        help="Calendar as-of YYYY-MM-DD (maps to document-DDMMYYYY folder)",
+    )
     args = parser.parse_args()
 
     amc_dir = args.root / "amcs" / "hsbc-mutual-fund"
     print(f"GET {PAGE_URL} ...")
     html = fetch_html()
+
+    if args.fortnightly:
+        as_of = args.as_of.strip()
+        if not as_of and args.months:
+            as_of = f"{args.months[0]}-15"
+        rows = extract_fortnightly_rows(html, as_of)
+        print(f"  ... parsed {len(rows)} fortnightly link(s) for as_of={as_of}")
+        for mk in args.months:
+            out_dir = amc_dir / mk
+            out_dir.mkdir(parents=True, exist_ok=True)
+            batch = rows
+            print(f"\n{mk} [fortnightly as_of={as_of}]: {len(batch)} file(s)")
+            manifest: list[dict] = []
+            if not batch:
+                print("  No matching fortnightly rows.")
+            for i, row in enumerate(batch, 1):
+                url = row["download_url"]
+                fname = safe_filename(url)
+                rec = {
+                    "month": mk,
+                    "as_of": as_of,
+                    "download_url": url,
+                    "saved_as": fname,
+                    "title": row.get("title"),
+                }
+                if args.dry_run:
+                    print(f"  [{i}] {fname}")
+                    manifest.append({**rec, "sha256": "", "dry_run": True})
+                    continue
+                try:
+                    body = download(url)
+                    h = hashlib.sha256(body).hexdigest()
+                    (out_dir / fname).write_bytes(body)
+                    manifest.append({**rec, "sha256": h})
+                    print(f"  [{i}] OK {fname} ({len(body)} bytes)")
+                except Exception as e:
+                    manifest.append({**rec, "sha256": "", "error": str(e)})
+                    print(f"  [{i}] ERR {fname}: {e}")
+            (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+            print(f"Wrote {out_dir / 'manifest.json'}")
+        return
+
     rows = extract_rows(html)
     print(f"  ... parsed {len(rows)} monthly fund portfolio link(s)")
 

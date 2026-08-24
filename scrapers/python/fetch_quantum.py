@@ -27,6 +27,7 @@ from urllib.parse import unquote, urlparse
 
 BASE = "https://www.quantumamc.com"
 LISTING_URL = f"{BASE}/portfolio/combined/-1/1/0/0"
+LISTING_URL_FORTNIGHTLY = f"{BASE}/portfolio/combined/-1/3/0/0"
 
 HEADERS = {
     "User-Agent": (
@@ -60,6 +61,10 @@ GTM_RE = re.compile(
 
 LABEL_MONTH_RE = re.compile(
     r"^([A-Za-z]+)\s+(\d{4})\s*-\s*All\s+Funds\s*$",
+    re.I,
+)
+LABEL_FORTNIGHTLY_RE = re.compile(
+    r"^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})\s*-\s*All\s+Funds\s*$",
     re.I,
 )
 
@@ -96,20 +101,46 @@ def label_to_year_month(label: str) -> tuple[int, int] | None:
     return int(y_s), mi
 
 
-def fetch_listing_html(*, ctx: ssl.SSLContext) -> str:
-    req = urllib.request.Request(LISTING_URL, headers=HEADERS, method="GET")
+def label_to_as_of(label: str) -> tuple[int, int, int] | None:
+    m = LABEL_FORTNIGHTLY_RE.match(label.strip())
+    if not m:
+        return None
+    day, mon_name, y_s = int(m.group(1)), m.group(2).title(), m.group(3)
+    if mon_name not in MONTH_NAMES_EN:
+        return None
+    return int(y_s), MONTH_NAMES_EN.index(mon_name) + 1, day
+
+
+def parse_as_of(as_of: str) -> tuple[int, int, int] | None:
+    parts = as_of.strip().split("-")
+    if len(parts) != 3:
+        return None
+    try:
+        y, m, d = int(parts[0]), int(parts[1]), int(parts[2])
+    except ValueError:
+        return None
+    if not (1 <= m <= 12 and 1 <= d <= 31):
+        return None
+    return y, m, d
+
+
+def fetch_listing_html(*, ctx: ssl.SSLContext, url: str = LISTING_URL) -> str:
+    req = urllib.request.Request(url, headers=HEADERS, method="GET")
     with urllib.request.urlopen(req, timeout=120, context=ctx) as resp:
         return resp.read().decode("utf-8", errors="ignore")
 
 
-def parse_all_funds_rows(html: str) -> dict[tuple[int, int], tuple[str, str]]:
-    """Map (year, month) -> (url, label)."""
-    out: dict[tuple[int, int], tuple[str, str]] = {}
+def parse_all_funds_rows(html: str, *, fortnightly: bool = False) -> dict[tuple, tuple[str, str]]:
+    """Map key -> (url, label). Monthly: (year, month); fortnightly: (year, month, day)."""
+    out: dict[tuple, tuple[str, str]] = {}
     for url, label in GTM_RE.findall(html):
-        ym = label_to_year_month(label)
-        if ym is None:
+        if fortnightly:
+            key = label_to_as_of(label)
+        else:
+            key = label_to_year_month(label)
+        if key is None:
             continue
-        out[ym] = (url, label.strip())
+        out[key] = (url, label.strip())
     return out
 
 
@@ -147,30 +178,52 @@ def main() -> None:
         help="Disable TLS verification if your Python lacks CA certs",
     )
     parser.add_argument("--fortnightly", action="store_true", help="Fetch fortnightly debt portfolios when supported")
+    parser.add_argument(
+        "--as-of",
+        dest="as_of",
+        default="",
+        help="Calendar as-of YYYY-MM-DD (fortnightly slice)",
+    )
     args = parser.parse_args()
 
     ctx = _ssl_context(args.insecure_ssl)
     amc_dir = args.root / "amcs" / "quantum-mutual-fund"
 
-    print(f"GET {LISTING_URL} …", flush=True)
+    listing_url = LISTING_URL_FORTNIGHTLY if args.fortnightly else LISTING_URL
+    print(f"GET {listing_url} …", flush=True)
     try:
-        html = fetch_listing_html(ctx=ctx)
+        html = fetch_listing_html(ctx=ctx, url=listing_url)
     except urllib.error.URLError as e:
         if not args.insecure_ssl and "CERTIFICATE_VERIFY_FAILED" in str(e).upper():
             raise SystemExit(
                 f"{e}\n\nRetry with:  python3 scripts/fetch_quantum.py ... --insecure-ssl"
             ) from e
         raise
-    index = parse_all_funds_rows(html)
-    print(f"  Parsed {len(index)} month row(s) (All Funds)", flush=True)
+    index = parse_all_funds_rows(html, fortnightly=args.fortnightly)
+    print(f"  Parsed {len(index)} row(s) (All Funds)", flush=True)
 
-    want_keys = [month_key_to_parts(m) for m in args.months]
+    as_of_target = parse_as_of(args.as_of) if args.as_of else None
+    if args.fortnightly and not as_of_target and args.months:
+        as_of_target = parse_as_of(f"{args.months[0]}-15")
 
     for mk in args.months:
         y, mon = month_key_to_parts(mk)
         out_dir = amc_dir / mk
         out_dir.mkdir(parents=True, exist_ok=True)
-        row = index.get((y, mon))
+        for p in out_dir.iterdir():
+            if p.is_file():
+                p.unlink()
+        row = None
+        if args.fortnightly and as_of_target:
+            row = index.get(as_of_target)
+        elif args.fortnightly:
+            # Best mid-month slice for the calendar month.
+            for day in (15, 14, 16, 13, 17):
+                row = index.get((y, mon, day))
+                if row:
+                    break
+        else:
+            row = index.get((y, mon))
         manifest: list[dict] = []
         print(f"\n{mk}:", flush=True)
         if not row:

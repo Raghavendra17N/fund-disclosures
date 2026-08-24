@@ -48,6 +48,20 @@ def month_search_key(month_key: str) -> tuple[str, str]:
     return frag, frag
 
 
+def fortnightly_search_key(month_key: str, as_of: str = "") -> str:
+    """Mid-month fortnightly slug fragment, e.g. as-on-15-jul-2026."""
+    if as_of:
+        parts = as_of.strip().split("-")
+        if len(parts) == 3:
+            y, m, d = int(parts[0]), int(parts[1]), int(parts[2])
+            mon = MON_ABBREV[f"{m:02d}"]
+            return f"as-on-{d:02d}-{mon}-{y}"
+    parts = month_key.strip().split("-")
+    y, m = int(parts[0]), int(parts[1])
+    mon = MON_ABBREV[f"{m:02d}"]
+    return f"as-on-15-{mon}-{y}"
+
+
 def safe_filename(url: str, title: str = "") -> str:
     path = urlparse(url).path
     base = unquote(path.rsplit("/", 1)[-1].split("?")[0])
@@ -95,12 +109,32 @@ def is_monthly_for(item: dict, frag: str) -> bool:
             return False
     if "monthly" not in blob and "portfolio" not in blob:
         return False
+    if "fortnightly" in blob:
+        return False
     if not re.search(r"\.(xlsx?|xls)(\?|$)", url, re.I) and item.get("mime_type", "") not in (
         "application/vnd.ms-excel",
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         "application/vnd.ms-excel.sheet.macroEnabled.12",
     ):
         # still accept if mime says spreadsheet
+        mt = (item.get("mime_type") or "").lower()
+        if "excel" not in mt and "spreadsheet" not in mt and "sheet" not in mt:
+            return False
+    return True
+
+
+def is_fortnightly_for(item: dict, frag: str) -> bool:
+    slug = str(item.get("slug") or "")
+    title = (item.get("title") or {}).get("rendered") or ""
+    url = pick_download_url(item) or ""
+    blob = f"{slug} {title} {url}".lower()
+    if frag not in blob.replace("_", "-"):
+        alt = frag.replace("-", "_")
+        if alt not in blob:
+            return False
+    if "fortnightly" not in blob:
+        return False
+    if not re.search(r"\.(xlsx?|xls)(\?|$)", url, re.I):
         mt = (item.get("mime_type") or "").lower()
         if "excel" not in mt and "spreadsheet" not in mt and "sheet" not in mt:
             return False
@@ -117,20 +151,37 @@ def download(url: str) -> bytes:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Fetch Bajaj Finserv monthly portfolios")
+    parser = argparse.ArgumentParser(description="Fetch Bajaj Finserv monthly/fortnightly portfolios")
     parser.add_argument("--months", nargs="+", default=["2026-01", "2026-02"])
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parent.parent)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--fortnightly",
+        action="store_true",
+        help="Fetch mid-month fortnightly portfolios (day 15 by default, or --as-of)",
+    )
+    parser.add_argument(
+        "--as-of",
+        default="",
+        help="Calendar as-of YYYY-MM-DD for fortnightly filename matching",
+    )
     args = parser.parse_args()
 
     amc_dir = args.root / "amcs" / "bajaj-finserv-mutual-fund"
+    label = "fortnightly" if args.fortnightly else "monthly"
 
     for month_key in args.months:
-        frag, _ = month_search_key(month_key)
+        if args.fortnightly:
+            frag = fortnightly_search_key(month_key, args.as_of)
+            matcher = is_fortnightly_for
+        else:
+            frag, _ = month_search_key(month_key)
+            matcher = is_monthly_for
+
         out_dir = amc_dir / month_key
         out_dir.mkdir(parents=True, exist_ok=True)
 
-        items = [it for it in fetch_media_search(frag) if is_monthly_for(it, frag)]
+        items = [it for it in fetch_media_search(frag) if matcher(it, frag)]
         # de-dupe by url
         seen: set[str] = set()
         uniq = []
@@ -141,7 +192,7 @@ def main() -> None:
             seen.add(u)
             uniq.append(it)
 
-        print(f"\n{month_key} search={frag!r}: {len(uniq)} media object(s)")
+        print(f"\n{month_key} {label} search={frag!r}: {len(uniq)} media object(s)")
         manifest: list[dict] = []
         if not uniq:
             (out_dir / "manifest.json").write_text("[]\n", encoding="utf-8")

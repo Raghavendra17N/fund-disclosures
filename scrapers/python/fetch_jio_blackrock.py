@@ -99,19 +99,33 @@ def fiscal_year_for_month(year: int, month: int) -> str:
     return f"FI{start}-{start + 1}"
 
 
-def row_matches_ym(row: dict, year: int, month: int) -> bool:
+def parse_as_of(as_of: str) -> tuple[int, int, int] | None:
+    parts = as_of.strip().split("-")
+    if len(parts) != 3:
+        return None
+    try:
+        y, m, d = int(parts[0]), int(parts[1]), int(parts[2])
+    except ValueError:
+        return None
+    if not (1 <= m <= 12 and 1 <= d <= 31):
+        return None
+    return y, m, d
+
+
+def row_matches_ym(row: dict, year: int, month: int, *, day: int | None = None) -> bool:
     date_s = str(row.get("date") or "").strip()
     if re.match(r"^\d{4}-\d{2}-\d{2}$", date_s):
-        y, m = int(date_s[0:4]), int(date_s[5:7])
-        if y == year and m == month:
+        y, m, d = int(date_s[0:4]), int(date_s[5:7]), int(date_s[8:10])
+        if y == year and m == month and (day is None or d == day):
             return True
     title = str(row.get("title") or "").strip()
     m = TITLE_DM_RE.search(title)
     if not m:
         return False
     d, mo, y = int(m.group(1)), int(m.group(2)), int(m.group(3))
-    _ = d
-    return y == year and mo == month
+    if y != year or mo != month:
+        return False
+    return day is None or d == day
 
 
 def _extract_json_lines_from_rsc(text: str) -> list[dict]:
@@ -224,6 +238,12 @@ def main() -> None:
         action="store_true",
         help="Use fortnightly-portfolio-disclosure page + L2 id",
     )
+    parser.add_argument(
+        "--as-of",
+        dest="as_of",
+        default="",
+        help="Calendar as-of YYYY-MM-DD (fortnightly: keep only matching title/date day)",
+    )
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
@@ -248,6 +268,13 @@ def main() -> None:
         print(f"Using discovered Next-Action id: {action_id}", flush=True)
     else:
         print("Using fallback Next-Action id (could fail if site changed)", flush=True)
+
+    as_of_day: int | None = None
+    if args.as_of:
+        parsed = parse_as_of(args.as_of)
+        if not parsed:
+            raise SystemExit(f"Invalid --as-of (expected YYYY-MM-DD): {args.as_of!r}")
+        as_of_day = parsed[2]
 
     for ym, mk in targets.items():
         fy = fiscal_year_for_month(ym[0], ym[1])
@@ -291,7 +318,7 @@ def main() -> None:
         seen_urls: set[str] = set()
         merged_rows = [*rows_fy_month, *rows_month_only, *rows_fy_only]
         for row in merged_rows:
-            if not row_matches_ym(row, ym[0], ym[1]):
+            if not row_matches_ym(row, ym[0], ym[1], day=as_of_day if args.fortnightly else None):
                 continue
             file_obj = row.get("file") or {}
             raw_url = str(file_obj.get("url") or "").strip()

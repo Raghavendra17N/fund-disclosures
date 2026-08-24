@@ -39,8 +39,12 @@ MO_LABEL_RE = re.compile(
     r" \d{1,2}, 20\d{2})",
     re.I,
 )
-FN_UPLOAD_RE = re.compile(r"/uploads/Fortnightly_Portfolio[\w.-]+\.(?:xlsx?|xlsb)", re.I)
+FN_UPLOAD_RE = re.compile(r"/uploads/Fortnightly_[Pp]ortfolio[\w.-]+\.(?:xlsx?|xlsb)", re.I)
 MO_UPLOAD_RE = re.compile(r"/uploads/Monthly_[Pp]ortfolio[\w.-]+\.(?:xlsx?|xlsb)", re.I)
+CMS_UPLOAD_RE = re.compile(
+    r'\{"uploadDate":"(\d{4}-\d{2}-\d{2})"[^}]*"attachment":\{"id":\d+,"documentId":"[^"]+","url":"(/uploads/(?:Fortnightly|Monthly)_[^"]+\.(?:xlsx?|xlsb))"\}',
+    re.I,
+)
 
 
 def ssl_ctx(insecure: bool) -> ssl.SSLContext:
@@ -53,12 +57,44 @@ def ssl_ctx(insecure: bool) -> ssl.SSLContext:
         return ssl.create_default_context()
 
 
-def parse_ym(label_date: str) -> tuple[int, int] | None:
-    m = re.match(r"([A-Za-z]+)\s+\d{1,2},\s*(20\d{2})", label_date.strip())
+def parse_ymd(label_date: str) -> tuple[int, int, int] | None:
+    m = re.match(r"([A-Za-z]+)\s+(\d{1,2}),\s*(20\d{2})", label_date.strip())
     if not m:
         return None
     mon = MONTHS.get(m.group(1).lower())
-    return (int(m.group(2)), mon) if mon else None
+    if not mon:
+        return None
+    return int(m.group(3)), mon, int(m.group(2))
+
+
+def parse_ym(label_date: str) -> tuple[int, int] | None:
+    ymd = parse_ymd(label_date)
+    return (ymd[0], ymd[1]) if ymd else None
+
+
+def collect_pairs_from_cms(text: str) -> list[dict]:
+    """Parse Strapi rows embedded in page HTML (authoritative uploadDate → file URL)."""
+    text = text.replace("&amp;", "&")
+    out: list[dict] = []
+    seen: set[tuple[str, str]] = set()
+    for m in CMS_UPLOAD_RE.finditer(text):
+        upload_date, path = m.group(1), m.group(2)
+        key = (upload_date, path)
+        if key in seen:
+            continue
+        seen.add(key)
+        y, mo, d = (int(x) for x in upload_date.split("-"))
+        out.append(
+            {
+                "year": y,
+                "month": mo,
+                "day": d,
+                "label": upload_date,
+                "path": path,
+                "upload_date": upload_date,
+            }
+        )
+    return out
 
 
 def collect_pairs(text: str, *, label_re: re.Pattern[str], upload_re: re.Pattern[str]) -> list[dict]:
@@ -86,10 +122,10 @@ def collect_pairs(text: str, *, label_re: re.Pattern[str], upload_re: re.Pattern
             uploads.append(u)
     pairs = []
     for lab, path in zip(labels, uploads):
-        ym = parse_ym(lab)
+        ym = parse_ymd(lab)
         if not ym:
             continue
-        pairs.append({"year": ym[0], "month": ym[1], "label": lab, "path": path})
+        pairs.append({"year": ym[0], "month": ym[1], "day": ym[2], "label": lab, "path": path})
     return pairs
 
 
@@ -98,6 +134,7 @@ def main() -> None:
     ap.add_argument("--months", nargs="+", required=True)
     ap.add_argument("--root", type=Path, default=Path(__file__).resolve().parent.parent)
     ap.add_argument("--fortnightly", action="store_true")
+    ap.add_argument("--as-of", dest="as_of", default="", help="Calendar as-of YYYY-MM-DD")
     ap.add_argument("--insecure-ssl", action="store_true")
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
@@ -111,22 +148,50 @@ def main() -> None:
     with urllib.request.urlopen(req, timeout=60, context=ctx) as resp:
         html = resp.read().decode("utf-8", "ignore")
     text = html.replace('\\"', '"').replace("\\/", "/")
-    pairs = collect_pairs(text, label_re=label_re, upload_re=upload_re)
+    pairs = collect_pairs_from_cms(text)
+    if not pairs:
+        pairs = collect_pairs(text, label_re=label_re, upload_re=upload_re)
+        print("  (fallback label/upload pairing)", flush=True)
+    else:
+        print(f"  CMS uploadDate rows: {len(pairs)}", flush=True)
+
+    as_of_parts = None
+    if args.as_of:
+        bits = args.as_of.strip().split("-")
+        if len(bits) == 3:
+            as_of_parts = (int(bits[0]), int(bits[1]), int(bits[2]))
 
     targets = set()
     for mk in args.months:
         y, m = mk.split("-")
-        targets.add((int(y), int(m)))
+        if as_of_parts:
+            targets.add(as_of_parts)
+        else:
+            targets.add((int(y), int(m)))
 
     amc = args.root / "amcs" / "the-wealth-company-mutual-fund"
-    for y, m in sorted(targets):
-        mk = f"{y}-{m:02d}"
+    for target in sorted(targets):
+        if len(target) == 3:
+            y, m, d = target
+            mk = f"{y}-{m:02d}"
+        else:
+            y, m = target
+            d = None
+            mk = f"{y}-{m:02d}"
         out = amc / mk
         out.mkdir(parents=True, exist_ok=True)
         for p in out.iterdir():
             if p.is_file():
                 p.unlink()
-        selected = [r for r in pairs if (r["year"], r["month"]) == (y, m)]
+        if d is not None:
+            selected = [
+                r
+                for r in pairs
+                if (r["year"], r["month"], r["day"]) == (y, m, d)
+                or r.get("upload_date") == f"{y:04d}-{m:02d}-{d:02d}"
+            ]
+        else:
+            selected = [r for r in pairs if (r["year"], r["month"]) == (y, m)]
         uniq = []
         seenp: set[str] = set()
         for r in selected:

@@ -7,6 +7,7 @@ import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync, mkdirSync, readdirSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { filterFilesForStorageKey } from "../lib/asofFileFilter.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "../../..");
 const scriptsDir = join(root, "scrapers/python");
@@ -49,6 +50,43 @@ function readManifest(slug, period) {
   }
 }
 
+function stripFlags(args, ...flags) {
+  const drop = new Set(flags);
+  const out = [];
+  for (let i = 0; i < args.length; i++) {
+    const a = args[i];
+    if (drop.has(a)) {
+      if (a === "--as-of") i++;
+      continue;
+    }
+    out.push(a);
+  }
+  return out;
+}
+
+function runWithArgFallback(script, baseArgs, forceRealFetch) {
+  const argSets = [
+    forceRealFetch ? baseArgs : ["--dry-run", ...baseArgs],
+    baseArgs,
+    stripFlags(baseArgs, "--as-of"),
+    stripFlags(baseArgs, "--fortnightly", "--as-of"),
+  ];
+  const seen = new Set();
+  for (const args of argSets) {
+    const key = args.join("\0");
+    if (seen.has(key)) continue;
+    seen.add(key);
+    const result = runPython(script, args);
+    if (result.ok) return result;
+    const msg = `${result.stderr}\n${result.stdout}`;
+    const unknown =
+      /unrecognized arguments:|no such option/i.test(msg) ||
+      /error:.*--dry-run|--fortnightly|--as-of/i.test(msg);
+    if (!unknown) return result;
+  }
+  return runPython(script, baseArgs);
+}
+
 /**
  * @param {object} cfg
  * @param {string} cfg.script e.g. fetch_bandhan.py
@@ -75,6 +113,9 @@ export function createPythonRefAdapter(cfg) {
       }
       if (ctx.type === "fortnightly") {
         extra.push("--fortnightly");
+        if (ctx.storageKey && /^\d{4}-\d{2}-\d{2}$/.test(ctx.storageKey)) {
+          extra.push("--as-of", ctx.storageKey);
+        }
       }
 
       const baseArgs = ["--months", ctx.period, "--root", stagingRoot, ...extra];
@@ -83,44 +124,7 @@ export function createPythonRefAdapter(cfg) {
       const forceRealFetch = ["fetch_unifi.py"].includes(cfg.script);
 
       // Prefer dry-run if the script supports it (unless we must stage files)
-      let result = forceRealFetch
-        ? runPython(cfg.script, baseArgs)
-        : runPython(cfg.script, ["--dry-run", ...baseArgs]);
-
-      const dropUnknown = (args, flag) => {
-        const i = args.indexOf(flag);
-        if (i >= 0) args = args.filter((_, idx) => idx !== i);
-        return args;
-      };
-
-      // Some scripts don't support --dry-run and/or --fortnightly yet
-      if (
-        !result.ok &&
-        /unrecognized arguments:\s*--dry-run|no such option.*dry-run/i.test(
-          `${result.stderr}\n${result.stdout}`,
-        )
-      ) {
-        result = runPython(cfg.script, baseArgs);
-      }
-      if (
-        !result.ok &&
-        /unrecognized arguments:\s*--fortnightly|no such option.*fortnightly/i.test(
-          `${result.stderr}\n${result.stdout}`,
-        )
-      ) {
-        const withoutFn = dropUnknown([...baseArgs], "--fortnightly");
-        result = runPython(cfg.script, ["--dry-run", ...withoutFn]);
-        if (
-          !result.ok &&
-          /unrecognized arguments:\s*--dry-run|no such option.*dry-run/i.test(
-            `${result.stderr}\n${result.stdout}`,
-          )
-        ) {
-          result = runPython(cfg.script, withoutFn);
-        } else if (!result.ok) {
-          result = runPython(cfg.script, withoutFn);
-        }
-      }
+      let result = runWithArgFallback(cfg.script, baseArgs, forceRealFetch);
 
       if (!result.ok) {
         return {
@@ -163,8 +167,14 @@ export function createPythonRefAdapter(cfg) {
         }
       }
 
-      // Scripts receive --fortnightly and already scope results; keep all returned files.
-      let out = files;
+      // Scripts receive --fortnightly and already scope results; filter by as-of day when known.
+      let out = filterFilesForStorageKey(files, ctx.storageKey, ctx.type);
+      if (out.length < files.length) {
+        return {
+          files: out,
+          notes: `python ${cfg.script} (${ctx.type}) · filtered ${files.length - out.length} wrong as-of`,
+        };
+      }
       return {
         files: out,
         notes: out.length

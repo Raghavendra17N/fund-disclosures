@@ -1,19 +1,15 @@
 #!/usr/bin/env python3
 """
-Bank of India Mutual Fund (boimf.in) — download **monthly portfolio** workbooks for given YYYY-MM.
+Bank of India Mutual Fund (boimf.in) — monthly and fortnightly portfolio workbooks.
 
-Uses the same JSON API as the investor site (Sitefinity + AjaxService.asmx):
+Monthly (Investor Corner):
   POST https://www.boimf.in/AjaxService.asmx/GetDocuments
-  Content-Type: application/json;charset=utf-8
+  LibraryName: InvestorCorner, folderName: MONTHLY PORTFOLIO
 
-Payload mirrors `AjaxCall.js` → `NoCategoryCall` for the **Monthly Portfolio** tab:
-  LibraryName: \"InvestorCorner\"
-  folderName: \"MONTHLY PORTFOLIO\"  (tab title uppercased in JS)
-  CategoryValue: \"no\"
-
-The feed also contains older weekly liquid portfolio rows with different `DocName` patterns;
-by default we only keep documents matching:
-  MONTHLY-PORTFOLIO - <DD>-<MONTH>-<YYYY>
+Fortnightly (Regulatory reports):
+  POST https://www.boimf.in/AjaxService.asmx/RGetDocuments
+  LibraryName: Reports, category: FORTNIGHTLY PORTFOLIO OF DEBT SCHEMES
+  DocName prefix DDMMYYYY, e.g. 15072026_BANK OF INDIA_FORTNIGHTLYDISCLOSURE
 """
 from __future__ import annotations
 
@@ -27,7 +23,9 @@ from urllib.request import Request, urlopen
 
 BASE = "https://www.boimf.in"
 AJAX_URL = f"{BASE}/AjaxService.asmx/GetDocuments"
+FORTNIGHTLY_AJAX_URL = f"{BASE}/AjaxService.asmx/RGetDocuments"
 REFERER = f"{BASE}/investor-corner"
+FORTNIGHTLY_REFERER = f"{BASE}/regulatory-reports/fortnightly-portfolio-of-debt-schemes"
 
 MONTH_NAME_TO_NUM = {
     "january": "01",
@@ -50,6 +48,8 @@ STANDARD_MONTHLY_RE = re.compile(
     re.I,
 )
 
+FORTNIGHTLY_DOC_RE = re.compile(r"^(\d{2})(\d{2})(\d{4})_", re.I)
+
 
 def safe_filename(url: str) -> str:
     path = urlparse(url).path
@@ -71,26 +71,40 @@ def docname_to_month_key(doc_name: str) -> str | None:
     return f"{year}-{mm}"
 
 
-def fetch_document_index() -> list[dict]:
-    payload = {
-        "pagno": 0,
-        "category": None,
-        "fromDate": None,
-        "toDate": None,
-        "LibraryName": "InvestorCorner",
-        "folderName": "MONTHLY PORTFOLIO",
-        "CategoryValue": "no",
-    }
+def fortnightly_doc_to_as_of(doc_name: str) -> str | None:
+    m = FORTNIGHTLY_DOC_RE.match((doc_name or "").strip())
+    if not m:
+        return None
+    dd, mm, yyyy = int(m.group(1)), int(m.group(2)), m.group(3)
+    if not (1 <= mm <= 12 and 1 <= dd <= 31):
+        return None
+    return f"{yyyy}-{mm:02d}-{dd:02d}"
+
+
+def as_of_to_ddmmyyyy(as_of: str) -> str | None:
+    parts = as_of.strip().split("-")
+    if len(parts) != 3:
+        return None
+    try:
+        y, m, d = parts[0], int(parts[1]), int(parts[2])
+    except ValueError:
+        return None
+    return f"{d:02d}{m:02d}{y}"
+
+
+def post_ajax(url: str, payload: dict, *, referer: str) -> list[dict]:
     data = json.dumps(payload).encode("utf-8")
     req = Request(
-        AJAX_URL,
+        url,
         data=data,
         method="POST",
         headers={
             "User-Agent": "Mozilla/5.0",
-            "Content-Type": "application/json;charset=utf-8",
-            "Accept": "application/json",
-            "Referer": REFERER,
+            "Content-Type": "application/json;charset=UTF-8",
+            "Accept": "application/json, */*",
+            "Origin": BASE,
+            "Referer": referer,
+            "X-Requested-With": "XMLHttpRequest",
         },
     )
     with urlopen(req, timeout=120) as resp:
@@ -101,6 +115,30 @@ def fetch_document_index() -> list[dict]:
     if not isinstance(docs, list):
         return []
     return [d for d in docs if isinstance(d, dict)]
+
+
+def fetch_document_index() -> list[dict]:
+    payload = {
+        "pagno": 0,
+        "category": None,
+        "fromDate": None,
+        "toDate": None,
+        "LibraryName": "InvestorCorner",
+        "folderName": "MONTHLY PORTFOLIO",
+        "CategoryValue": "no",
+    }
+    return post_ajax(AJAX_URL, payload, referer=REFERER)
+
+
+def fetch_fortnightly_index() -> list[dict]:
+    payload = {
+        "pagno": 0,
+        "category": "FORTNIGHTLY PORTFOLIO OF DEBT SCHEMES",
+        "fromDate": None,
+        "toDate": None,
+        "LibraryName": "Reports",
+    }
+    return post_ajax(FORTNIGHTLY_AJAX_URL, payload, referer=FORTNIGHTLY_REFERER)
 
 
 def pick_for_months(
@@ -132,13 +170,39 @@ def pick_for_months(
     return chosen
 
 
-def download(url: str) -> bytes:
+def pick_fortnightly_for_months(
+    docs: list[dict],
+    month_keys: list[str],
+    as_of: str = "",
+) -> dict[str, dict]:
+    want = set(month_keys)
+    token = as_of_to_ddmmyyyy(as_of) if as_of else ""
+    chosen: dict[str, dict] = {}
+    for row in docs:
+        name = row.get("DocName") or ""
+        row_as_of = fortnightly_doc_to_as_of(name)
+        if not row_as_of:
+            continue
+        if token and not name.upper().startswith(token):
+            continue
+        if as_of and row_as_of != as_of:
+            continue
+        mk = row_as_of[:7]
+        if mk not in want:
+            continue
+        prev = chosen.get(mk)
+        if not prev or name > (prev.get("DocName") or ""):
+            chosen[mk] = row
+    return chosen
+
+
+def download(url: str, *, referer: str = REFERER) -> bytes:
     req = Request(
         url,
         headers={
             "User-Agent": "Mozilla/5.0",
             "Accept": "*/*",
-            "Referer": REFERER,
+            "Referer": referer,
         },
     )
     with urlopen(req, timeout=120) as resp:
@@ -163,24 +227,41 @@ def main() -> None:
     )
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--fortnightly", action="store_true", help="Fetch fortnightly debt portfolios when supported")
+    parser.add_argument(
+        "--as-of",
+        default="",
+        help="Calendar as-of YYYY-MM-DD for fortnightly consolidated workbook",
+    )
     args = parser.parse_args()
 
     amc_dir = args.root / "amcs" / "bank-of-india-mutual-fund"
+    as_of = args.as_of.strip()
+    if args.fortnightly and not as_of and args.months:
+        as_of = f"{args.months[0]}-15"
 
-    print("POST GetDocuments (InvestorCorner / MONTHLY PORTFOLIO)…")
-    docs = fetch_document_index()
-    print(f"  … {len(docs)} row(s) in index", flush=True)
-
-    selected = pick_for_months(docs, list(args.months))
+    if args.fortnightly:
+        print(f"POST RGetDocuments (Reports / FORTNIGHTLY PORTFOLIO OF DEBT SCHEMES)…")
+        docs = fetch_fortnightly_index()
+        print(f"  … {len(docs)} row(s) in index", flush=True)
+        selected = pick_fortnightly_for_months(docs, list(args.months), as_of)
+        referer = FORTNIGHTLY_REFERER
+        label = f"fortnightly as_of={as_of}" if as_of else "fortnightly"
+    else:
+        print("POST GetDocuments (InvestorCorner / MONTHLY PORTFOLIO)…")
+        docs = fetch_document_index()
+        print(f"  … {len(docs)} row(s) in index", flush=True)
+        selected = pick_for_months(docs, list(args.months))
+        referer = REFERER
+        label = "monthly"
 
     for month_key in args.months:
         out_dir = amc_dir / month_key
         out_dir.mkdir(parents=True, exist_ok=True)
 
         row = selected.get(month_key)
-        print(f"\n{month_key}:", end=" ")
+        print(f"\n{month_key} [{label}]:", end=" ")
         if not row:
-            print("no standard MONTHLY-PORTFOLIO row (see listing on site).")
+            print("no matching row.")
             manifest: list[dict] = []
             man_path = out_dir / "manifest.json"
             man_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
@@ -188,10 +269,11 @@ def main() -> None:
 
         file_url = (row.get("FolderUrl") or "").strip()
         title = row.get("DocName") or ""
-        fname = safe_filename(file_url) if file_url else "monthly-portfolio.xlsx"
+        fname = safe_filename(file_url) if file_url else "fortnightly-portfolio.xlsx"
 
         rec = {
             "month": month_key,
+            "as_of": fortnightly_doc_to_as_of(title) if args.fortnightly else None,
             "download_url": file_url,
             "saved_as": fname,
             "title": title,
@@ -203,7 +285,7 @@ def main() -> None:
             manifest = [{**rec, "sha256": "", "dry_run": True}]
         else:
             try:
-                body = download(file_url)
+                body = download(file_url, referer=referer)
                 h = hashlib.sha256(body).hexdigest()
                 dest = out_dir / fname
                 dest.write_bytes(body)

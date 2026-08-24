@@ -56,28 +56,46 @@ HEADERS_POST = {
     "Referer": PAGE_REF,
 }
 
+# Site titles mix full names ("June 30, 2026") and 3-letter abbrevs ("Jun 30, 2026").
 MONTH_NAME_TO_NUM = {
+    "jan": 1,
     "january": 1,
+    "feb": 2,
     "february": 2,
+    "mar": 3,
     "march": 3,
+    "apr": 4,
     "april": 4,
     "may": 5,
+    "jun": 6,
     "june": 6,
+    "jul": 7,
     "july": 7,
+    "aug": 8,
     "august": 8,
+    "sep": 9,
+    "sept": 9,
     "september": 9,
+    "oct": 10,
     "october": 10,
+    "nov": 11,
     "november": 11,
+    "dec": 12,
     "december": 12,
 }
 
 TITLE_DATE_RE = re.compile(
-    r"\b(January|February|March|April|May|June|July|August|September|October|November|December)"
-    r"\s+\d{1,2},?\s+(\d{4})\b",
+    r"\b("
+    r"Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|"
+    r"Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|"
+    r"Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?"
+    r")"
+    r"\s+(\d{1,2}),?\s+(\d{4})\b",
     re.I,
 )
 
 MONTHLY_SUB = "Monthly Portfolio of Schemes"
+FORTNIGHTLY_SUB = "Fortnightly Portfolio of Schemes"
 
 
 def check_openssl() -> None:
@@ -148,11 +166,33 @@ def title_to_month_key(title: str) -> str | None:
     m = TITLE_DATE_RE.search(title or "")
     if not m:
         return None
-    mon, y = m.group(1), m.group(2)
+    mon, y = m.group(1), m.group(3)
     mm = MONTH_NAME_TO_NUM.get(mon.lower())
     if not mm:
         return None
     return f"{y}-{mm:02d}"
+
+
+def title_to_as_of(title: str) -> str | None:
+    """'Fortnightly Portfolio- JM Liquid Fund - July 15, 2026' -> '2026-07-15'."""
+    m = TITLE_DATE_RE.search(title or "")
+    if not m:
+        return None
+    mon, day, y = m.group(1), int(m.group(2)), m.group(3)
+    mm = MONTH_NAME_TO_NUM.get(mon.lower())
+    if not mm:
+        return None
+    return f"{y}-{mm:02d}-{day:02d}"
+
+
+def parse_as_of(as_of: str) -> tuple[int, int, int] | None:
+    parts = as_of.strip().split("-")
+    if len(parts) != 3:
+        return None
+    try:
+        return int(parts[0]), int(parts[1]), int(parts[2])
+    except ValueError:
+        return None
 
 
 def safe_filename(path_part: str) -> str:
@@ -193,27 +233,51 @@ def main() -> None:
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parent.parent)
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--limit", type=int, default=0, help="Max files per month (0 = all)")
+    parser.add_argument(
+        "--fortnightly",
+        action="store_true",
+        help="Fetch Fortnightly Portfolio of Schemes (mid-month / month-end by --as-of)",
+    )
+    parser.add_argument(
+        "--as-of",
+        default="",
+        help="Calendar as-of YYYY-MM-DD (filters fortnightly titles by date)",
+    )
     args = parser.parse_args()
 
     check_openssl()
     amc_dir = args.root / "amcs" / "jm-financial-mutual-fund"
+    label = "fortnightly" if args.fortnightly else "monthly"
+    want_sub = FORTNIGHTLY_SUB if args.fortnightly else MONTHLY_SUB
+    as_of = args.as_of.strip()
+    if args.fortnightly and not as_of and args.months:
+        as_of = f"{args.months[0]}-15"
 
     print(f"POST {API_URL} …")
     rows = fetch_document_rows()
     print(f"  … decrypted {len(rows)} document row(s)")
 
-    monthly: list[dict] = []
+    selected: list[dict] = []
     for r in rows:
-        if (r.get("SubCategoryName") or "").strip() != MONTHLY_SUB:
+        if (r.get("SubCategoryName") or "").strip() != want_sub:
             continue
         title = (r.get("Title") or "").strip()
-        mk = title_to_month_key(title)
         fn = (r.get("FileName") or "").strip()
-        if not mk or not fn:
+        if not fn:
             continue
-        monthly.append(
+        if args.fortnightly:
+            row_as_of = title_to_as_of(title)
+            if as_of and row_as_of != as_of:
+                continue
+            mk = title_to_month_key(title)
+        else:
+            mk = title_to_month_key(title)
+        if not mk:
+            continue
+        selected.append(
             {
                 "month_key": mk,
+                "as_of": title_to_as_of(title) if args.fortnightly else None,
                 "title": title,
                 "download_url": file_url(fn),
                 "file_name": fn,
@@ -221,7 +285,7 @@ def main() -> None:
         )
 
     by_month: dict[str, list[dict]] = {k: [] for k in args.months}
-    for r in monthly:
+    for r in selected:
         mk = r["month_key"]
         if mk in by_month:
             by_month[mk].append(r)
@@ -231,20 +295,22 @@ def main() -> None:
         out_dir = amc_dir / mk
         out_dir.mkdir(parents=True, exist_ok=True)
         batch = by_month.get(mk) or []
-        print(f"\n{mk}: {len(batch)} file(s)")
+        suffix = f" as_of={as_of}" if args.fortnightly and as_of else ""
+        print(f"\n{mk} [{label}{suffix}]: {len(batch)} file(s)")
         if args.limit and len(batch) > args.limit:
             batch = batch[: args.limit]
             print(f"  (limited to {args.limit})")
 
         manifest: list[dict] = []
         if not batch:
-            print("  No matching monthly portfolio rows.")
+            print(f"  No matching {label} portfolio rows.")
 
         for i, item in enumerate(batch, 1):
             url = item["download_url"]
             fname = safe_filename(item["file_name"])
             rec = {
                 "month": mk,
+                "as_of": item.get("as_of"),
                 "download_url": url,
                 "saved_as": fname,
                 "title": item.get("title"),
