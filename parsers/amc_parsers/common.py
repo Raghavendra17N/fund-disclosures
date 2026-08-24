@@ -1091,6 +1091,13 @@ def extract_scheme_name_cams(rows: list[list[str]]) -> str | None:
             m = re.search(r"(?i)scheme\s*name\s*:\s*(.+)$", joined)
             if m:
                 return m.group(1).split("|")[0].strip()
+        # Choice / CAMS: "Name of the scheme" label in col, fund name in next col
+        for i, cell in enumerate(row):
+            if re.search(r"(?i)^name\s+of\s+the\s+scheme$", (cell or "").strip()):
+                for j in range(i + 1, len(row)):
+                    val = (row[j] or "").strip()
+                    if val and not re.search(r"(?i)^name\s+of", val):
+                        return val
     return None
 
 

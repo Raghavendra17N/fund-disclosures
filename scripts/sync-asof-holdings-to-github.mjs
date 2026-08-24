@@ -5,8 +5,6 @@
  *
  * Usage:
  *   node scripts/sync-asof-holdings-to-github.mjs --asof=2026-08-15 --cadence=fortnightly --dry-run
- *   node scripts/sync-asof-holdings-to-github.mjs --asof=2026-08-15 --cadence=fortnightly --update-latest --push
- *   node scripts/sync-asof-holdings-to-github.mjs --asof=2026-06-30 --cadence=monthly --push
  *   node scripts/sync-asof-holdings-to-github.mjs --asof=2026-07-15 --cadence=fortnightly --push
  *
  * Auth for --push: GH_TOKEN or GITHUB_TOKEN.
@@ -23,8 +21,10 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { spawnSync } from "node:child_process";
 import {
   attachAvailableAsOf,
+  buildFilingsFromAsOfDirs,
   collectAsOfPortfolios,
   normalizeAsOf,
+  pruneOrphanAsOfPortfolios,
   scanExistingAsOfDirs,
   sourcePeriodFromAsOf,
 } from "./lib/asof-portfolios.mjs";
@@ -52,6 +52,15 @@ function hasFlag(name) {
 const dryRun = hasFlag("dry-run");
 const doPush = hasFlag("push");
 const updateLatest = hasFlag("update-latest");
+if (updateLatest) {
+  console.warn(
+    "Warning: --update-latest is deprecated. Portfolios live under portfolios/asof/ only.",
+  );
+}
+
+function cdnUrl(objectKey) {
+  return `https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@main/${objectKey}`;
+}
 const limit = Number(argValue("limit", "0")) || 0;
 const asof = normalizeAsOf(argValue("asof", ""));
 const cadence = argValue("cadence", "");
@@ -125,10 +134,10 @@ function schemeFromMeta(meta, portfolioId) {
 }
 
 function refreshFilings(catalog) {
-  const asOfMap = scanExistingAsOfDirs(outDir);
+  const asOfMap = scanExistingAsOfDirs(outDir, catalog);
   for (const dates of asOfMap.values()) dates.add(asof);
 
-  const withDates = attachAvailableAsOf(catalog, asOfMap);
+  const withDates = attachAvailableAsOf(catalog, asOfMap, { cdnUrlFn: cdnUrl });
   writeJson(join(outDir, "catalog/amfi-lookup.json"), withDates);
 
   const filingsPath = join(outDir, "catalog/filings.json");
@@ -141,40 +150,7 @@ function refreshFilings(catalog) {
     }
   }
 
-  const byKey = new Map(
-    (prior.filings || []).map((f) => [`${f.as_of}::${f.cadence || ""}`, f]),
-  );
-  const asofRoot = join(outDir, "portfolios", "asof");
-  if (existsSync(asofRoot)) {
-    for (const date of readdirSync(asofRoot)) {
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) continue;
-      const dir = join(asofRoot, date);
-      let count = 0;
-      try {
-        count = readdirSync(dir).filter((n) => n.endsWith(".json")).length;
-      } catch {
-        continue;
-      }
-      const guessed =
-        date === asof
-          ? cadence
-          : byKey.get(`${date}::fortnightly`)?.cadence ||
-            byKey.get(`${date}::monthly`)?.cadence ||
-            (date.endsWith("-15") ? "fortnightly" : "monthly");
-      byKey.set(`${date}::${guessed}`, {
-        as_of: date,
-        cadence: guessed,
-        portfolio_count: count,
-      });
-    }
-  }
-
-  const doc = {
-    generated_at: new Date().toISOString(),
-    filings: [...byKey.values()].sort((a, b) =>
-      String(b.as_of).localeCompare(String(a.as_of)),
-    ),
-  };
+  const doc = buildFilingsFromAsOfDirs(outDir, withDates, prior.filings || []);
   writeJson(filingsPath, doc);
   return { catalog: withDates, filings: doc };
 }
@@ -215,7 +191,7 @@ function pushWithPin(message) {
   meta.raw_base = `https://raw.githubusercontent.com/${OWNER}/${REPO}/${commit}`;
   meta.cdn_catalog = `https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@${commit}/catalog/amfi-lookup.json`;
   meta.cdn_filings = `https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@${commit}/catalog/filings.json`;
-  meta.cdn_portfolio_template = `https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@${commit}/portfolios/latest/{portfolio_id}.json`;
+  meta.cdn_portfolio_template = `https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@${commit}/portfolios/asof/{as_of}/{portfolio_id}.json`;
   meta.cdn_asof_template = `https://cdn.jsdelivr.net/gh/${OWNER}/${REPO}@${commit}/portfolios/asof/{as_of}/{portfolio_id}.json`;
   meta.last_asof_sync = {
     as_of: asof,
@@ -311,12 +287,6 @@ for (const entry of entries) {
       join(outDir, `portfolios/asof/${asof}/${entry.portfolio_id}.json`),
       payload,
     );
-    if (updateLatest) {
-      writeJson(
-        join(outDir, `portfolios/latest/${entry.portfolio_id}.json`),
-        payload,
-      );
-    }
     written += 1;
     if (written % 100 === 0) {
       console.log(`  wrote ${written}/${entries.length}`);
@@ -326,6 +296,14 @@ for (const entry of entries) {
     console.error(`  FAIL ${entry.portfolio_id}`, err?.message || err);
   }
 }
+
+const pruned = pruneOrphanAsOfPortfolios(
+  outDir,
+  asof,
+  entries.map((e) => e.portfolio_id),
+  lookup,
+);
+if (pruned) console.log(`Pruned ${pruned} stale asof file(s) for ${asof}.`);
 
 let catalog = lookup;
 const catalogPath = join(outDir, "catalog/amfi-lookup.json");
@@ -343,9 +321,5 @@ console.log(
 );
 
 if (doPush) {
-  pushWithPin(
-    `sync(asof=${asof}/${cadence}): ${written} portfolios${
-      updateLatest ? " + latest" : ""
-    }`,
-  );
+  pushWithPin(`sync(asof=${asof}/${cadence}): ${written} portfolios`);
 }

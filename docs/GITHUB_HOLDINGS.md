@@ -7,8 +7,8 @@ via **jsDelivr**. No card-on-file cloud.
 
 | Role | Value |
 |------|--------|
-| Data account | `kushagra-agarwal-a` |
-| Data repo | [`fund-holdings-data`](https://github.com/kushagra-agarwal-a/fund-holdings-data) (public) |
+| Data account | `subscriptionmanager26-png` |
+| Data repo | [`fund-holdings-data`](https://github.com/subscriptionmanager26-png/fund-holdings-data) (public) |
 | Pipeline repo | [`subscriptionmanager26-png/fund-disclosures`](https://github.com/subscriptionmanager26-png/fund-disclosures) |
 
 ## Dedup model (important)
@@ -34,12 +34,13 @@ collapse onto the same id (legacy plan codes).
 ## Object layout
 
 ```text
-portfolios/latest/{portfolio_id}.json
 portfolios/asof/{yyyy-mm-dd}/{portfolio_id}.json
 catalog/amfi-lookup.json
 catalog/filings.json
 meta.json
 ```
+
+See also [DATA_LAYOUT.md](./DATA_LAYOUT.md) for local ↔ CDN folder conventions.
 ### Portfolio object
 
 ```json
@@ -61,8 +62,10 @@ meta.json
   "name": "…",
   "has_holdings": true,
   "portfolio_id": "152310",
-  "portfolio_key": "portfolios/latest/152310.json",
-  "portfolio_url": "https://cdn.jsdelivr.net/gh/kushagra-agarwal-a/fund-holdings-data@main/portfolios/latest/152310.json"
+  "latest_as_of": "2026-07-31",
+  "available_as_of": ["2026-07-31", "2026-07-15"],
+  "portfolio_key": "portfolios/asof/2026-07-31/152310.json",
+  "portfolio_url": "https://cdn.jsdelivr.net/gh/subscriptionmanager26-png/fund-holdings-data@main/portfolios/asof/2026-07-31/152310.json"
 }
 ```
 
@@ -73,7 +76,7 @@ meta.json
 1. Fetch catalog (cache aggressively):
 
 ```text
-https://cdn.jsdelivr.net/gh/kushagra-agarwal-a/fund-holdings-data@main/catalog/amfi-lookup.json
+https://cdn.jsdelivr.net/gh/subscriptionmanager26-png/fund-holdings-data@main/catalog/amfi-lookup.json
 ```
 
 2. Look up AMFI code → `portfolio_id` / `portfolio_url`.
@@ -81,14 +84,14 @@ https://cdn.jsdelivr.net/gh/kushagra-agarwal-a/fund-holdings-data@main/catalog/a
 3. Fetch the shared portfolio:
 
 ```text
-https://cdn.jsdelivr.net/gh/kushagra-agarwal-a/fund-holdings-data@main/portfolios/latest/{portfolio_id}.json
+https://cdn.jsdelivr.net/gh/subscriptionmanager26-png/fund-holdings-data@main/portfolios/latest/{portfolio_id}.json
 ```
 
 Historical (day-level as-of):
 
 ```text
-https://cdn.jsdelivr.net/gh/kushagra-agarwal-a/fund-holdings-data@main/portfolios/asof/2026-07-15/{portfolio_id}.json
-https://cdn.jsdelivr.net/gh/kushagra-agarwal-a/fund-holdings-data@main/catalog/filings.json
+https://cdn.jsdelivr.net/gh/subscriptionmanager26-png/fund-holdings-data@main/portfolios/asof/2026-07-15/{portfolio_id}.json
+https://cdn.jsdelivr.net/gh/subscriptionmanager26-png/fund-holdings-data@main/catalog/filings.json
 ```
 4. Overlay the requesting scheme’s name/NAV from the catalog row onto the payload
    if you need share-class-specific fields (the portfolio object carries the
@@ -132,11 +135,11 @@ Env overrides: `HOLDINGS_DATA_OWNER`, `HOLDINGS_DATA_REPO`, `HOLDINGS_DATA_BRANC
 ## Smoke test
 
 ```bash
-curl -sS 'https://cdn.jsdelivr.net/gh/kushagra-agarwal-a/fund-holdings-data@main/meta.json'
-curl -sS 'https://cdn.jsdelivr.net/gh/kushagra-agarwal-a/fund-holdings-data@main/catalog/filings.json'
+curl -sS 'https://cdn.jsdelivr.net/gh/subscriptionmanager26-png/fund-holdings-data@main/meta.json'
+curl -sS 'https://cdn.jsdelivr.net/gh/subscriptionmanager26-png/fund-holdings-data@main/catalog/filings.json'
 # pick a child AMFI from catalog, read portfolio_id, then:
-curl -sS 'https://cdn.jsdelivr.net/gh/kushagra-agarwal-a/fund-holdings-data@main/portfolios/latest/152310.json' | head -c 400
-curl -sS 'https://cdn.jsdelivr.net/gh/kushagra-agarwal-a/fund-holdings-data@main/portfolios/asof/2026-06-30/152310.json' | head -c 200
+curl -sS 'https://cdn.jsdelivr.net/gh/subscriptionmanager26-png/fund-holdings-data@main/portfolios/latest/152310.json' | head -c 400
+curl -sS 'https://cdn.jsdelivr.net/gh/subscriptionmanager26-png/fund-holdings-data@main/portfolios/asof/2026-06-30/152310.json' | head -c 200
 ```
 
 ## Quotas

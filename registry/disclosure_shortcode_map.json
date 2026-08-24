@@ -1566,7 +1566,9 @@
     {
       "amc_id": "angel-one-mutual-fund",
       "shortcode": "Angel One Nifty Total Market Momentum Quality 50 ETF",
-      "aliases": [],
+      "aliases": [
+        "Angel One Nifty Total Market Momentum Quality 50 ETF"
+      ],
       "canonical_amfi_code": "153957",
       "amfi_base_name": "ANGEL ONE NIFTY TOTAL MARKET MOMENTUM QUALITY 50 ETF",
       "disclosure_label": "Angel One Nifty Total Market Momentum Quality 50 ETF",
@@ -1578,7 +1580,11 @@
     {
       "amc_id": "angel-one-mutual-fund",
       "shortcode": "Angel One Nifty Total Market Momentum Quality 50 Index Fund",
-      "aliases": [],
+      "aliases": [
+        "Angel One Nifty Total Market Mo",
+        "Angel One Nifty Total Market Momentum Quality 50 INDEX",
+        "Angel One Nifty Total Market Momentum Quality 50 Index"
+      ],
       "canonical_amfi_code": "153956",
       "amfi_base_name": "ANGEL ONE NIFTY TOTAL MARKET MOMENTUM QUALITY 50 INDEX FUND",
       "disclosure_label": "Angel One Nifty Total Market Momentum Quality 50 Index Fund",
@@ -5096,7 +5102,10 @@
     {
       "amc_id": "capitalmind-mutual-fund",
       "shortcode": "CMARB",
-      "aliases": [],
+      "aliases": [
+        "CMARB_30th June 2026",
+        "CMARB_July 31, 2026"
+      ],
       "canonical_amfi_code": "154236",
       "amfi_base_name": "Capitalmind Arbitrage Fund",
       "disclosure_label": "Capitalmind Arbitrage Fund",
@@ -5108,7 +5117,12 @@
     {
       "amc_id": "capitalmind-mutual-fund",
       "shortcode": "CMFLEXI",
-      "aliases": [],
+      "aliases": [
+        "CMFCF",
+        "CMFCF_June 30, 2026",
+        "CMFCF_June 30_ 2026",
+        "CMFLEXI_July 31, 2026"
+      ],
       "canonical_amfi_code": "153738",
       "amfi_base_name": "CAPITALMIND FLEXI CAP FUND",
       "disclosure_label": "Capitalmind Flexi Cap Fund",
@@ -5120,7 +5134,16 @@
     {
       "amc_id": "capitalmind-mutual-fund",
       "shortcode": "CMLIQ",
-      "aliases": [],
+      "aliases": [
+        "CMLF",
+        "CMLF_July 15, 2026",
+        "CMLF_July 31, 2026",
+        "CMLF_August 15, 2026",
+        "CMLF_June 15, 2026",
+        "CMLF_June 15_ 2026",
+        "CMLF_June 30, 2026",
+        "CMLF_June 30_ 2026"
+      ],
       "canonical_amfi_code": "154011",
       "amfi_base_name": "Capitalmind Liquid Fund",
       "disclosure_label": "Capitalmind Liquid Fund",
@@ -5132,7 +5155,10 @@
     {
       "amc_id": "capitalmind-mutual-fund",
       "shortcode": "CMMAAF",
-      "aliases": [],
+      "aliases": [
+        "CMMAAF_30th June 2026",
+        "CMMAAF_July 31, 2026"
+      ],
       "canonical_amfi_code": "154232",
       "amfi_base_name": "Capitalmind Multi Asset Allocation Fund",
       "disclosure_label": "Capitalmind Multi Asset Allocation Fund",
@@ -19606,7 +19632,10 @@
     {
       "amc_id": "old-bridge-mutual-fund",
       "shortcode": "OBFE",
-      "aliases": [],
+      "aliases": [
+        "OBFCE",
+        "OBFE"
+      ],
       "canonical_amfi_code": "152358",
       "amfi_base_name": "Old Bridge Focused Fund",
       "disclosure_label": "Old Bridge Focused Fund",
@@ -19618,7 +19647,10 @@
     {
       "amc_id": "old-bridge-mutual-fund",
       "shortcode": "OBFX",
-      "aliases": [],
+      "aliases": [
+        "OBFLX",
+        "OBFX"
+      ],
       "canonical_amfi_code": "154225",
       "amfi_base_name": "Old Bridge Flexi Cap Fund",
       "disclosure_label": "Old Bridge Flexi Cap Fund",
@@ -19750,13 +19782,29 @@
     {
       "amc_id": "pgim-india-mutual-fund",
       "shortcode": "HEALTHCARE",
-      "aliases": [],
+      "aliases": [
+        "PGIM INDIA HEALTHCARE FUND"
+      ],
       "canonical_amfi_code": "153039",
       "amfi_base_name": "PGIM India Healthcare Fund",
       "disclosure_label": "PGIM INDIA HEALTHCARE FUND",
       "confidence": "seeded",
       "source": "shortcode",
       "first_seen_period": "2026-06",
+      "last_verified_period": "latest"
+    },
+    {
+      "amc_id": "pgim-india-mutual-fund",
+      "shortcode": "Money Market",
+      "aliases": [
+        "PGIM INDIA MONEY MARKET FUND"
+      ],
+      "canonical_amfi_code": "148161",
+      "amfi_base_name": "PGIM India Money Market Fund",
+      "disclosure_label": "PGIM INDIA MONEY MARKET FUND",
+      "confidence": "seeded",
+      "source": "shortcode",
+      "first_seen_period": "2026-07",
       "last_verified_period": "latest"
     },
     {
@@ -25808,7 +25856,11 @@
     {
       "amc_id": "zerodha-mutual-fund",
       "shortcode": "ZLIQD",
-      "aliases": [],
+      "aliases": [
+        "ZERODHA NIFTY 1D RATE LIQUID ETF",
+        "Zerodha Nifty 1D Rate Liquid ETF",
+        "Zerodha Nifty 1D Rate Liquid ETF - Growth"
+      ],
       "canonical_amfi_code": "152327",
       "amfi_base_name": "Zerodha Nifty 1D Rate Liquid ETF - Growth",
       "disclosure_label": "ZERODHA NIFTY 1D RATE LIQUID ETF",
@@ -25820,7 +25872,12 @@
     {
       "amc_id": "zerodha-mutual-fund",
       "shortcode": "ZLTGC",
-      "aliases": [],
+      "aliases": [
+        "ZERODHA NIFTY 8-13 YR G-SEC ETF",
+        "ZERODHA NIFTY 8-13 Yr G-Sec ETF",
+        "Zerodha Nifty 8 - 13 Yr G - Sec ETF",
+        "Zerodha Nifty 8-13 Yr G-Sec ETF"
+      ],
       "canonical_amfi_code": "153811",
       "amfi_base_name": "Zerodha Nifty 8 - 13 Yr G - Sec ETF",
       "disclosure_label": "ZERODHA NIFTY 8-13 Yr G-Sec ETF",
@@ -25892,7 +25949,11 @@
     {
       "amc_id": "zerodha-mutual-fund",
       "shortcode": "ZNSDG",
-      "aliases": [],
+      "aliases": [
+        "ZERODHA NIFTY SHORT DURATION G-SEC INDEX FUND",
+        "Zerodha Nifty Short Duration G - Sec Index Fund",
+        "Zerodha Nifty Short Duration G-Sec Index Fund"
+      ],
       "canonical_amfi_code": "154109",
       "amfi_base_name": "Zerodha Nifty Short Duration G - Sec Index Fund",
       "disclosure_label": "ZERODHA NIFTY SHORT DURATION G-SEC INDEX FUND",
@@ -25904,7 +25965,10 @@
     {
       "amc_id": "zerodha-mutual-fund",
       "shortcode": "ZOVER",
-      "aliases": [],
+      "aliases": [
+        "ZERODHA OVERNIGHT FUND",
+        "Zerodha Overnight Fund"
+      ],
       "canonical_amfi_code": "153436",
       "amfi_base_name": "Zerodha Overnight Fund",
       "disclosure_label": "ZERODHA OVERNIGHT FUND",
@@ -25975,6 +26039,44 @@
       "source": "gap_fix",
       "first_seen_period": "2026-07",
       "last_verified_period": "2026-07"
+    },
+    {
+      "amc_id": "uti-mutual-fund",
+      "shortcode": "UTI - Credit Risk Fund.",
+      "aliases": [
+        "UTI - Credit Risk Fund"
+      ],
+      "canonical_amfi_code": "117981",
+      "amfi_base_name": "UTI - Credit Risk Fund.",
+      "disclosure_label": "UTI - Credit Risk Fund.",
+      "confidence": "manual",
+      "source": "fortnightly_label",
+      "first_seen_period": "2026-07-15",
+      "last_verified_period": "2026-07-15"
+    },
+    {
+      "amc_id": "uti-mutual-fund",
+      "shortcode": "UTI - Medium Term Fund ( Segregated - 06032020)",
+      "aliases": [],
+      "canonical_amfi_code": "148246",
+      "amfi_base_name": "UTI - Medium Term Fund ( Segregated - 06032020",
+      "disclosure_label": "UTI - Medium Term Fund ( Segregated - 06032020)",
+      "confidence": "manual",
+      "source": "fortnightly_label",
+      "first_seen_period": "2026-07-15",
+      "last_verified_period": "2026-07-15"
+    },
+    {
+      "amc_id": "uti-mutual-fund",
+      "shortcode": "UTI - Money Market Fund",
+      "aliases": [],
+      "canonical_amfi_code": "100723",
+      "amfi_base_name": "UTI - Money Market Fund",
+      "disclosure_label": "UTI - Money Market Fund",
+      "confidence": "manual",
+      "source": "fortnightly_label",
+      "first_seen_period": "2026-07-15",
+      "last_verified_period": "2026-07-15"
     }
   ]
 }

@@ -1,11 +1,14 @@
 #!/usr/bin/env node
 /**
- * Collect portfolios for a calendar as-of date from data/parsed/{cadence}/{YYYY-MM}.
+ * Collect portfolios for a calendar as-of date from data/parsed/{cadence}/{period}/.
  *
- * Used by sync-holdings-to-github.mjs for historical trees:
- *   portfolios/asof/YYYY-MM-DD/{portfolio_id}.json
+ * Canonical layout (local + GitHub):
+ *   data/parsed/{cadence}/{YYYY-MM-DD}/{amc}/{fund}/portfolio.json   ← preferred
+ *   portfolios/asof/{YYYY-MM-DD}/{portfolio_id}.json                 ← CDN
+ *
+ * Legacy period folders (YYYY-MM) are still scanned as fallbacks.
  */
-import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync, unlinkSync } from "node:fs";
 import { join } from "node:path";
 import { disclosurePeriodCandidates } from "../../scrapers/node/lib/disclosurePeriod.js";
 
@@ -44,6 +47,20 @@ function walkPortfolioFiles(dir, out = []) {
   return out;
 }
 
+/** Resolve parent portfolio book id (share-class → shared holdings file). */
+export function resolvePortfolioId(meta, catalogLookup) {
+  const amfi = String(meta?.amfi_code || meta?.scheme_id || "").trim();
+  if (!/^\d{4,8}$/.test(amfi)) return "";
+  const row = catalogLookup?.[amfi];
+  if (row?.portfolio_id && /^\d{4,8}$/.test(String(row.portfolio_id))) {
+    return String(row.portfolio_id);
+  }
+  if (row?.parent_amfi && /^\d{4,8}$/.test(String(row.parent_amfi))) {
+    return String(row.parent_amfi);
+  }
+  return amfi;
+}
+
 /**
  * @returns {Map<string, { portfolio_id: string, local_path: string, meta: object, members: string[] }>}
  */
@@ -74,7 +91,7 @@ export function collectAsOfPortfolios({
       const meta = payload?.meta || {};
       const fileAsOf = String(meta.as_of || meta.as_of || "").slice(0, 10);
       if (fileAsOf !== asOf) continue;
-      const id = String(meta.amfi_code || meta.scheme_id || "").trim();
+      const id = resolvePortfolioId(meta, catalogLookup);
       if (!/^\d{4,8}$/.test(id)) continue;
 
       const rel = abs.startsWith(root) ? abs.slice(root.length + 1) : abs;
@@ -106,10 +123,13 @@ export function collectAsOfPortfolios({
   // Attach sibling share-classes from catalog when available
   if (catalogLookup) {
     for (const row of Object.values(catalogLookup)) {
-      const pid = String(row.portfolio_id || row.parent_amfi || row.amfi_code || "");
+      const amfi = String(row.amfi_code || "").trim();
+      const pid = String(
+        row.portfolio_id || row.parent_amfi || row.amfi_code || "",
+      ).trim();
+      if (!/^\d{4,8}$/.test(pid)) continue;
       const entry = byId.get(pid);
       if (!entry) continue;
-      const amfi = String(row.amfi_code || "");
       if (amfi && !entry.members.includes(amfi)) entry.members.push(amfi);
     }
   }
@@ -136,24 +156,60 @@ export function mergeFilings(existing, next) {
   };
 }
 
-export function attachAvailableAsOf(catalog, asOfDatesByPortfolio) {
+/** Parent portfolio ids used to ignore stale child-keyed asof files. */
+export function parentPortfolioIds(catalog) {
+  const ids = new Set();
+  for (const row of Object.values(catalog || {})) {
+    const pid = String(row?.portfolio_id || "").trim();
+    if (/^\d{4,8}$/.test(pid)) ids.add(pid);
+  }
+  return ids;
+}
+
+export function portfolioAsofKey(asOf, portfolioId) {
+  return `portfolios/asof/${asOf}/${portfolioId}.json`;
+}
+
+export function attachAvailableAsOf(catalog, asOfDatesByPortfolio, { cdnUrlFn } = {}) {
   const out = { ...catalog };
   for (const [code, row] of Object.entries(out)) {
-    const pid = row?.portfolio_id ? String(row.portfolio_id) : "";
+    if (!row || typeof row !== "object") continue;
+    const pid = String(
+      row.portfolio_id || row.parent_amfi || row.amfi_code || "",
+    ).trim();
     const dates = pid ? asOfDatesByPortfolio.get(pid) : null;
     if (dates?.size) {
+      const available = [...dates].sort().reverse();
+      const latest = available[0] || null;
+      const portfolio_key =
+        latest && pid ? portfolioAsofKey(latest, pid) : row.portfolio_key ?? null;
       out[code] = {
         ...row,
-        available_as_of: [...dates].sort().reverse(),
+        portfolio_id: row.portfolio_id || pid,
+        available_as_of: available,
+        latest_as_of: latest,
+        portfolio_key,
+        portfolio_url:
+          portfolio_key && cdnUrlFn
+            ? cdnUrlFn(portfolio_key)
+            : row.portfolio_url ?? null,
       };
+    } else if ("available_as_of" in row || "latest_as_of" in row) {
+      const { available_as_of: _a, latest_as_of: _l, ...rest } = row;
+      out[code] = rest;
     }
   }
   return out;
 }
 
-export function scanExistingAsOfDirs(outDir) {
+/**
+ * Scan on-disk asof trees. When catalog is provided, ignore child-AMFI duplicate
+ * filenames (legacy sync artefact).
+ */
+export function scanExistingAsOfDirs(outDir, catalog = null) {
   /** @type {Map<string, Set<string>>} portfolio_id → as_of dates */
   const map = new Map();
+  const parentIds = catalog ? parentPortfolioIds(catalog) : null;
   const asofRoot = join(outDir, "portfolios", "asof");
   if (!existsSync(asofRoot)) return map;
   for (const date of readdirSync(asofRoot)) {
@@ -169,9 +225,89 @@ export function scanExistingAsOfDirs(outDir) {
     for (const name of readdirSync(dir)) {
       if (!name.endsWith(".json")) continue;
       const id = name.replace(/\.json$/, "");
+      if (!/^\d{4,8}$/.test(id)) continue;
+      if (parentIds?.size && !parentIds.has(id)) continue;
       if (!map.has(id)) map.set(id, new Set());
       map.get(id).add(date);
     }
   }
   return map;
+}
+
+/** Count deduped parent portfolio files in one asof directory. */
+export function countDedupedAsOfDir(asOfDir, catalog) {
+  if (!existsSync(asOfDir)) return 0;
+  const parentIds = parentPortfolioIds(catalog);
+  if (!parentIds.size) {
+    return readdirSync(asOfDir).filter((n) => n.endsWith(".json")).length;
+  }
+  let count = 0;
+  for (const name of readdirSync(asOfDir)) {
+    if (!name.endsWith(".json")) continue;
+    const id = name.replace(/\.json$/, "");
+    if (parentIds.has(id)) count += 1;
+  }
+  return count;
+}
+
+/** Remove stale asof JSON not in keepIds (and always drop child-AMFI duplicate keys). */
+export function pruneOrphanAsOfPortfolios(outDir, asOf, keepIds, catalog = null) {
+  const dir = join(outDir, "portfolios", "asof", asOf);
+  if (!existsSync(dir)) return 0;
+  const keep = new Set([...keepIds].map((id) => `${id}.json`));
+  const parentIds = catalog ? parentPortfolioIds(catalog) : null;
+  let removed = 0;
+  for (const name of readdirSync(dir)) {
+    if (!name.endsWith(".json")) continue;
+    const id = name.replace(/\.json$/, "");
+    const isChildDuplicate = parentIds?.size && !parentIds.has(id);
+    if (!keep.has(name) || isChildDuplicate) {
+      unlinkSync(join(dir, name));
+      removed += 1;
+    }
+  }
+  return removed;
+}
+
+/** Rebuild catalog/filings.json rows from on-disk asof dirs (deduped counts). */
+export function buildFilingsFromAsOfDirs(outDir, catalog, priorFilings = []) {
+  const priorByDate = new Map(
+    (priorFilings || []).map((f) => [`${f.as_of}::${f.cadence || ""}`, f]),
+  );
+  const asofRoot = join(outDir, "portfolios", "asof");
+  if (!existsSync(asofRoot)) {
+    return {
+      generated_at: new Date().toISOString(),
+      filings: [...priorByDate.values()].sort((a, b) =>
+        String(b.as_of).localeCompare(String(a.as_of)),
+      ),
+    };
+  }
+  for (const date of readdirSync(asofRoot)) {
+    if (!AS_OF_RE.test(date)) continue;
+    const dir = join(asofRoot, date);
+    let st;
+    try {
+      st = statSync(dir);
+    } catch {
+      continue;
+    }
+    if (!st.isDirectory()) continue;
+    const count = countDedupedAsOfDir(dir, catalog);
+    const cadenceGuess =
+      priorByDate.get(`${date}::fortnightly`)?.cadence ||
+      priorByDate.get(`${date}::monthly`)?.cadence ||
+      (date.endsWith("-15") ? "fortnightly" : "monthly");
+    priorByDate.set(`${date}::${cadenceGuess}`, {
+      as_of: date,
+      cadence: cadenceGuess,
+      portfolio_count: count,
+    });
+  }
+  return {
+    generated_at: new Date().toISOString(),
+    filings: [...priorByDate.values()].sort((a, b) =>
+      String(b.as_of).localeCompare(String(a.as_of)),
+    ),
+  };
 }

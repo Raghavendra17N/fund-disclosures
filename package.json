@@ -26,11 +26,10 @@
     "amfi:match:reuse": ".venv/bin/python3 matching/match_disclosure_amfi.py --amfi-funds=data/amfi/funds_asof_2026-07-31.json --shortcode-map=registry/disclosure_shortcode_map.json",
     "amfi:new-parents": ".venv/bin/python3 matching/incremental_new_parents.py",
     "amfi:coverage": ".venv/bin/python3 matching/rebuild_catalog_coverage.py",
+    "amfi:debt-dashboard": ".venv/bin/python3 scripts/debt_coverage_dashboard.py --refresh",
     "export:mapping": ".venv/bin/python3 matching/export_mapping_xlsx.py",
     "holdings:catalog": ".venv/bin/python3 scripts/build_holdings_browser_catalog.py",
-    "holdings:browse": ".venv/bin/python3 holdings-browser/server.py",
-    "holdings:sync": "node scripts/sync-holdings-to-github.mjs",
-    "holdings:sync:asof": "node scripts/sync-asof-holdings-to-github.mjs"
+    "holdings:browse": ".venv/bin/python3 holdings-browser/server.py"
   },
   "engines": {
     "node": ">=20"

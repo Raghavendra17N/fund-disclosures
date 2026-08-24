@@ -50,37 +50,66 @@ def load_amc_names() -> dict[str, dict]:
     return out
 
 
-def load_shortcode_map() -> dict[str, dict]:
+def name_key(s: str | None) -> str:
+    if not s:
+        return ""
+    t = re.sub(r"\(.*?\)", " ", s, flags=re.S)
+    t = re.sub(r"[^a-z0-9 ]", " ", t.lower())
+    return re.sub(r"\s+", " ", t).strip()
+
+
+def _register_map_keys(
+    out: dict[str, dict],
+    by_name: dict[str, dict],
+    amc_id: str,
+    payload: dict,
+    *labels: str | None,
+) -> None:
+    for label in labels:
+        if not label:
+            continue
+        label = label.strip()
+        if not label:
+            continue
+        keys = {label, label.casefold()}
+        compact = normalize_shortcode(label)
+        if compact:
+            keys.add(compact)
+        for k in keys:
+            out.setdefault(f"{amc_id}::{k}", payload)
+        nk = name_key(label)
+        if nk:
+            by_name.setdefault(f"{amc_id}::{nk}", payload)
+
+
+def load_shortcode_map() -> tuple[dict[str, dict], dict[str, dict]]:
     data = json.loads(MAP_PATH.read_text(encoding="utf-8"))
     out: dict[str, dict] = {}
+    by_name: dict[str, dict] = {}
     for row in data.get("entries") or []:
         amc_id = (row.get("amc_id") or "").strip()
         raw = (row.get("shortcode") or "").strip()
         amfi = str(row.get("canonical_amfi_code") or "").strip()
         if not amc_id or not raw or not amfi:
             continue
-        compact = normalize_shortcode(raw)
-        keys = {raw, raw.casefold()}
-        if compact:
-            keys.add(compact)
-        for alias in row.get("aliases") or []:
-            a = (alias or "").strip()
-            if not a:
-                continue
-            keys.add(a)
-            keys.add(a.casefold())
-            ac = normalize_shortcode(a)
-            if ac:
-                keys.add(ac)
         payload = {
             "amfi_code": amfi,
             "amfi_name": row.get("amfi_base_name") or row.get("disclosure_label"),
             "map_shortcode": raw,
             "confidence": row.get("confidence"),
         }
-        for k in keys:
-            out.setdefault(f"{amc_id}::{k}", payload)
-    return out
+        _register_map_keys(out, by_name, amc_id, payload, raw)
+        for alias in row.get("aliases") or []:
+            _register_map_keys(out, by_name, amc_id, payload, alias)
+        _register_map_keys(
+            out,
+            by_name,
+            amc_id,
+            payload,
+            row.get("disclosure_label"),
+            row.get("amfi_base_name"),
+        )
+    return out, by_name
 
 
 DATE_TAIL = re.compile(
@@ -111,12 +140,22 @@ def peel_labels(*labels: str | None) -> list[str]:
     return out
 
 
-def resolve_amfi(amap: dict, amc_id: str, *labels: str | None) -> dict | None:
+def resolve_amfi(
+    amap: dict[str, dict],
+    by_name: dict[str, dict],
+    amc_id: str,
+    *labels: str | None,
+) -> dict | None:
     for label in peel_labels(*labels):
         for key in (label, label.casefold(), normalize_shortcode(label)):
             if not key:
                 continue
             hit = amap.get(f"{amc_id}::{key}")
+            if hit:
+                return hit
+        nk = name_key(label)
+        if nk:
+            hit = by_name.get(f"{amc_id}::{nk}")
             if hit:
                 return hit
     return None
@@ -234,7 +273,7 @@ def main() -> int:
         return lock_cp.returncode
 
     roots = [parsed_root for _, _, parsed_root in _period_roots()]
-    amap = load_shortcode_map()
+    amap, by_name = load_shortcode_map()
     amcs = load_amc_names()
     best: dict[tuple[str, str], dict] = {}
 
@@ -249,6 +288,8 @@ def main() -> int:
             if JUNK_FOLDER.match(folder) or JUNK_FOLDER.match(s.get("shortcode") or ""):
                 continue
             payload = json.loads(pj.read_text(encoding="utf-8"))
+            if isinstance(payload, list):
+                continue
             meta = payload.get("meta") or {}
             as_of = meta.get("as_of") or s.get("as_of")
             shortcode = meta.get("shortcode") or s.get("shortcode")
@@ -259,7 +300,9 @@ def main() -> int:
                 or folder.casefold()
             )
             key = (amc_id, identity)
-            amfi = resolve_amfi(amap, amc_id, shortcode, scheme_name, folder, s.get("scheme"))
+            amfi = resolve_amfi(
+                amap, by_name, amc_id, shortcode, scheme_name, folder, s.get("scheme")
+            )
             amc_info = amcs.get(amc_id) or {}
             scheme_id = (amfi or {}).get("amfi_code") or shortcode or folder
             ident = {

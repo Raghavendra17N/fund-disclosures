@@ -189,7 +189,18 @@ def parse_navall(text: str) -> list[AmfiScheme]:
         parts = line.split(";")
         if len(parts) < 6:
             continue
-        code, isin1, isin2, name, nav, date = parts[0], parts[1], parts[2], parts[3], parts[4], parts[5]
+        # NAVAll layout changed ~2024: optional Plan + Option columns before NAV + Date.
+        if len(parts) >= 8:
+            code, isin1, isin2, name, nav, date = (
+                parts[0],
+                parts[1],
+                parts[2],
+                parts[3],
+                parts[6],
+                parts[7],
+            )
+        else:
+            code, isin1, isin2, name, nav, date = parts[0], parts[1], parts[2], parts[3], parts[4], parts[5]
         code = code.strip()
         if not code.isdigit():
             continue

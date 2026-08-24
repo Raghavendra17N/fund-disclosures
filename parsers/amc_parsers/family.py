@@ -263,7 +263,14 @@ def parse_file(
                     continue
                 if family == "cams":
                     scheme = extract_scheme_name_cams(rows) or extract_title_scheme(rows, sheet_name)
-                    shortcode = sheet_name.strip() or None
+                    if re.search(r"(?i)^name\s+of\s+the\s", scheme or ""):
+                        scheme = extract_title_scheme(rows, sheet_name) or wb_path.stem
+                    sc = (sheet_name or "").strip()
+                    if sc and sc.lower() not in {"sheet", "index", "contents", "cover", "notes"}:
+                        shortcode = sc
+                    else:
+                        m = re.match(r"^([A-Z0-9]+)", wb_path.stem.upper())
+                        shortcode = m.group(1) if m else None
                     code_pref = True if prefer_leading_code is None else prefer_leading_code
                     # cams almost always has leading codes
                     code_pref = True

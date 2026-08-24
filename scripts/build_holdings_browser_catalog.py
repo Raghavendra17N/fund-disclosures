@@ -340,6 +340,7 @@ def main() -> int:
             "amc_name": r.get("amc_name"),
             "parent_name": r.get("parent_name"),
             "parent_amfi": r.get("parent_amfi"),
+            "portfolio_id": r.get("parent_amfi") if r.get("has_holdings") and r.get("parent_amfi") else None,
             "nav": r.get("nav"),
             "nav_date": r.get("nav_date"),
             "isin": r.get("isin"),
