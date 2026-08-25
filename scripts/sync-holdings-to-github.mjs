@@ -335,12 +335,7 @@ function writeFilingsAndCatalogAvailability(catalog) {
   const withDates = attachAvailableAsOf(catalog, asOfMap, { cdnUrlFn: cdnUrl });
   writeJson(join(outDir, "catalog/amfi-lookup.json"), withDates);
 
-  const prior = loadExistingFilings();
-  const merged = buildFilingsFromAsOfDirs(
-    outDir,
-    withDates,
-    prior.filings || [],
-  );
+  const merged = buildFilingsFromAsOfDirs(outDir, withDates);
   writeJson(join(outDir, "catalog/filings.json"), merged);
   return { catalog: withDates, filings: merged };
 }

@@ -1,19 +1,15 @@
 #!/usr/bin/env node
 /**
- * Drop portfolios/asof folders older than a rolling N-month window and refresh
- * catalog/filings.json + catalog/amfi-lookup.json + meta.json.
+ * Recompute catalog/filings.json from portfolios/asof/* on-disk counts and push.
+ * Use after fixing buildFilingsFromAsOfDirs or when filings rows drift from reality.
  *
- * Usage:
- *   node scripts/prune-retention-asof.mjs --months=3 --dry-run
- *   node scripts/prune-retention-asof.mjs --months=3 --push
+ *   node scripts/refresh-filings-catalog.mjs --dry-run
+ *   node scripts/refresh-filings-catalog.mjs --push
  */
 import {
   existsSync,
   mkdirSync,
-  readdirSync,
   readFileSync,
-  rmSync,
-  statSync,
   writeFileSync,
 } from "node:fs";
 import { dirname, join } from "node:path";
@@ -32,8 +28,6 @@ const OWNER = process.env.HOLDINGS_DATA_OWNER || "kushagra-agarwal-a";
 const REPO = process.env.HOLDINGS_DATA_REPO || "fund-holdings-data";
 const BRANCH = process.env.HOLDINGS_DATA_BRANCH || "main";
 
-const AS_OF_RE = /^\d{4}-\d{2}-\d{2}$/;
-
 function argValue(name, fallback = null) {
   const prefix = `--${name}=`;
   const hit = process.argv.find((a) => a.startsWith(prefix));
@@ -45,7 +39,6 @@ function hasFlag(name) {
 
 const dryRun = hasFlag("dry-run");
 const doPush = hasFlag("push");
-const months = Math.max(1, Number(argValue("months", "3")) || 3);
 const outDir = argValue("out", join(ROOT, ".tmp/fund-holdings-data"));
 
 function ensureDir(p) {
@@ -90,35 +83,6 @@ function initOrClone() {
   ensureDir(outDir);
 }
 
-function listAsOfDates() {
-  const asofRoot = join(outDir, "portfolios", "asof");
-  if (!existsSync(asofRoot)) return [];
-  return readdirSync(asofRoot)
-    .filter((d) => AS_OF_RE.test(d))
-    .sort();
-}
-
-/** First day of month N months before anchor month (UTC). */
-function retentionCutoff(latestMonthEnd, monthCount) {
-  const [y, m] = latestMonthEnd.slice(0, 7).split("-").map(Number);
-  const anchor = new Date(Date.UTC(y, m - 1, 1));
-  anchor.setUTCMonth(anchor.getUTCMonth() - (monthCount - 1));
-  const cy = anchor.getUTCFullYear();
-  const cm = String(anchor.getUTCMonth() + 1).padStart(2, "0");
-  return `${cy}-${cm}-01`;
-}
-
-function latestMonthEnd(dates) {
-  const monthEnds = dates.filter((d) => {
-    const day = Number(d.slice(8, 10));
-    const [y, m] = d.slice(0, 7).split("-").map(Number);
-    const last = new Date(Date.UTC(y, m, 0)).getUTCDate();
-    return day === last;
-  });
-  if (monthEnds.length) return monthEnds.sort().at(-1);
-  return dates.sort().at(-1) || null;
-}
-
 function pushWithPin(message) {
   run("git", ["-C", outDir, "add", "-A"]);
   const st = spawnSync("git", ["-C", outDir, "status", "--porcelain"], {
@@ -141,7 +105,6 @@ function pushWithPin(message) {
   ]);
   run("git", ["-C", outDir, "remote", "set-url", "origin", gitTokenUrl()]);
   run("git", ["-C", outDir, "push", "-u", "origin", `HEAD:${BRANCH}`]);
-
   const shaRes = spawnSync("git", ["-C", outDir, "rev-parse", "HEAD"], {
     encoding: "utf8",
   });
@@ -150,85 +113,44 @@ function pushWithPin(message) {
 
 initOrClone();
 
-const dates = listAsOfDates();
-if (!dates.length) {
-  console.log("No as-of folders found.");
+const catalogPath = join(outDir, "catalog/amfi-lookup.json");
+let catalog = {};
+if (existsSync(catalogPath)) {
+  try {
+    catalog = JSON.parse(readFileSync(catalogPath, "utf8"));
+  } catch {
+    catalog = {};
+  }
+}
+
+const asOfMap = scanExistingAsOfDirs(outDir, catalog);
+const withDates = attachAvailableAsOf(catalog, asOfMap, { cdnUrlFn: cdnUrl });
+const filingsDoc = buildFilingsFromAsOfDirs(outDir, withDates);
+
+console.log(JSON.stringify(filingsDoc, null, 2));
+
+if (dryRun) {
+  console.log("\nDry run — no files written.");
   process.exit(0);
 }
 
-const anchor = latestMonthEnd(dates);
-const cutoff = retentionCutoff(anchor, months);
-const toDrop = dates.filter((d) => d < cutoff);
-const toKeep = dates.filter((d) => d >= cutoff);
+writeJson(catalogPath, withDates);
+writeJson(join(outDir, "catalog/filings.json"), filingsDoc);
 
-console.log(
-  JSON.stringify(
-    {
-      months,
-      anchor,
-      retention_cutoff: cutoff,
-      keep: toKeep,
-      drop: toDrop,
-      dry_run: dryRun,
-      push: doPush,
-      out: outDir,
-    },
-    null,
-    2,
-  ),
-);
+const metaPath = join(outDir, "meta.json");
+const meta = existsSync(metaPath)
+  ? JSON.parse(readFileSync(metaPath, "utf8"))
+  : {};
+meta.filings_count = filingsDoc.filings.length;
+meta.filings_refreshed_at = filingsDoc.generated_at;
+writeJson(metaPath, meta);
 
-if (!toDrop.length) {
-  console.log("Nothing to prune.");
-  process.exit(0);
-}
-
-if (!dryRun) {
-  for (const date of toDrop) {
-    const dir = join(outDir, "portfolios", "asof", date);
-    if (existsSync(dir)) {
-      rmSync(dir, { recursive: true, force: true });
-      console.log(`Removed portfolios/asof/${date}/`);
-    }
-  }
-
-  const catalogPath = join(outDir, "catalog/amfi-lookup.json");
-  let catalog = {};
-  if (existsSync(catalogPath)) {
-    try {
-      catalog = JSON.parse(readFileSync(catalogPath, "utf8"));
-    } catch {
-      catalog = {};
-    }
-  }
-
-  const asOfMap = scanExistingAsOfDirs(outDir, catalog);
-  const withDates = attachAvailableAsOf(catalog, asOfMap, { cdnUrlFn: cdnUrl });
-  writeJson(catalogPath, withDates);
-
-  const filingsDoc = buildFilingsFromAsOfDirs(outDir, withDates);
-  writeJson(join(outDir, "catalog/filings.json"), filingsDoc);
-
-  const metaPath = join(outDir, "meta.json");
-  const meta = existsSync(metaPath)
-    ? JSON.parse(readFileSync(metaPath, "utf8"))
-    : {};
-  meta.retention_cutoff = cutoff;
-  meta.retention_months = months;
-  meta.retention_pruned_at = new Date().toISOString();
-  meta.retention_dropped_as_of = toDrop;
-  writeJson(metaPath, meta);
-}
-
-if (doPush && !dryRun) {
-  const commit = pushWithPin(
-    `chore(retention): prune as-of before ${cutoff} (${toDrop.length} folder(s))`,
-  );
+if (doPush) {
+  const commit = pushWithPin("fix: rebuild filings.json from on-disk as-of counts");
   if (commit) {
-    const metaPath = join(outDir, "meta.json");
-    const meta = JSON.parse(readFileSync(metaPath, "utf8"));
     meta.commit = commit;
     meta.raw_base = `https://raw.githubusercontent.com/${OWNER}/${REPO}/${commit}`;
+    meta.cdn_filings = `${meta.raw_base}/catalog/filings.json`;
     writeJson(metaPath, meta);
     run("git", ["-C", outDir, "add", "meta.json"]);
     run("git", [
@@ -240,9 +162,11 @@ if (doPush && !dryRun) {
       "user.name=holdings-sync",
       "commit",
       "-m",
-      `meta: pin retention commit ${commit.slice(0, 7)}`,
+      `meta: pin filings refresh ${commit.slice(0, 7)}`,
     ]);
     run("git", ["-C", outDir, "push", "-u", "origin", `HEAD:${BRANCH}`]);
     console.log(`Pushed → https://github.com/${OWNER}/${REPO}\nPinned → ${commit}`);
   }
+} else {
+  console.log(`\nWrote ${join(outDir, "catalog/filings.json")} (use --push to publish)`);
 }

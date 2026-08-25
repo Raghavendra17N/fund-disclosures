@@ -289,18 +289,24 @@ export function pruneOrphanAsOfPortfolios(
   return removed;
 }
 
-/** Rebuild catalog/filings.json rows from on-disk asof dirs (deduped counts). */
-export function buildFilingsFromAsOfDirs(outDir, catalog, priorFilings = []) {
-  const priorByDate = new Map(
-    (priorFilings || []).map((f) => [`${f.as_of}::${f.cadence || ""}`, f]),
-  );
+/** Infer disclosure cadence from calendar as-of (one CDN folder per date). */
+export function cadenceForAsOf(asOf) {
+  const s = normalizeAsOf(asOf);
+  if (!AS_OF_RE.test(s)) return "fortnightly";
+  const day = Number(s.slice(8, 10));
+  if (day === 15) return "fortnightly";
+  if (isMonthEndAsOf(s)) return "monthly";
+  return day <= 15 ? "fortnightly" : "monthly";
+}
+
+/** Rebuild catalog/filings.json rows from on-disk as-of dirs (deduped counts). */
+export function buildFilingsFromAsOfDirs(outDir, catalog) {
   const asofRoot = join(outDir, "portfolios", "asof");
+  const filings = [];
   if (!existsSync(asofRoot)) {
     return {
       generated_at: new Date().toISOString(),
-      filings: [...priorByDate.values()].sort((a, b) =>
-        String(b.as_of).localeCompare(String(a.as_of)),
-      ),
+      filings,
     };
   }
   for (const date of readdirSync(asofRoot)) {
@@ -314,20 +320,16 @@ export function buildFilingsFromAsOfDirs(outDir, catalog, priorFilings = []) {
     }
     if (!st.isDirectory()) continue;
     const count = countDedupedAsOfDir(dir, catalog);
-    const cadenceGuess =
-      priorByDate.get(`${date}::fortnightly`)?.cadence ||
-      priorByDate.get(`${date}::monthly`)?.cadence ||
-      (date.endsWith("-15") ? "fortnightly" : "monthly");
-    priorByDate.set(`${date}::${cadenceGuess}`, {
+    if (count <= 0) continue;
+    filings.push({
       as_of: date,
-      cadence: cadenceGuess,
+      cadence: cadenceForAsOf(date),
       portfolio_count: count,
     });
   }
+  filings.sort((a, b) => String(b.as_of).localeCompare(String(a.as_of)));
   return {
     generated_at: new Date().toISOString(),
-    filings: [...priorByDate.values()].sort((a, b) =>
-      String(b.as_of).localeCompare(String(a.as_of)),
-    ),
+    filings,
   };
 }

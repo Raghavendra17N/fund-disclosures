@@ -144,18 +144,8 @@ function refreshFilings(catalog) {
   const withDates = attachAvailableAsOf(catalog, asOfMap, { cdnUrlFn: cdnUrl });
   writeJson(join(outDir, "catalog/amfi-lookup.json"), withDates);
 
-  const filingsPath = join(outDir, "catalog/filings.json");
-  let prior = { filings: [] };
-  if (existsSync(filingsPath)) {
-    try {
-      prior = JSON.parse(readFileSync(filingsPath, "utf8"));
-    } catch {
-      prior = { filings: [] };
-    }
-  }
-
-  const doc = buildFilingsFromAsOfDirs(outDir, withDates, prior.filings || []);
-  writeJson(filingsPath, doc);
+  const doc = buildFilingsFromAsOfDirs(outDir, withDates);
+  writeJson(join(outDir, "catalog/filings.json"), doc);
   return { catalog: withDates, filings: doc };
 }
 
