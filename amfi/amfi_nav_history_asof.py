@@ -19,9 +19,13 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import urllib.request
 from datetime import datetime
 from pathlib import Path
+
+ISIN_RE = re.compile(r"^INF[A-Z0-9]{9}$")
+NUMERIC_NAV_RE = re.compile(r"^\d+(?:\.\d+)?$")
 
 
 PORTAL = "https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx"
@@ -48,19 +52,99 @@ def download(frm: datetime, to: datetime, dest: Path) -> None:
     dest.write_bytes(data)
 
 
+def _cell(parts: list[str], i: int) -> str | None:
+    if i >= len(parts):
+        return None
+    v = parts[i].strip()
+    if not v or v == "-":
+        return None
+    return v
+
+
+def _looks_like_isin(v: str | None) -> bool:
+    return bool(v and ISIN_RE.match(v.upper()))
+
+
+def _looks_like_nav(v: str | None) -> bool:
+    return bool(v and NUMERIC_NAV_RE.match(v.replace(",", "")))
+
+
+def detect_history_layout(header: str) -> str:
+    """AMFI added Plan + Option columns to NAV history (~2024).
+
+    New: Scheme Code;NAV Name;Plan;Option;ISIN…;ISIN…;Net Asset Value;Date
+    Old: Scheme Code;Scheme Name;ISIN…;ISIN…;Net Asset Value;Repurchase;Sale;Date
+    """
+    h = header.lower()
+    if "nav name" in h and "plan" in h:
+        return "plan_option"
+    return "legacy"
+
+
+def parse_history_row(
+    parts: list[str],
+    *,
+    layout: str,
+    amc: str | None,
+    cat: str | None,
+) -> dict | None:
+    code = parts[0].strip()
+    if not code.isdigit():
+        return None
+
+    if layout == "plan_option" or (
+        len(parts) >= 8 and _looks_like_isin(_cell(parts, 4))
+    ):
+        return {
+            "amfi_code": code,
+            "name": parts[1].strip(),
+            "plan": _cell(parts, 2),
+            "option": _cell(parts, 3),
+            "isin_growth_or_payout": _cell(parts, 4),
+            "isin_div_reinvestment": _cell(parts, 5),
+            "nav": _cell(parts, 6),
+            "nav_date": _cell(parts, 7),
+            "amc_name": amc,
+            "category": cat,
+        }
+
+    nav = _cell(parts, 4)
+    nav_date = _cell(parts, 7) if len(parts) >= 8 else _cell(parts, 5)
+    return {
+        "amfi_code": code,
+        "name": parts[1].strip(),
+        "plan": None,
+        "option": None,
+        "isin_growth_or_payout": _cell(parts, 2),
+        "isin_div_reinvestment": _cell(parts, 3),
+        "nav": nav,
+        "nav_date": nav_date,
+        "amc_name": amc,
+        "category": cat,
+    }
+
+
 def parse_history(text: str) -> list[dict]:
     idx = text.find("Scheme Code;")
     if idx >= 0:
         text = text[idx:]
 
+    lines = text.splitlines()
+    layout = "legacy"
+    for line in lines:
+        if line.strip().startswith("Scheme Code;"):
+            layout = detect_history_layout(line)
+            break
+
     rows: list[dict] = []
     amc = None
     cat = None
-    for raw in text.splitlines():
+    for raw in lines:
         line = raw.strip()
         if not line:
             continue
         if line.startswith("Scheme Code;"):
+            layout = detect_history_layout(line)
             continue
         if ";" not in line:
             if (
@@ -75,31 +159,27 @@ def parse_history(text: str) -> list[dict]:
         parts = line.split(";")
         if len(parts) < 5:
             continue
-        code = parts[0].strip()
-        if not code.isdigit():
-            continue
-
-        def cell(i: int) -> str | None:
-            if i >= len(parts):
-                return None
-            v = parts[i].strip()
-            if not v or v == "-":
-                return None
-            return v
-
-        rows.append(
-            {
-                "amfi_code": code,
-                "name": parts[1].strip(),
-                "isin_growth_or_payout": cell(2),
-                "isin_div_reinvestment": cell(3),
-                "nav": cell(4),
-                "nav_date": cell(7),
-                "amc_name": amc,
-                "category": cat,
-            }
-        )
+        row = parse_history_row(parts, layout=layout, amc=amc, cat=cat)
+        if row:
+            rows.append(row)
     return rows
+
+
+def validate_scheme_nav_fields(schemes: list[dict]) -> list[str]:
+    """Return human-readable errors when NAV/ISIN columns look swapped."""
+    errors: list[str] = []
+    for row in schemes:
+        code = row.get("amfi_code")
+        nav = row.get("nav")
+        isin = row.get("isin_growth_or_payout")
+        if _looks_like_isin(str(nav or "")):
+            errors.append(f"{code}: nav looks like ISIN ({nav})")
+        if isin and not _looks_like_isin(str(isin)) and not str(isin).startswith("-"):
+            if "plan" in str(isin).lower() or "growth" in str(isin).lower() or "idcw" in str(isin).lower():
+                errors.append(f"{code}: isin looks like plan/option ({isin})")
+        if nav and not _looks_like_nav(str(nav)) and not _looks_like_isin(str(nav)):
+            errors.append(f"{code}: nav is not numeric ({nav})")
+    return errors
 
 
 def filter_funds(funds: list[dict], active_codes: set[str]) -> tuple[list[dict], list[dict]]:
@@ -140,6 +220,13 @@ def main() -> None:
 
     text = hist_path.read_text(encoding="utf-8", errors="replace")
     schemes = parse_history(text)
+    field_errors = validate_scheme_nav_fields(schemes)
+    if field_errors:
+        sample = "\n".join(f"  - {e}" for e in field_errors[:8])
+        raise SystemExit(
+            f"NAV/ISIN column sanity check failed ({len(field_errors)} rows). "
+            f"AMFI layout may have changed again.\n{sample}"
+        )
     active_codes = {r["amfi_code"] for r in schemes}
 
     funds = json.loads(Path(args.funds).read_text(encoding="utf-8"))

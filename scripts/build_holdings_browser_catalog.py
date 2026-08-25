@@ -22,6 +22,8 @@ DATE_TAIL = re.compile(
     r"jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|"
     r"nov(?:ember)?|dec(?:ember)?)\s*\d{1,2},?\s*\d{4}\s*$"
 )
+ISIN_RE = re.compile(r"^INF[A-Z0-9]{9}$")
+NUMERIC_NAV_RE = re.compile(r"^\d+(?:\.\d+)?$")
 
 
 def norm(s: str) -> str:
@@ -68,6 +70,29 @@ def slim_holdings(rec: dict) -> dict:
         "b2_key": rec.get("b2_key"),
         "source_file": rec.get("source_file"),
     }
+
+
+def validate_lookup_nav_fields(lookup: dict[str, dict]) -> None:
+    errors: list[str] = []
+    for code, row in lookup.items():
+        nav = row.get("nav")
+        isin = row.get("isin")
+        if nav and ISIN_RE.match(str(nav).upper()):
+            errors.append(f"{code}: nav={nav}")
+        if isin and not ISIN_RE.match(str(isin).upper()):
+            low = str(isin).lower()
+            if "plan" in low or "growth" in low or "idcw" in low:
+                errors.append(f"{code}: isin={isin}")
+        if nav and not NUMERIC_NAV_RE.match(str(nav).replace(",", "")) and not ISIN_RE.match(
+            str(nav).upper()
+        ):
+            errors.append(f"{code}: nav={nav}")
+    if errors:
+        sample = "\n".join(f"  - {e}" for e in errors[:10])
+        raise SystemExit(
+            f"Catalog NAV/ISIN sanity check failed ({len(errors)} schemes). "
+            f"Re-run `npm run amfi:asof` after fixing NAV history parsing.\n{sample}"
+        )
 
 
 def main() -> int:
@@ -353,6 +378,8 @@ def main() -> int:
             "source_file": hold.get("source_file"),
             "local_path": hold.get("local_path"),
         }
+
+    validate_lookup_nav_fields(lookup)
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(catalog, ensure_ascii=False) + "\n", encoding="utf-8")

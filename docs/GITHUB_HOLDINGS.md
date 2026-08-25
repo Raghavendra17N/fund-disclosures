@@ -132,6 +132,16 @@ node scripts/sync-asof-holdings-to-github.mjs --asof=2026-06-30 --cadence=monthl
 
 Env overrides: `HOLDINGS_DATA_OWNER`, `HOLDINGS_DATA_REPO`, `HOLDINGS_DATA_BRANCH`.
 
+### AMFI NAV history columns
+
+AMFI added **Plan** and **Option** columns to the NAV history download (~2024):
+
+`Scheme Code;NAV Name;Plan;Option;ISIN…;ISIN…;Net Asset Value;Date`
+
+`amfi/amfi_nav_history_asof.py` detects this layout from the header. If parsing drifts,
+`npm run amfi:asof` and `npm run holdings:catalog` fail fast with a NAV/ISIN sanity check.
+Regression: `.venv/bin/python3 amfi/test_nav_history_parse.py`.
+
 ## Smoke test
 
 ```bash

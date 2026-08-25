@@ -28,7 +28,7 @@ import {
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 
-const OWNER = process.env.HOLDINGS_DATA_OWNER || "kushagra-agarwal-a";
+const OWNER = process.env.HOLDINGS_DATA_OWNER || "subscriptionmanager26-png";
 const REPO = process.env.HOLDINGS_DATA_REPO || "fund-holdings-data";
 const BRANCH = process.env.HOLDINGS_DATA_BRANCH || "main";
 
