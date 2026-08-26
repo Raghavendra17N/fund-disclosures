@@ -1,0 +1,57 @@
+name: Auto Update Changelog on PR Merge
+
+on:
+  pull_request_target:
+    types: [closed]
+    branches:
+      - main
+      - master
+      - dev-rgv
+
+jobs:
+  update-changelog:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.base_ref }}
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update CHANGELOG.md
+        run: |
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_AUTHOR="${{ github.event.pull_request.user.login }}"
+          PR_URL="${{ github.event.pull_request.html_url }}"
+          
+          ENTRY="- ${PR_TITLE} ([#${PR_NUMBER}](${PR_URL})) by @${PR_AUTHOR}"
+          echo "Appending entry: $ENTRY"
+          
+          python3 -c "
+          import re
+          with open('CHANGELOG.md', 'r', encoding='utf-8') as f:
+              content = f.read()
+
+          entry = '''$ENTRY'''
+          target = '## [Unreleased]\n'
+          if target in content:
+              parts = content.split(target, 1)
+              updated = parts[0] + target + '\n' + entry + '\n' + parts[1]
+          else:
+              updated = content + '\n\n' + target + '\n' + entry + '\n'
+
+          with open('CHANGELOG.md', 'w', encoding='utf-8') as f:
+              f.write(updated)
+          "
+
+      - name: Commit and Push Changelog
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "docs(changelog): auto-update for PR #${{ github.event.pull_request.number }}"
+          file_pattern: "CHANGELOG.md"
