@@ -3,10 +3,6 @@ name: Auto Update Changelog on PR Merge
 on:
   pull_request_target:
     types: [closed]
-    branches:
-      - main
-      - master
-      - dev-rgv
 
 jobs:
   update-changelog:
