@@ -5,16 +5,6 @@ on:
     types: [closed]
   pull_request_target:
     types: [closed]
-  workflow_dispatch:
-    inputs:
-      pr_number:
-        description: "PR Number to record (for test)"
-        required: false
-        default: "1"
-      pr_title:
-        description: "PR Title to record"
-        required: false
-        default: "feat: test changelog entry"
 
 jobs:
   update-changelog:
