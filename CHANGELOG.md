@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Changelog testing ([#4](https://github.com/Raghavendra17N/fund-disclosures/pull/4)) by @Raghavendra17N
+
 - Changelog change ([#3](https://github.com/Raghavendra17N/fund-disclosures/pull/3)) by @Raghavendra17N
 
 ### Added
