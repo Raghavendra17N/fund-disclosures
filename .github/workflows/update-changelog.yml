@@ -1,12 +1,24 @@
 name: Auto Update Changelog on PR Merge
 
 on:
+  pull_request:
+    types: [closed]
   pull_request_target:
     types: [closed]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "PR Number to record (for test)"
+        required: false
+        default: "1"
+      pr_title:
+        description: "PR Title to record"
+        required: false
+        default: "feat: test changelog entry"
 
 jobs:
   update-changelog:
-    if: github.event.pull_request.merged == true
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -15,16 +27,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.base_ref }}
+          ref: ${{ github.base_ref || github.ref }}
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update CHANGELOG.md
         run: |
-          PR_NUMBER="${{ github.event.pull_request.number }}"
-          PR_TITLE="${{ github.event.pull_request.title }}"
-          PR_AUTHOR="${{ github.event.pull_request.user.login }}"
-          PR_URL="${{ github.event.pull_request.html_url }}"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            PR_NUMBER="${{ github.event.inputs.pr_number }}"
+            PR_TITLE="${{ github.event.inputs.pr_title }}"
+            PR_AUTHOR="${{ github.actor }}"
+            PR_URL="https://github.com/${{ github.repository }}/pull/${PR_NUMBER}"
+          else
+            PR_NUMBER="${{ github.event.pull_request.number }}"
+            PR_TITLE="${{ github.event.pull_request.title }}"
+            PR_AUTHOR="${{ github.event.pull_request.user.login }}"
+            PR_URL="${{ github.event.pull_request.html_url }}"
+          fi
           
           ENTRY="- ${PR_TITLE} ([#${PR_NUMBER}](${PR_URL})) by @${PR_AUTHOR}"
           echo "Appending entry: $ENTRY"
@@ -49,5 +68,5 @@ jobs:
       - name: Commit and Push Changelog
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "docs(changelog): auto-update for PR #${{ github.event.pull_request.number }}"
+          commit_message: "docs(changelog): auto-update for PR #${{ github.event.inputs.pr_number || github.event.pull_request.number }}"
           file_pattern: "CHANGELOG.md"
