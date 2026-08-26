@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Changelog change ([#3](https://github.com/Raghavendra17N/fund-disclosures/pull/3)) by @Raghavendra17N
+
 ### Added
 - Multi-cloud ingestion support for **Google Cloud Storage (GCS)**, **Amazon Web Services (S3)**, and **Microsoft Azure (Blob Storage)**.
 - Unified container entrypoint (`scripts/cloud_job.sh`) with dynamic cloud provider routing.

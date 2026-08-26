@@ -1,6 +1,8 @@
 name: Auto Update Changelog on PR Merge
 
 on:
+  pull_request:
+    types: [closed]
   pull_request_target:
     types: [closed]
 
@@ -15,7 +17,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.base_ref }}
+          ref: ${{ github.base_ref || github.ref }}
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
