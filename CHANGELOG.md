@@ -18,7 +18,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Automated changelog update workflow on PR merge.
 
 ### Changed
-- Streamlined Docker build with `.dockerignore` reducing image size from 1.5GB down to ~250MB.
 - Dropped duplicate JSON uploads in favor of high-performance analytical Parquet datasets.
 
 ---
