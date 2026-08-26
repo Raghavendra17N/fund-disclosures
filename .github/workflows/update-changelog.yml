@@ -8,7 +8,7 @@ on:
 
 jobs:
   update-changelog:
-    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -23,17 +23,10 @@ jobs:
 
       - name: Update CHANGELOG.md
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            PR_NUMBER="${{ github.event.inputs.pr_number }}"
-            PR_TITLE="${{ github.event.inputs.pr_title }}"
-            PR_AUTHOR="${{ github.actor }}"
-            PR_URL="https://github.com/${{ github.repository }}/pull/${PR_NUMBER}"
-          else
-            PR_NUMBER="${{ github.event.pull_request.number }}"
-            PR_TITLE="${{ github.event.pull_request.title }}"
-            PR_AUTHOR="${{ github.event.pull_request.user.login }}"
-            PR_URL="${{ github.event.pull_request.html_url }}"
-          fi
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_AUTHOR="${{ github.event.pull_request.user.login }}"
+          PR_URL="${{ github.event.pull_request.html_url }}"
           
           ENTRY="- ${PR_TITLE} ([#${PR_NUMBER}](${PR_URL})) by @${PR_AUTHOR}"
           echo "Appending entry: $ENTRY"
@@ -58,5 +51,5 @@ jobs:
       - name: Commit and Push Changelog
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "docs(changelog): auto-update for PR #${{ github.event.inputs.pr_number || github.event.pull_request.number }}"
+          commit_message: "docs(changelog): auto-update for PR #${{ github.event.pull_request.number }}"
           file_pattern: "CHANGELOG.md"
