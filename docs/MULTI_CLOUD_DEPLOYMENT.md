@@ -96,7 +96,7 @@ docker build -t fund-holding-backend:latest .
 ```bash
 docker run --rm \
   -e CLOUD_PROVIDER="gcp" \
-  -e GCS_BUCKET="my-investmentflow-bucket" \
+  -e GCS_BUCKET="my-gcs-bucket" \
   -e PERIOD="2026-07" \
   -e AMC="quant-mutual-fund" \
   -e GOOGLE_APPLICATION_CREDENTIALS="/app/gcp-sa.json" \
@@ -108,7 +108,7 @@ docker run --rm \
 ```bash
 docker run --rm \
   -e CLOUD_PROVIDER="aws" \
-  -e S3_BUCKET="my-investmentflow-bucket" \
+  -e S3_BUCKET="my-s3-bucket" \
   -e PERIOD="2026-07" \
   -e AMC="quant-mutual-fund" \
   -e AWS_ACCESS_KEY_ID="AKIA..." \
