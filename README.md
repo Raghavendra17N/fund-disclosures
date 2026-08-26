@@ -96,6 +96,10 @@ Frozen under `exports/baseline/` after Aug 2026 QC:
 - Disclosure rows mapped ≈ **2386 / 2387** (Taurus IE pool ignored)
 - Shortcode map: `registry/disclosure_shortcode_map.json`
 
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for history of releases and PR additions.
+
 ## License
 
 [MIT](LICENSE)
