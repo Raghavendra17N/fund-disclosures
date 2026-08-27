@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Option to upload only PARQUET_ONLY=true. ([#6](https://github.com/Raghavendra17N/fund-disclosures/pull/6)) by @Raghavendra17N
+
 - Docker Image size reduction  ([#5](https://github.com/Raghavendra17N/fund-disclosures/pull/5)) by @Raghavendra17N
 
 - Changelog testing ([#4](https://github.com/Raghavendra17N/fund-disclosures/pull/4)) by @Raghavendra17N

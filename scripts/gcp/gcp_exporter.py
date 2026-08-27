@@ -219,6 +219,7 @@ def export_gcp(
     existing_parquet_blobs = set() if force else set(b.name for b in bucket.list_blobs(prefix="fund_holdings/normalized/"))
 
     # 1. Export Raw Files (Skipped if parquet_only is True)
+    # 1. Export Raw Files (Skipped if parquet_only is True)
     raw_base = ROOT / "data" / "disclosures" / cadence
     raw_count = 0
     raw_skipped = 0
@@ -250,6 +251,8 @@ def export_gcp(
                     blob.upload_from_filename(str(file_path))
                     raw_count += 1
                     print(f"  [GCS Raw] Uploaded: gs://{bucket_name}/{blob_path}")
+    elif parquet_only:
+        print("  [GCS Raw] Skipped raw file upload (parquet-only mode enabled)")
     elif parquet_only:
         print("  [GCS Raw] Skipped raw file upload (parquet-only mode enabled)")
 
