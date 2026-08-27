@@ -207,15 +207,21 @@ def export_gcp(
     cadence: str = "monthly",
     amc_filter: Optional[str] = None,
     parquet_only: bool = False,
+    force: bool = False,
 ):
     client = storage.Client()
     bucket = client.bucket(bucket_name)
 
-    print(f"\n=== [GCP / GCS Export] Period={period}, Bucket=gs://{bucket_name}/, ParquetOnly={parquet_only} ===")
+    print(f"\n=== [GCP / GCS Export] Period={period}, Bucket=gs://{bucket_name}/, ParquetOnly={parquet_only}, ForceOverwrite={force} ===")
+
+    # Pre-fetch existing blobs to avoid redundant uploads and enable instant skipping
+    existing_raw_blobs = set() if force else set(b.name for b in bucket.list_blobs(prefix=f"fund_holdings/raw/{cadence}/"))
+    existing_parquet_blobs = set() if force else set(b.name for b in bucket.list_blobs(prefix="fund_holdings/normalized/"))
 
     # 1. Export Raw Files (Skipped if parquet_only is True)
     raw_base = ROOT / "data" / "disclosures" / cadence
     raw_count = 0
+    raw_skipped = 0
     if not parquet_only and raw_base.exists():
         for date_dir in [d for d in raw_base.iterdir() if d.is_dir() and period in d.name]:
             as_of = date_dir.name
@@ -225,8 +231,13 @@ def export_gcp(
                 for file_path in amc_dir.iterdir():
                     if not file_path.is_file() or file_path.name.startswith("."):
                         continue
-                    sha256 = compute_sha256(file_path)
                     blob_path = f"fund_holdings/raw/{cadence}/{as_of}/{amc_dir.name}/{file_path.name}"
+                    if blob_path in existing_raw_blobs:
+                        raw_skipped += 1
+                        print(f"  [GCS Raw] Skipped: gs://{bucket_name}/{blob_path} (already exists)")
+                        continue
+
+                    sha256 = compute_sha256(file_path)
                     blob = bucket.blob(blob_path)
                     blob.metadata = {
                         "amc_id": amc_dir.name,
@@ -245,6 +256,7 @@ def export_gcp(
     # 2. Export Normalized Parquet Files
     parsed_base = ROOT / "data" / "parsed" / cadence
     norm_count = 0
+    norm_skipped = 0
     total_holdings = 0
     if parsed_base.exists():
         for date_dir in [d for d in parsed_base.iterdir() if d.is_dir() and period in d.name]:
@@ -264,6 +276,12 @@ def export_gcp(
                     if not amfi_code or not raw_holdings:
                         continue
 
+                    blob_path = f"fund_holdings/normalized/as_of={as_of}/{amfi_code}.parquet"
+                    if blob_path in existing_parquet_blobs:
+                        norm_skipped += 1
+                        print(f"  [GCS Parquet] Skipped: gs://{bucket_name}/{blob_path} (already exists)")
+                        continue
+
                     shaped_holdings = [shape_holding_row(h) for h in raw_holdings]
                     df = pd.DataFrame(shaped_holdings)
                     df["amfi_code"] = amfi_code
@@ -276,7 +294,6 @@ def export_gcp(
                     df.to_parquet(buffer, index=False, engine="pyarrow", compression="snappy")
                     buffer.seek(0)
 
-                    blob_path = f"fund_holdings/normalized/as_of={as_of}/{amfi_code}.parquet"
                     blob = bucket.blob(blob_path)
                     blob.metadata = {
                         "amfi_code": amfi_code,
@@ -297,7 +314,7 @@ def export_gcp(
         catalog_blob.upload_from_filename(str(map_file), content_type="application/json")
         print(f"  [GCS Catalog] Uploaded: gs://{bucket_name}/fund_holdings/catalog/disclosure_shortcode_map.json")
 
-    print(f"\n[GCP Result] Raw Files: {raw_count}, Parquet Schemes: {norm_count}, Total Holdings: {total_holdings}")
+    print(f"\n[GCP Result] Raw Uploaded: {raw_count} (Skipped: {raw_skipped}), Parquet Schemes Uploaded: {norm_count} (Skipped: {norm_skipped}), Total Holdings Ingested: {total_holdings}")
 
 
 def main() -> int:
@@ -307,14 +324,19 @@ def main() -> int:
     ap.add_argument("--cadence", default="monthly", choices=["monthly", "fortnightly"])
     ap.add_argument("--amc", help="Optional AMC filter")
     ap.add_argument("--parquet-only", "--skip-raw", action="store_true", help="Upload only Parquet files (skip raw excel files)")
+    ap.add_argument("--force", "--overwrite", action="store_true", help="Force overwrite existing files in GCS")
     args = ap.parse_args()
 
     env_parquet_only = os.getenv("PARQUET_ONLY", "").lower() in {"1", "true", "yes"} or os.getenv("SKIP_RAW_UPLOAD", "").lower() in {"1", "true", "yes"}
     is_parquet_only = args.parquet_only or env_parquet_only
 
-    export_gcp(args.bucket, args.period, args.cadence, args.amc, parquet_only=is_parquet_only)
+    env_force = os.getenv("FORCE_OVERWRITE", "").lower() in {"1", "true", "yes"} or os.getenv("FORCE", "").lower() in {"1", "true", "yes"}
+    is_force = args.force or env_force
+
+    export_gcp(args.bucket, args.period, args.cadence, args.amc, parquet_only=is_parquet_only, force=is_force)
     return 0
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
