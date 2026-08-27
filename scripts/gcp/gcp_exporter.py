@@ -201,16 +201,22 @@ def compute_sha256(filepath: Path) -> str:
     return h.hexdigest()
 
 
-def export_gcp(bucket_name: str, period: str, cadence: str = "monthly", amc_filter: Optional[str] = None):
+def export_gcp(
+    bucket_name: str,
+    period: str,
+    cadence: str = "monthly",
+    amc_filter: Optional[str] = None,
+    parquet_only: bool = False,
+):
     client = storage.Client()
     bucket = client.bucket(bucket_name)
 
-    print(f"\n=== [GCP / GCS Export] Period={period}, Bucket=gs://{bucket_name}/ ===")
+    print(f"\n=== [GCP / GCS Export] Period={period}, Bucket=gs://{bucket_name}/, ParquetOnly={parquet_only} ===")
 
-    # 1. Export Raw Files
+    # 1. Export Raw Files (Skipped if parquet_only is True)
     raw_base = ROOT / "data" / "disclosures" / cadence
     raw_count = 0
-    if raw_base.exists():
+    if not parquet_only and raw_base.exists():
         for date_dir in [d for d in raw_base.iterdir() if d.is_dir() and period in d.name]:
             as_of = date_dir.name
             for amc_dir in date_dir.iterdir():
@@ -233,6 +239,8 @@ def export_gcp(bucket_name: str, period: str, cadence: str = "monthly", amc_filt
                     blob.upload_from_filename(str(file_path))
                     raw_count += 1
                     print(f"  [GCS Raw] Uploaded: gs://{bucket_name}/{blob_path}")
+    elif parquet_only:
+        print("  [GCS Raw] Skipped raw file upload (parquet-only mode enabled)")
 
     # 2. Export Normalized Parquet Files
     parsed_base = ROOT / "data" / "parsed" / cadence
@@ -282,6 +290,13 @@ def export_gcp(bucket_name: str, period: str, cadence: str = "monthly", amc_filt
                     total_holdings += len(df)
                     print(f"  [GCS Parquet] Uploaded: gs://{bucket_name}/{blob_path} ({len(df)} rows)")
 
+    # 3. Export Scheme Catalog Mapping (if available)
+    map_file = ROOT / "registry" / "disclosure_shortcode_map.json"
+    if map_file.is_file():
+        catalog_blob = bucket.blob("fund_holdings/catalog/disclosure_shortcode_map.json")
+        catalog_blob.upload_from_filename(str(map_file), content_type="application/json")
+        print(f"  [GCS Catalog] Uploaded: gs://{bucket_name}/fund_holdings/catalog/disclosure_shortcode_map.json")
+
     print(f"\n[GCP Result] Raw Files: {raw_count}, Parquet Schemes: {norm_count}, Total Holdings: {total_holdings}")
 
 
@@ -291,9 +306,13 @@ def main() -> int:
     ap.add_argument("--period", required=True, help="Period YYYY-MM or YYYY-MM-DD")
     ap.add_argument("--cadence", default="monthly", choices=["monthly", "fortnightly"])
     ap.add_argument("--amc", help="Optional AMC filter")
+    ap.add_argument("--parquet-only", "--skip-raw", action="store_true", help="Upload only Parquet files (skip raw excel files)")
     args = ap.parse_args()
 
-    export_gcp(args.bucket, args.period, args.cadence, args.amc)
+    env_parquet_only = os.getenv("PARQUET_ONLY", "").lower() in {"1", "true", "yes"} or os.getenv("SKIP_RAW_UPLOAD", "").lower() in {"1", "true", "yes"}
+    is_parquet_only = args.parquet_only or env_parquet_only
+
+    export_gcp(args.bucket, args.period, args.cadence, args.amc, parquet_only=is_parquet_only)
     return 0
 
 
