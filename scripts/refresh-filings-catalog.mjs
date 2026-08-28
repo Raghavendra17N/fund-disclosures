@@ -17,7 +17,9 @@ import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 import {
   attachAvailableAsOf,
+  assertCatalogPortfolioCoverage,
   buildFilingsFromAsOfDirs,
+  mirrorLatestPortfolios,
   scanExistingAsOfDirs,
 } from "./lib/asof-portfolios.mjs";
 
@@ -136,6 +138,18 @@ if (dryRun) {
 
 writeJson(catalogPath, withDates);
 writeJson(join(outDir, "catalog/filings.json"), filingsDoc);
+
+const coverage = assertCatalogPortfolioCoverage(outDir, withDates);
+if (!coverage.ok) {
+  const sample = coverage.missing.slice(0, 8);
+  throw new Error(
+    `Catalog/asof mismatch: ${coverage.missing.length} portfolio(s) missing on disk. ` +
+      `Examples: ${sample.map((m) => `${m.portfolio_id}@${m.as_of || "?"}`).join(", ")}`,
+  );
+}
+
+const mirrored = mirrorLatestPortfolios(outDir, withDates);
+if (mirrored) console.log(`Mirrored ${mirrored} portfolio(s) to portfolios/latest/.`);
 
 const metaPath = join(outDir, "meta.json");
 const meta = existsSync(metaPath)

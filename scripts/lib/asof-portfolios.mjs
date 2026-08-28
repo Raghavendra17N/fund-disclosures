@@ -8,7 +8,7 @@
  *
  * Legacy period folders (YYYY-MM) are still scanned as fallbacks.
  */
-import { existsSync, readdirSync, readFileSync, statSync, unlinkSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync, unlinkSync, copyFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { disclosurePeriodCandidates } from "../../scrapers/node/lib/disclosurePeriod.js";
 
@@ -332,4 +332,64 @@ export function buildFilingsFromAsOfDirs(outDir, catalog) {
     generated_at: new Date().toISOString(),
     filings,
   };
+}
+
+/**
+ * Copy newest as-of book per portfolio_id → portfolios/latest/{id}.json
+ * for backward-compatible CDN/API consumers that still hit /latest/.
+ */
+export function mirrorLatestPortfolios(outDir, catalog = null) {
+  const asofRoot = join(outDir, "portfolios", "asof");
+  const latestDir = join(outDir, "portfolios", "latest");
+  mkdirSync(latestDir, { recursive: true });
+  const map = scanExistingAsOfDirs(outDir, catalog);
+  let mirrored = 0;
+  for (const [pid, dates] of map) {
+    const latest = [...dates].sort().reverse()[0];
+    if (!latest) continue;
+    const src = join(asofRoot, latest, `${pid}.json`);
+    const dest = join(latestDir, `${pid}.json`);
+    if (!existsSync(src)) continue;
+    copyFileSync(src, dest);
+    mirrored += 1;
+  }
+  return mirrored;
+}
+
+/**
+ * Fail fast when catalog points at as-of files that are missing on disk.
+ * @returns {{ ok: boolean, missing: Array<{ portfolio_id: string, as_of: string, sample_amfi?: string }> }}
+ */
+export function assertCatalogPortfolioCoverage(outDir, catalog) {
+  const asofRoot = join(outDir, "portfolios", "asof");
+  /** @type {Map<string, string>} */
+  const sampleAmfi = new Map();
+  for (const [code, row] of Object.entries(catalog || {})) {
+    if (!row?.has_holdings || !row?.portfolio_id) continue;
+    const pid = String(row.portfolio_id);
+    if (!sampleAmfi.has(pid)) sampleAmfi.set(pid, code);
+  }
+
+  const missing = [];
+  const seen = new Set();
+  for (const row of Object.values(catalog || {})) {
+    if (!row?.has_holdings || !row?.portfolio_id) continue;
+    const pid = String(row.portfolio_id);
+    if (!/^\d{4,8}$/.test(pid) || seen.has(pid)) continue;
+    seen.add(pid);
+    const latest = String(row.latest_as_of || "").trim();
+    const fallback = Array.isArray(row.available_as_of)
+      ? [...row.available_as_of].sort().reverse()[0]
+      : "";
+    const asOf = latest || fallback;
+    if (!asOf) {
+      missing.push({ portfolio_id: pid, as_of: "", sample_amfi: sampleAmfi.get(pid) });
+      continue;
+    }
+    const path = join(asofRoot, asOf, `${pid}.json`);
+    if (!existsSync(path)) {
+      missing.push({ portfolio_id: pid, as_of: asOf, sample_amfi: sampleAmfi.get(pid) });
+    }
+  }
+  return { ok: missing.length === 0, missing };
 }
