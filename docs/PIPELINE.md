@@ -76,7 +76,17 @@ Baseline freeze: `exports/baseline/`.
 ## Secrets
 
 - `EDELWEISS_API_SECRET` — required for Edelweiss statutory API fetch
+- `GH_TOKEN` / `GITHUB_TOKEN` — required for `holdings:sync*` `--push`
 - Holdings API object storage: `B2_KEY_ID`, `B2_APPLICATION_KEY` (see `holdings-browser/.env.example`)
+
+## Data safety
+
+Sync scripts **block pushes** that shrink on-disk `portfolios/asof/*` trees or remove
+`available_as_of` links from the published catalog (`scripts/lib/holdings-guard.mjs`).
+Use `--allow-regression` only for intentional cleanups.
+
+Never copy a fresh `holdings-browser` catalog over the data repo without running
+`holdings:refresh-filings` afterward — historical as-of links come from on-disk trees.
 
 ## Compat
 

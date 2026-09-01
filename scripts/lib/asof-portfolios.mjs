@@ -179,16 +179,33 @@ export function portfolioAsofKey(asOf, portfolioId) {
   return `portfolios/asof/${asOf}/${portfolioId}.json`;
 }
 
-export function attachAvailableAsOf(catalog, asOfDatesByPortfolio, { cdnUrlFn } = {}) {
+export function attachAvailableAsOf(
+  catalog,
+  asOfDatesByPortfolio,
+  { cdnUrlFn, outDir = null } = {},
+) {
   const out = { ...catalog };
   for (const [code, row] of Object.entries(out)) {
     if (!row || typeof row !== "object") continue;
     const pid = String(
       row.portfolio_id || row.parent_amfi || row.amfi_code || "",
     ).trim();
-    const dates = pid ? asOfDatesByPortfolio.get(pid) : null;
-    if (dates?.size) {
-      const available = [...dates].sort().reverse();
+    const merged = new Set(pid ? asOfDatesByPortfolio.get(pid) || [] : []);
+
+    // Keep published as-of links when the portfolio file still exists on disk.
+    for (const d of row.available_as_of || []) {
+      const day = String(d).trim();
+      if (!AS_OF_RE.test(day) || !pid) continue;
+      if (outDir) {
+        const path = join(outDir, portfolioAsofKey(day, pid));
+        if (existsSync(path)) merged.add(day);
+      } else {
+        merged.add(day);
+      }
+    }
+
+    if (merged.size) {
+      const available = [...merged].sort().reverse();
       const latest = available[0] || null;
       const portfolio_key =
         latest && pid ? portfolioAsofKey(latest, pid) : row.portfolio_key ?? null;
