@@ -6,11 +6,35 @@ import argparse
 import io
 import json
 import sys
+import os
+import re
+from datetime import datetime, timedelta
 from pathlib import Path
 import pandas as pd
 from google.cloud import storage
 
 ROOT = Path(__file__).resolve().parents[2]
+
+
+def resolve_default_period(period_arg: str | None) -> str:
+    """Resolve period string: explicit CLI arg -> ENV var -> latest folder on disk -> previous month."""
+    if period_arg and period_arg.strip():
+        return period_arg.strip()
+
+    env_period = os.getenv("PERIOD", "").strip()
+    if env_period:
+        return env_period
+
+    for base in [ROOT / "data" / "parsed" / "monthly", ROOT / "data" / "disclosures" / "monthly"]:
+        if base.exists():
+            date_dirs = sorted([d.name for d in base.iterdir() if d.is_dir() and re.match(r"^\d{4}-\d{2}", d.name)], reverse=True)
+            if date_dirs:
+                return date_dirs[0][:7] if len(date_dirs[0]) >= 7 else date_dirs[0]
+
+    now = datetime.now()
+    first_of_this_month = now.replace(day=1)
+    last_month = first_of_this_month - timedelta(days=1)
+    return last_month.strftime("%Y-%m")
 
 
 def validate_gcp(bucket_name: str, period: str, amc_filter: str | None = None) -> dict:
@@ -83,10 +107,11 @@ def validate_gcp(bucket_name: str, period: str, amc_filter: str | None = None) -
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--bucket", required=True)
-    ap.add_argument("--period", required=True)
+    ap.add_argument("--period", required=False, default=None, help="Period YYYY-MM (defaults to auto-detected previous month)")
     ap.add_argument("--amc")
     args = ap.parse_args()
-    res = validate_gcp(args.bucket, args.period, args.amc)
+    period = resolve_default_period(args.period)
+    res = validate_gcp(args.bucket, period, args.amc)
     return 0 if res["passed"] else 1
 
 
