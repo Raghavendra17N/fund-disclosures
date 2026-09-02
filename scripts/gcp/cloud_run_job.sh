@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-PERIOD="${PERIOD:-2026-07}"
+# Auto-compute previous calendar month (e.g. 2026-08 when running in Sep 2026) if PERIOD is not explicitly set
+if [ -z "$PERIOD" ]; then
+  PERIOD=$(python3 -c "from datetime import datetime, timedelta; now = datetime.now(); print((now.replace(day=1) - timedelta(days=1)).strftime('%Y-%m'))")
+fi
 TYPE="${TYPE:-monthly}"
 AMC="${AMC:-}"
 GCS_BUCKET="${GCS_BUCKET:-}"
