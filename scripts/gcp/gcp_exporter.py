@@ -310,14 +310,20 @@ def export_gcp(
                     total_holdings += len(df)
                     print(f"  [GCS Parquet] Uploaded: gs://{bucket_name}/{blob_path} ({len(df)} rows)")
 
-    # 3. Export Scheme Catalog Mapping (if available)
-    map_file = ROOT / "registry" / "disclosure_shortcode_map.json"
-    if map_file.is_file():
-        catalog_blob = bucket.blob("fund_holdings/catalog/disclosure_shortcode_map.json")
-        catalog_blob.upload_from_filename(str(map_file), content_type="application/json")
-        print(f"  [GCS Catalog] Uploaded: gs://{bucket_name}/fund_holdings/catalog/disclosure_shortcode_map.json")
+    # 3. Export Scheme Catalog Mappings (if available)
+    catalog_files = [
+        ("disclosure_shortcode_map.json", ROOT / "registry" / "disclosure_shortcode_map.json"),
+        ("amfi_to_portfolio_id_map.json", ROOT / "registry" / "amfi_to_portfolio_id_map.json"),
+        ("disclosure_to_amfi_global_mapping.json", ROOT / "data" / "sources" / "disclosure_to_amfi_global_mapping.json"),
+    ]
+    for filename, path in catalog_files:
+        if path.is_file():
+            catalog_blob = bucket.blob(f"fund_holdings/catalog/{filename}")
+            catalog_blob.upload_from_filename(str(path), content_type="application/json")
+            print(f"  [GCS Catalog] Uploaded: gs://{bucket_name}/fund_holdings/catalog/{filename}")
 
     print(f"\n[GCP Result] Raw Uploaded: {raw_count} (Skipped: {raw_skipped}), Parquet Schemes Uploaded: {norm_count} (Skipped: {norm_skipped}), Total Holdings Ingested: {total_holdings}")
+
 
 
 def main() -> int:
