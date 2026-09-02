@@ -5,7 +5,9 @@ set -eo pipefail
 # Unified Multi-Cloud Ingestion Job Entrypoint (GCP / AWS / Azure)
 # ==============================================================================
 
-PERIOD="${PERIOD:-2026-07}"
+if [ -z "$PERIOD" ]; then
+  PERIOD=$(python3 -c "from datetime import datetime, timedelta; now = datetime.now(); print((now.replace(day=1) - timedelta(days=1)).strftime('%Y-%m'))" 2>/dev/null || echo "")
+fi
 TYPE="${TYPE:-monthly}"
 AMC="${AMC:-}"
 CLOUD_PROVIDER="${CLOUD_PROVIDER:-}"
