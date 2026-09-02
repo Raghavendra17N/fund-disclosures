@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Date fixes in Nightly Cloud Run Job ([#8](https://github.com/Raghavendra17N/fund-disclosures/pull/8)) by @Raghavendra17N
+
 - Skip upload when files already exists ([#7](https://github.com/Raghavendra17N/fund-disclosures/pull/7)) by @Raghavendra17N
 
 - Option to upload only PARQUET_ONLY=true. ([#6](https://github.com/Raghavendra17N/fund-disclosures/pull/6)) by @Raghavendra17N
