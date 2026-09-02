@@ -17,9 +17,15 @@ import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 import {
   attachAvailableAsOf,
+  assertCatalogPortfolioCoverage,
   buildFilingsFromAsOfDirs,
+  mirrorLatestPortfolios,
   scanExistingAsOfDirs,
 } from "./lib/asof-portfolios.mjs";
+import {
+  assertNoHoldingsRegression,
+  loadRepoCatalog,
+} from "./lib/holdings-guard.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -39,6 +45,7 @@ function hasFlag(name) {
 
 const dryRun = hasFlag("dry-run");
 const doPush = hasFlag("push");
+const allowRegression = hasFlag("allow-regression");
 const outDir = argValue("out", join(ROOT, ".tmp/fund-holdings-data"));
 
 function ensureDir(p) {
@@ -66,6 +73,7 @@ function cdnUrl(objectKey) {
 function initOrClone() {
   if (existsSync(join(outDir, ".git"))) {
     if (doPush) {
+      run("git", ["-C", outDir, "remote", "set-url", "origin", gitTokenUrl()]);
       run("git", ["-C", outDir, "fetch", "origin", BRANCH]);
       run("git", ["-C", outDir, "checkout", "-B", BRANCH, `origin/${BRANCH}`]);
     }
@@ -114,8 +122,9 @@ function pushWithPin(message) {
 initOrClone();
 
 const catalogPath = join(outDir, "catalog/amfi-lookup.json");
-let catalog = {};
-if (existsSync(catalogPath)) {
+const baselineCatalog = loadRepoCatalog(outDir);
+let catalog = baselineCatalog;
+if (!Object.keys(catalog).length && existsSync(catalogPath)) {
   try {
     catalog = JSON.parse(readFileSync(catalogPath, "utf8"));
   } catch {
@@ -124,7 +133,14 @@ if (existsSync(catalogPath)) {
 }
 
 const asOfMap = scanExistingAsOfDirs(outDir, catalog);
-const withDates = attachAvailableAsOf(catalog, asOfMap, { cdnUrlFn: cdnUrl });
+const withDates = attachAvailableAsOf(catalog, asOfMap, {
+  cdnUrlFn: cdnUrl,
+  outDir,
+});
+assertNoHoldingsRegression(outDir, baselineCatalog, withDates, {
+  allowRegression,
+  label: "refresh-filings-catalog",
+});
 const filingsDoc = buildFilingsFromAsOfDirs(outDir, withDates);
 
 console.log(JSON.stringify(filingsDoc, null, 2));
@@ -136,6 +152,21 @@ if (dryRun) {
 
 writeJson(catalogPath, withDates);
 writeJson(join(outDir, "catalog/filings.json"), filingsDoc);
+
+const coverage = assertCatalogPortfolioCoverage(outDir, withDates);
+if (!coverage.ok) {
+  const sample = coverage.missing.slice(0, 8);
+  const msg =
+    `Catalog/asof mismatch: ${coverage.missing.length} portfolio(s) missing on disk. ` +
+    `Examples: ${sample.map((m) => `${m.portfolio_id}@${m.as_of || "?"}`).join(", ")}`;
+  if (coverage.missing.length > 50) {
+    throw new Error(msg);
+  }
+  console.warn(`Warning: ${msg}`);
+}
+
+const mirrored = mirrorLatestPortfolios(outDir, withDates);
+if (mirrored) console.log(`Mirrored ${mirrored} portfolio(s) to portfolios/latest/.`);
 
 const metaPath = join(outDir, "meta.json");
 const meta = existsSync(metaPath)

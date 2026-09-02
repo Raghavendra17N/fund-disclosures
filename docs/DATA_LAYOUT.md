@@ -31,8 +31,13 @@ catalog/filings.json                               deduped counts per as-of date
 meta.json
 ```
 
-There is **no** `portfolios/latest/` duplicate. “Latest holdings” for API consumers =
+There is **no** separate canonical store under `portfolios/latest/`. “Latest holdings” for API consumers =
+
 `catalog[amfi].latest_as_of` → `portfolios/asof/{latest_as_of}/{portfolio_id}.json`.
+
+After each sync, `mirrorLatestPortfolios()` also copies the newest as-of file to
+`portfolios/latest/{portfolio_id}.json` for legacy CDN clients. The sync fails if
+catalog `latest_as_of` points at a missing as-of file.
 
 ## Counting schemes for an as-of date
 
