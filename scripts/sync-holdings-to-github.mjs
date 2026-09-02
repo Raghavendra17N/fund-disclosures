@@ -34,14 +34,21 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { spawnSync } from "node:child_process";
 import {
   attachAvailableAsOf,
+  assertCatalogPortfolioCoverage,
   buildFilingsFromAsOfDirs,
   collectAsOfPortfolios,
+  mirrorLatestPortfolios,
   normalizeAsOf,
   portfolioAsofKey,
   pruneOrphanAsOfPortfolios,
   scanExistingAsOfDirs,
   sourcePeriodFromAsOf,
 } from "./lib/asof-portfolios.mjs";
+import {
+  assertNoHoldingsRegression,
+  loadRepoCatalog,
+  mergeCatalogAsOfFromRepo,
+} from "./lib/holdings-guard.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -50,7 +57,7 @@ const { shapeHoldingsPayload } = await import(
   pathToFileURL(join(ROOT, "holdings-browser/api/_contract.js")).href,
 );
 
-const OWNER = process.env.HOLDINGS_DATA_OWNER || "subscriptionmanager26-png";
+const OWNER = process.env.HOLDINGS_DATA_OWNER || "kushagra-agarwal-a";
 const REPO = process.env.HOLDINGS_DATA_REPO || "fund-holdings-data";
 const BRANCH = process.env.HOLDINGS_DATA_BRANCH || "main";
 
@@ -67,6 +74,7 @@ function hasFlag(name) {
 const dryRun = hasFlag("dry-run");
 const doPush = hasFlag("push");
 const keepOut = hasFlag("keep");
+const allowRegression = hasFlag("allow-regression");
 const updateLatest = hasFlag("update-latest");
 if (updateLatest) {
   console.warn(
@@ -163,6 +171,7 @@ Synced via \`scripts/sync-holdings-to-github.mjs\`.
 function initOrClone() {
   if (existsSync(join(outDir, ".git"))) {
     if (doPush) {
+      run("git", ["-C", outDir, "remote", "set-url", "origin", gitTokenUrl()]);
       run("git", ["-C", outDir, "fetch", "origin", BRANCH]);
       run("git", [
         "-C",
@@ -330,13 +339,41 @@ function loadExistingFilings() {
   }
 }
 
-function writeFilingsAndCatalogAvailability(catalog) {
+function writeFilingsAndCatalogAvailability(
+  catalog,
+  { baselineCatalog = null, syncedDates = [] } = {},
+) {
+  const beforeCatalog = baselineCatalog || loadRepoCatalog(outDir);
   const asOfMap = scanExistingAsOfDirs(outDir, catalog);
-  const withDates = attachAvailableAsOf(catalog, asOfMap, { cdnUrlFn: cdnUrl });
+  const withDates = attachAvailableAsOf(catalog, asOfMap, {
+    cdnUrlFn: cdnUrl,
+    outDir,
+  });
+  assertNoHoldingsRegression(outDir, beforeCatalog, withDates, {
+    allowRegression,
+    label: "writeFilingsAndCatalogAvailability",
+    syncedDates,
+  });
   writeJson(join(outDir, "catalog/amfi-lookup.json"), withDates);
 
   const merged = buildFilingsFromAsOfDirs(outDir, withDates);
   writeJson(join(outDir, "catalog/filings.json"), merged);
+
+  const coverage = assertCatalogPortfolioCoverage(outDir, withDates);
+  if (!coverage.ok) {
+    const sample = coverage.missing.slice(0, 8);
+    const msg =
+      `Catalog/asof mismatch: ${coverage.missing.length} portfolio(s) missing on disk. ` +
+      `Examples: ${sample.map((m) => `${m.portfolio_id}@${m.as_of || "?"}`).join(", ")}`;
+    if (coverage.missing.length > 20) {
+      throw new Error(msg);
+    }
+    console.warn(`Warning: ${msg}`);
+  }
+
+  const mirrored = mirrorLatestPortfolios(outDir, withDates);
+  if (mirrored) console.log(`Mirrored ${mirrored} portfolio(s) to portfolios/latest/.`);
+
   return { catalog: withDates, filings: merged };
 }
 
@@ -390,6 +427,7 @@ function syncHistoricalAsOf(lookup) {
   }
 
   initOrClone();
+  const repoCatalogBefore = loadRepoCatalog(outDir);
 
   let written = 0;
   let failed = 0;
@@ -435,7 +473,9 @@ function syncHistoricalAsOf(lookup) {
   }
 
   const keepIds = entries.map((e) => e.portfolio_id);
-  const pruned = pruneOrphanAsOfPortfolios(outDir, asof, keepIds, lookup);
+  const pruned = pruneOrphanAsOfPortfolios(outDir, asof, keepIds, lookup, {
+    mergeExisting: cadence === "fortnightly" || hasFlag("merge"),
+  });
   if (pruned) console.log(`Pruned ${pruned} stale asof file(s) for ${asof}.`);
 
   // Keep existing catalog; refresh availability + filings
@@ -448,7 +488,10 @@ function syncHistoricalAsOf(lookup) {
       catalog = lookup;
     }
   }
-  const { filings } = writeFilingsAndCatalogAvailability(catalog);
+  const { filings } = writeFilingsAndCatalogAvailability(catalog, {
+    baselineCatalog: repoCatalogBefore,
+    syncedDates: [asof],
+  });
 
   writeJson(join(outDir, "meta.json"), {
     generated_at: new Date().toISOString(),
@@ -602,6 +645,7 @@ function main() {
   }
 
   initOrClone();
+  const repoCatalogBefore = loadRepoCatalog(outDir);
   removeLegacyHoldingsDir();
 
   let written = 0;
@@ -644,12 +688,17 @@ function main() {
   }
   let prunedTotal = 0;
   for (const [day, ids] of writtenByAsOf) {
+    // Only prune within the as-of date(s) written in this run — never touch other dates.
     prunedTotal += pruneOrphanAsOfPortfolios(outDir, day, [...ids], lookup);
   }
   if (prunedTotal) console.log(`Pruned ${prunedTotal} stale asof file(s).`);
 
-  const catalog = rewriteCatalog(lookup, byId);
-  const { filings } = writeFilingsAndCatalogAvailability(catalog);
+  let catalog = rewriteCatalog(lookup, byId);
+  catalog = mergeCatalogAsOfFromRepo(outDir, catalog, repoCatalogBefore);
+  const { filings } = writeFilingsAndCatalogAvailability(catalog, {
+    baselineCatalog: repoCatalogBefore,
+    syncedDates: [...writtenByAsOf.keys()],
+  });
   writeJson(join(outDir, "meta.json"), {
     generated_at: new Date().toISOString(),
     owner: OWNER,
