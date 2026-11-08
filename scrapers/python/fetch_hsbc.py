@@ -11,11 +11,15 @@ import argparse
 import hashlib
 import json
 import re
+import sys
 import subprocess
 from datetime import datetime
 from pathlib import Path
 from urllib.parse import unquote, urljoin, urlparse
 from urllib.request import Request, urlopen
+
+sys.path.insert(0, str(Path(__file__).resolve().parent / "lib"))
+from month_names import MONTH_WORD_PATTERN, month_key  # noqa: E402
 
 PAGE_URL = "https://www.assetmanagement.hsbc.co.in/en/mutual-funds/investor-resources/information-library"
 BASE_URL = "https://www.assetmanagement.hsbc.co.in"
@@ -41,7 +45,7 @@ FORTNIGHTLY_SECTION_RE = re.compile(
     re.I | re.S,
 )
 MONTH_RE = re.compile(
-    r"\b(january|february|march|april|may|june|july|august|september|october|november|december)\b[\s,\-]+(\d{4})",
+    r"\b(" + MONTH_WORD_PATTERN + r")\b\.?[\s,\-]+(\d{4})",
     re.I,
 )
 
@@ -70,12 +74,7 @@ def text_to_month_key(text: str) -> str | None:
     m = MONTH_RE.search(text)
     if not m:
         return None
-    mon, year = m.group(1), m.group(2)
-    try:
-        dt = datetime.strptime(f"{mon} {year}", "%B %Y")
-        return f"{dt.year:04d}-{dt.month:02d}"
-    except ValueError:
-        return None
+    return month_key(m.group(1), m.group(2))      # full names, 3-letter abbreviations and SEPT, any letter case
 
 
 FORTNIGHTLY_LINK_RE = re.compile(
