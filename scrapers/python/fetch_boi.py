@@ -17,9 +17,13 @@ import argparse
 import hashlib
 import json
 import re
+import sys
 from pathlib import Path
 from urllib.parse import unquote, urlparse
 from urllib.request import Request, urlopen
+
+sys.path.insert(0, str(Path(__file__).resolve().parent / "lib"))
+from month_names import month_number  # noqa: E402
 
 BASE = "https://www.boimf.in"
 AJAX_URL = f"{BASE}/AjaxService.asmx/GetDocuments"
@@ -65,10 +69,10 @@ def docname_to_month_key(doc_name: str) -> str | None:
     if not m:
         return None
     mon_word, year = m.group(1), m.group(2)
-    mm = MONTH_NAME_TO_NUM.get(mon_word.lower())
-    if not mm:
+    n = month_number(mon_word)          # full names, 3-letter abbreviations (SEP) and SEPT, any letter case
+    if n is None:
         return None
-    return f"{year}-{mm}"
+    return f"{year}-{n:02d}"
 
 
 def fortnightly_doc_to_as_of(doc_name: str) -> str | None:

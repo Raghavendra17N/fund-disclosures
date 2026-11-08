@@ -11,10 +11,14 @@ import argparse
 import hashlib
 import json
 import re
+import sys
 from datetime import datetime
 from pathlib import Path
 from urllib.parse import quote, unquote, urljoin, urlparse, urlunparse
 from urllib.request import Request, urlopen
+
+sys.path.insert(0, str(Path(__file__).resolve().parent / "lib"))
+from month_names import MONTH_WORD_PATTERN, month_key  # noqa: E402
 
 PAGE_URL = "http://www.ilfsinfrafund.com/other.php"
 BASE_URL = "https://www.ilfsinfrafund.com/"
@@ -31,7 +35,7 @@ HEADERS = {
 
 LINK_RE = re.compile(r'href=["\']([^"\']+)["\']', re.I)
 MONTH_YEAR_RE = re.compile(
-    r"(january|february|march|april|may|june|july|august|september|october|november|december)(?:[\s\-_]+)?(\d{4})",
+    r"(?<![A-Za-z])(" + MONTH_WORD_PATTERN + r")(?![A-Za-z])(?:[\s\-_.]+)?(\d{4})",
     re.I,
 )
 
@@ -54,12 +58,7 @@ def text_to_month_key(text: str) -> str | None:
     m = MONTH_YEAR_RE.search(text)
     if not m:
         return None
-    mon, year = m.group(1), m.group(2)
-    try:
-        dt = datetime.strptime(f"{mon} {year}", "%B %Y")
-        return f"{dt.year:04d}-{dt.month:02d}"
-    except ValueError:
-        return None
+    return month_key(m.group(1), m.group(2))      # full names, 3-letter abbreviations and SEPT, any letter case
 
 
 def extract_rows(html: str) -> list[dict]:
