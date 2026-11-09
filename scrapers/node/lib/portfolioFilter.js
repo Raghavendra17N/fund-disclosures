@@ -24,6 +24,19 @@ const FILE_EXT = /\.(xlsx|xls|csv|zip|xlsm)(?:\?|#|$)/i;
 const EXCLUDE =
   /aaum|aauum|\baum\b|average[\s_-]?assets|assets[\s_-]?under[\s_-]?management|complaint|proxy|voting|tracking[\s_-]?error|risk[\s_-]?param|portfolio[\s_-]?overlap|overlap|transaction[\s_-]?report|investor[\s_-]?complaint|\bir_|\bsebi\b|product[\s_-]?dashboard|scheme[\s_-]?dashboard|dashboard|constituent|fund[\s_-]?performance|quarterly[\s_-]?aum|disclosure[\s_-]?of[\s_-]?aum|top\s*\d+\s*holdings(?:\s+by\s+issuer)?|holdings\s+by\s+issuer|prc[\s_-]?matrix|\bprc\b|potential[\s_-]?risk[\s_-]?class|hyportfolio|half[\s_-]?year(?:ly)?|unaudited[\s_-]?financial|scheme[\s_-]?financial|reg[\s_-]?59a|\b59a\b|misselling|commission[\s_-]?disclosure|scheme[\s_-]?summary|\bssd[\s_-]?\d|mis[\s_-]?report/i;
 
+/**
+ * Kotak (and peers) publish the full monthly book as "Consolidated SEBI Portfolio". The generic
+ * EXCLUDE list drops any name containing "sebi", so these files were rejected.
+ * Adapted from subscriptionmanager26-png/fund-disclosures (MIT, see LICENSE).
+ */
+const CONSOLIDATED_SEBI_PORTFOLIO =
+  /consolidated[\s_-]*sebi[\s_-]*portfolio|consolidatedsebiportfolio/i;
+
+export function isExcludedNonPortfolio(blob) {
+  if (CONSOLIDATED_SEBI_PORTFOLIO.test(blob)) return false;
+  return EXCLUDE.test(blob);
+}
+
 function fileBlob(file) {
   const url = String(file?.url || "");
   const filename = String(file?.filename || file?.text || "");
@@ -56,7 +69,7 @@ export function classifyDisclosureFile(file, opts = {}) {
     return { keep: false, reason: "not_spreadsheet" };
   }
 
-  if (EXCLUDE.test(blob)) {
+  if (isExcludedNonPortfolio(blob)) {
     return { keep: false, reason: "excluded_non_portfolio" };
   }
 
