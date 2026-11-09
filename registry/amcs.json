@@ -332,6 +332,7 @@
           "adapter": "python_ref",
           "script": "fetch_bandhan.py",
           "python_slug": "bandhan-mutual-fund",
+          "timeout_ms": 600000,
           "extra_args": [
             "--no-growth-page-limit",
             "80",
@@ -344,6 +345,7 @@
           "adapter": "python_ref",
           "script": "fetch_bandhan.py",
           "python_slug": "bandhan-mutual-fund",
+          "timeout_ms": 600000,
           "extra_args": [
             "--no-growth-page-limit",
             "80",

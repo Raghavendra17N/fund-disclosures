@@ -55,6 +55,7 @@ function resolveAdapter(amc, type) {
       script: cfg.script,
       slug: cfg.python_slug,
       extraArgs: cfg.extra_args || [],
+      timeoutMs: cfg.timeout_ms,
     });
   }
   if (!adapters[name]) throw new Error(`Unknown adapter: ${name}`);
