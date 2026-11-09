@@ -1503,7 +1503,8 @@
           "script": "fetch_oldbridge.py",
           "python_slug": "old-bridge-mutual-fund",
           "extra_args": [],
-          "notes": "via reference/python-fetchers (AMC-direct)"
+          "trust_adapter_period": true,
+          "notes": "via reference/python-fetchers (AMC-direct); the adapter scopes rows by the month in the title, and file names such as OBMF_Flexi_Cap_Portfolio_Sept_26_<hash>.xlsx carry no date the as-of filter can read"
         },
         "fortnightly": {
           "adapter": "unsupported",
