@@ -5,6 +5,7 @@
  */
 import { summarizePythonFailure } from "../lib/pythonFailure.js";
 import { spawnSync } from "node:child_process";
+import { resolvePythonTimeoutMs } from "../lib/pythonTimeout.js";
 import { existsSync, readFileSync, mkdirSync, readdirSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -19,7 +20,7 @@ function pythonBin() {
   return "python3";
 }
 
-function runPython(script, args) {
+function runPython(script, args, timeoutMs = resolvePythonTimeoutMs()) {
   const scriptPath = join(scriptsDir, script);
   if (!existsSync(scriptPath)) {
     return { ok: false, error: `missing ${script}`, stdout: "", stderr: "" };
@@ -28,7 +29,7 @@ function runPython(script, args) {
     cwd: root,
     encoding: "utf8",
     // Slow AMC pages: allow retries inside the Python script within this budget.
-    timeout: Number(process.env.PYTHON_REF_TIMEOUT_MS) || 120_000,
+    timeout: timeoutMs,
     env: { ...process.env, PYTHONUNBUFFERED: "1" },
   });
   return {
@@ -65,7 +66,7 @@ function stripFlags(args, ...flags) {
   return out;
 }
 
-function runWithArgFallback(script, baseArgs, forceRealFetch) {
+function runWithArgFallback(script, baseArgs, forceRealFetch, timeoutMs) {
   const argSets = [
     forceRealFetch ? baseArgs : ["--dry-run", ...baseArgs],
     baseArgs,
@@ -77,7 +78,7 @@ function runWithArgFallback(script, baseArgs, forceRealFetch) {
     const key = args.join("\0");
     if (seen.has(key)) continue;
     seen.add(key);
-    const result = runPython(script, args);
+    const result = runPython(script, args, timeoutMs);
     if (result.ok) return result;
     const msg = `${result.stderr}\n${result.stdout}`;
     const unknown =
@@ -85,7 +86,7 @@ function runWithArgFallback(script, baseArgs, forceRealFetch) {
       /error:.*--dry-run|--fortnightly|--as-of/i.test(msg);
     if (!unknown) return result;
   }
-  return runPython(script, baseArgs);
+  return runPython(script, baseArgs, timeoutMs);
 }
 
 /**
@@ -93,6 +94,7 @@ function runWithArgFallback(script, baseArgs, forceRealFetch) {
  * @param {string} cfg.script e.g. fetch_bandhan.py
  * @param {string} cfg.slug folder slug under amcs/ in the python toolkit
  * @param {string[]} [cfg.extraArgs]
+ * @param {number} [cfg.timeoutMs] per-AMC time budget for one Python run
  */
 export function createPythonRefAdapter(cfg) {
   return {
@@ -130,7 +132,7 @@ export function createPythonRefAdapter(cfg) {
       ].includes(cfg.script);
 
       // Prefer dry-run if the script supports it (unless we must stage files)
-      let result = runWithArgFallback(cfg.script, baseArgs, forceRealFetch);
+      let result = runWithArgFallback(cfg.script, baseArgs, forceRealFetch, resolvePythonTimeoutMs(cfg.timeoutMs));
 
       if (!result.ok) {
         return {
