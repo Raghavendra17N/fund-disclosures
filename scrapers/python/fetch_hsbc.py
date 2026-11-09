@@ -50,13 +50,28 @@ MONTH_RE = re.compile(
 )
 
 
+KNOWN_FILE_EXT_RE = re.compile(r"\.(?:xlsx|xls|zip|pdf|csv)$", re.I)
+
+
 def safe_filename(url: str) -> str:
     path = urlparse(url).path
     base = path.rsplit("/", 1)[-1]
     base = unquote(base.split("?")[0])
     if not base or base in (".", ".."):
         base = "download.xlsx"
-    return re.sub(r"[^\w.\-() ]", "_", base).strip()[:200] or "download.xlsx"
+    name = re.sub(r"[^\w.\-() ]", "_", base).strip()[:200] or "download.xlsx"
+    # HSBC's September 2026 links have no extension but serve XLSX (Content-Disposition: ...xlsx): name the file so parsers recognise it.
+    return name if KNOWN_FILE_EXT_RE.search(name) else f"{name}.xlsx"
+
+
+def is_portfolio_document_href(href_l: str) -> bool:
+    """A monthly fund-portfolio document link: a spreadsheet extension, or none at all under /portfolios/document-DDMMYYYY/."""
+    if "/portfolios/" not in href_l:
+        return False
+    if re.search(r"\.(xlsx|xls)(?:\?|$)", href_l):
+        return True
+    path = href_l.split("?")[0]
+    return bool(re.search(r"/document-\d{8}/[^/]+$", path)) and not re.search(r"\.(?:pdf|zip|doc|docx|csv|ppt|pptx)$", path)
 
 
 def fetch_html() -> str:
@@ -78,7 +93,7 @@ def text_to_month_key(text: str) -> str | None:
 
 
 FORTNIGHTLY_LINK_RE = re.compile(
-    r'href="([^"]*fortnightly-debt-portfolio/document-\d{8}/[^"]+\.(?:xlsx|xls))"',
+    r'href="([^"]*fortnightly-debt-portfolio/document-\d{8}/[^"?#]+?(?:\.(?:xlsx|xls))?)"',
     re.I,
 )
 
@@ -133,7 +148,7 @@ def extract_rows(html: str) -> list[dict]:
     rows: list[dict] = []
     for href, label_html in LINK_RE.findall(block):
         href_l = href.lower()
-        if "/portfolios/" not in href_l or not re.search(r"\.(xlsx|xls)(?:\?|$)", href_l):
+        if not is_portfolio_document_href(href_l):
             continue
         label = re.sub(r"<[^>]+>", " ", label_html)
         label = re.sub(r"\s+", " ", label).strip()
