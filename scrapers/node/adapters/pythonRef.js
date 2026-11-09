@@ -3,6 +3,7 @@
  * Runs the script with --dry-run when possible to list URLs; otherwise runs a
  * real fetch into a staging tree and reads manifest.json.
  */
+import { summarizePythonFailure } from "../lib/pythonFailure.js";
 import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync, mkdirSync, readdirSync } from "node:fs";
 import { join, dirname } from "node:path";
@@ -134,7 +135,7 @@ export function createPythonRefAdapter(cfg) {
       if (!result.ok) {
         return {
           files: [],
-          notes: `python_exit_${result.status ?? "x"}: ${(result.stderr || result.stdout || result.error || "").slice(0, 240)}`,
+          notes: summarizePythonFailure(result),
         };
       }
 
