@@ -48,6 +48,26 @@ def month_search_key(month_key: str) -> tuple[str, str]:
     return frag, frag
 
 
+def fragment_variants(frag: str) -> list[str]:
+    """
+    Spellings Bajaj has used for the same date in media slugs: as-on-30-sep-2026 (August style) and as-on-30-sep2026 (September 2026,
+    month and year glued), plus SEPT. Order matters only for the first search; every variant is accepted by the matchers.
+    """
+    out = [frag]
+    glued = re.sub(r"-(\d{4})$", r"\1", frag)
+    if glued != frag:
+        out.append(glued)
+    if "-sep-" in frag:
+        out.append(frag.replace("-sep-", "-sept-"))
+    return out
+
+
+def blob_has_fragment(blob: str, frag: str) -> bool:
+    """True when any spelling of the date fragment appears in the slug/title/url text (hyphen or underscore separated)."""
+    flat = blob.replace("_", "-")
+    return any(v in flat for v in fragment_variants(frag))
+
+
 def fortnightly_search_key(month_key: str, as_of: str = "") -> str:
     """Mid-month fortnightly slug fragment, e.g. as-on-15-jul-2026."""
     if as_of:
@@ -102,11 +122,8 @@ def is_monthly_for(item: dict, frag: str) -> bool:
     title = (item.get("title") or {}).get("rendered") or ""
     url = pick_download_url(item) or ""
     blob = f"{slug} {title} {url}".lower()
-    if frag not in blob.replace("_", "-"):
-        # also allow underscore form as_on_30_jun_2026
-        alt = frag.replace("-", "_")
-        if alt not in blob:
-            return False
+    if not blob_has_fragment(blob, frag):
+        return False
     if "monthly" not in blob and "portfolio" not in blob:
         return False
     if "fortnightly" in blob:
@@ -128,10 +145,8 @@ def is_fortnightly_for(item: dict, frag: str) -> bool:
     title = (item.get("title") or {}).get("rendered") or ""
     url = pick_download_url(item) or ""
     blob = f"{slug} {title} {url}".lower()
-    if frag not in blob.replace("_", "-"):
-        alt = frag.replace("-", "_")
-        if alt not in blob:
-            return False
+    if not blob_has_fragment(blob, frag):
+        return False
     if "fortnightly" not in blob:
         return False
     if not re.search(r"\.(xlsx?|xls)(\?|$)", url, re.I):
@@ -181,7 +196,9 @@ def main() -> None:
         out_dir = amc_dir / month_key
         out_dir.mkdir(parents=True, exist_ok=True)
 
-        items = [it for it in fetch_media_search(frag) if matcher(it, frag)]
+        items = []
+        for query in fragment_variants(frag):             # search every spelling; the matchers accept all of them
+            items.extend(it for it in fetch_media_search(query) if matcher(it, frag))
         # de-dupe by url
         seen: set[str] = set()
         uniq = []
