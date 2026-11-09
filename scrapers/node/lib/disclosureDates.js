@@ -195,6 +195,18 @@ export function extractAllYearMonths(...parts) {
     if (month) add(Number(m[2]), month);
   }
 
+  // CamelCase names with no separators: ConsolidatedSEBIPortfolioSeptember2026.xlsx (Kotak).
+  // Case-sensitive on purpose: a capitalised month word glued to a lowercase letter and followed by a
+  // four-digit year (…PortfolioSeptember2026), so ordinary lowercase words never match.
+  const monthYearCamel = new RegExp(
+    `(?<=[a-z])(${MONTH_TOKEN.split("|").map((t) => t.replace(/^./, (c) => c.toUpperCase())).join("|")})(20\\d{2})(?!\\d)`,
+    "g",
+  );
+  for (const m of blob.matchAll(monthYearCamel)) {
+    const month = MONTH_NUM[m[1].toLowerCase()];
+    if (month) add(Number(m[2]), month);
+  }
+
   const pathYm = /(?:^|[/\\])monthly[/\\](20\d{2})[/\\](\d{1,2})(?:[/\\]|$)/gi;
   for (const m of blob.matchAll(pathYm)) {
     const month = Number(m[2]);
