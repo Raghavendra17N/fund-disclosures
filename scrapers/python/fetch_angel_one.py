@@ -86,6 +86,21 @@ def fetch_html(*, ctx: ssl.SSLContext) -> str:
         return resp.read().decode("utf-8", errors="ignore")
 
 
+def _decode_disclosures_object(text: str) -> dict | None:
+    """The object that follows the first "disclosuresData": key, or None when absent or not a non-empty object."""
+    idx = text.find('"disclosuresData":')
+    if idx < 0:
+        return None
+    start = text.find("{", idx)
+    if start < 0:
+        return None
+    try:
+        obj, _ = json.JSONDecoder().raw_decode(text[start:])
+    except json.JSONDecodeError:
+        return None
+    return obj if isinstance(obj, dict) and obj else None
+
+
 def extract_props(html_text: str) -> dict:
     for m in PUSH_RE.finditer(html_text):
         raw = m.group(1)
@@ -96,6 +111,12 @@ def extract_props(html_text: str) -> dict:
             unescaped = json.loads('"' + raw + '"')
         except json.JSONDecodeError:
             unescaped = raw.replace('\\"', '"').replace("\\\\", "\\").replace("\\n", "\n")
+
+        # The payload layout has changed before: the first `null,{...}` object may now be the page props
+        # (keys lang/children) with disclosuresData nested deeper. Find the key itself and decode its object.
+        direct = _decode_disclosures_object(unescaped)
+        if direct is not None:
+            return {"disclosuresData": direct}
 
         array_str = re.sub(r"^[a-zA-Z0-9_]+:", "", unescaped.strip())
         null_match = re.search(r"null,(\{)", array_str)
