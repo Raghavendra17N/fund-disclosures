@@ -78,6 +78,7 @@
           "script": "fetch_abakkus.py",
           "python_slug": "abakkus-mutual-fund",
           "extra_args": [],
+          "trust_adapter_period": true,
           "notes": "via reference/python-fetchers (AMC-direct)"
         },
         "fortnightly": {
