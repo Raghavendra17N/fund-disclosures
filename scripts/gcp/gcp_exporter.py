@@ -284,6 +284,7 @@ def export_gcp(
     norm_skipped = 0
     total_holdings = 0
     new_parquet_uploads = []
+    skipped_codes = []
     if parsed_base.exists():
         for date_dir in [d for d in parsed_base.iterdir() if d.is_dir() and period in d.name]:
             for amc_dir in date_dir.iterdir():
@@ -305,6 +306,7 @@ def export_gcp(
                     blob_path = f"fund_holdings/normalized/as_of={as_of}/{amfi_code}.parquet"
                     if blob_path in existing_parquet_blobs:
                         norm_skipped += 1
+                        skipped_codes.append({"amfi_code": amfi_code, "amc_id": amc_dir.name, "scheme_name": meta.get("amfi_name") or meta.get("scheme_name") or "unknown"})
                         continue
 
                     shaped_holdings = [shape_holding_row(h) for h in raw_holdings]
@@ -364,6 +366,15 @@ def export_gcp(
     else:
         print(f"\n --- All {norm_skipped} scanned schemes already existed in GCS. Zero new files needed upload. ---")
     print(f"=================================================================\n")
+
+    # Machine readable result for scripts/gcp/run_report.py (names, codes and counts only).
+    result_dir = ROOT / "data" / "run_report"
+    result_dir.mkdir(parents=True, exist_ok=True)
+    (result_dir / "export_result.json").write_text(json.dumps({
+        "period": period,
+        "uploaded": [{k: u[k] for k in ("amfi_code", "scheme_name", "amc_id", "rows")} for u in new_parquet_uploads],
+        "already_in_gcs": skipped_codes,
+    }, indent=2) + "\n", encoding="utf-8")
 
 
 def main() -> int:
