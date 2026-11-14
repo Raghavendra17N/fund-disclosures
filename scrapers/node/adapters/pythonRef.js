@@ -14,7 +14,18 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "../../..");
 const scriptsDir = join(root, "scrapers/python");
 const stagingRoot = join(root, "data/staging/python");
 
-function pythonBin() {
+/**
+ * Interpreter for the per-AMC Python scrapers. Order: PYTHON_BIN, the active virtualenv (VIRTUAL_ENV, so a
+ * Windows venv is honoured instead of the Store "python3"), the repo's .venv, then python3.
+ */
+export function pythonBin(env = process.env) {
+  if (env.PYTHON_BIN) return env.PYTHON_BIN;
+  if (env.VIRTUAL_ENV) {
+    for (const rel of ["Scripts/python.exe", "bin/python3", "bin/python"]) {
+      const candidate = join(env.VIRTUAL_ENV, rel);
+      if (existsSync(candidate)) return candidate;
+    }
+  }
   const venv = join(root, ".venv/bin/python3");
   if (existsSync(venv)) return venv;
   return "python3";
