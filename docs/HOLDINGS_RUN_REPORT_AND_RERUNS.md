@@ -69,3 +69,18 @@ The report contains only scheme names, AMFI codes, AMC names and counts. Failure
 ## Tests
 
 `python3 -m unittest scripts/gcp/test_holdings_run_report.py` (offline: plan, report and reason sanitizing).
+
+## OpenFin fallback for funds an AMC could not deliver (off by default)
+
+For AMFI codes the AMC had last month but that are still missing after the run, `scripts/gcp/openfin_fallback.py` can ask the OpenFin API (`openfin.pocketedge.in`, the same source the backend falls back to when it reads holdings) and write a parquet marked `source=openfin_api`.
+
+- **Date check:** data is accepted only when the API's own `as_of` equals the month-end being ingested (for example `2026-10-31`). Stale months are never written.
+- **Never overwrites:** an AMC's own parquet always wins; the fallback only fills holes.
+- **Off unless asked:** `OPENFIN_FALLBACK=true`. Restrict with `OPENFIN_FALLBACK_AMCS=edelweiss-mutual-fund` (comma list; empty means every missing fund).
+- **Report:** filled funds show as success with the reason "filled from OpenFin API (third party; as_of verified)". `data/run_report/openfin_result.json` lists them.
+- **Where it runs:** wired into `cloud_run_job.sh` after the export. The GitHub workflow does not set the variable, so today it is a PC / manual option:
+
+```
+OPENFIN_FALLBACK=true OPENFIN_FALLBACK_AMCS=edelweiss-mutual-fund \
+  scripts/pc/run_monthly_on_pc.sh missing 2026-10 --write
+```

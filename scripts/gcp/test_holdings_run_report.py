@@ -83,5 +83,29 @@ class SanitizeTests(unittest.TestCase):
         self.assertNotIn("SECRET", out)
 
 
+class OpenFinTests(unittest.TestCase):
+    def test_month_end_and_date_gate(self):
+        from openfin_fallback import accept_response, month_end, to_exporter_rows
+        self.assertEqual(month_end("2026-10"), "2026-10-31")
+        self.assertEqual(month_end("2026-02"), "2026-02-28")
+        good = {"as_of": "2026-10-31", "holdings": [{"company_name": "X Ltd", "weight": 5.0}]}
+        self.assertEqual(len(accept_response(good, "2026-10-31")), 1)
+        # stale month, missing date, empty list and junk are all rejected
+        self.assertIsNone(accept_response({"as_of": "2026-09-30", "holdings": good["holdings"]}, "2026-10-31"))
+        self.assertIsNone(accept_response({"holdings": good["holdings"]}, "2026-10-31"))
+        self.assertIsNone(accept_response({"as_of": "2026-10-31", "holdings": []}, "2026-10-31"))
+        self.assertIsNone(accept_response("oops", "2026-10-31"))
+        rows = to_exporter_rows(good["holdings"] + [{"weight": 1}])
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["instrument"], "X Ltd")
+        self.assertEqual(rows[0]["pct_nav"], 5.0)
+
+    def test_report_marks_openfin_fill(self):
+        rep = build_report("2026-10", ["a"], {"a": "A MF"}, st(a=["1"]), st(a=["1"]), None, None, {}, {"1": "Alpha"},
+                           {"filled": [{"amfi_code": "1"}]})
+        self.assertIn("OpenFin", rep["funds"][0]["reason"])
+        self.assertEqual(rep["funds"][0]["status"], "success")
+
+
 if __name__ == "__main__":
     unittest.main()
