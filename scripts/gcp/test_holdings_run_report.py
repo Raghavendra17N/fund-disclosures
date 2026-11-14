@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from holdings_state import code_from_blob, plan_amcs, prev_period, sanitize_reason  # noqa: E402
+from holdings_state import clean_name, code_from_blob, maturity_hint, plan_amcs, prev_period, sanitize_reason  # noqa: E402
 from run_report import build_report, render_markdown  # noqa: E402
 
 
@@ -105,6 +105,29 @@ class OpenFinTests(unittest.TestCase):
                            {"filled": [{"amfi_code": "1"}]})
         self.assertIn("OpenFin", rep["funds"][0]["reason"])
         self.assertEqual(rep["funds"][0]["status"], "success")
+
+
+class NameTests(unittest.TestCase):
+    def test_clean_name_decodes_entities(self):
+        self.assertEqual(clean_name("Large &amp; Mid Cap Fund"), "Large & Mid Cap Fund")
+        self.assertEqual(clean_name("UTI Children&#39;s Hybrid Fund"), "UTI Children's Hybrid Fund")
+        self.assertEqual(clean_name("IL&amp;amp;FS"), "IL&FS")
+        self.assertEqual(clean_name(None), "")
+
+    def test_maturity_hint(self):
+        self.assertEqual(maturity_hint("Axis Nifty SDL September 2026 Debt Index Fund", "2026-10"), "Sep 2026")
+        self.assertEqual(maturity_hint("HDFC Nifty SDL Oct 2026 Index Fund", "2026-10"), "Oct 2026")
+        self.assertEqual(maturity_hint("Nifty SDL Apr 2027 Index Fund", "2026-10"), "")
+        self.assertEqual(maturity_hint("Edelweiss Large Cap Fund", "2026-10"), "")
+
+    def test_report_flags_matured_and_cleans_names(self):
+        rep = build_report("2026-10", ["a"], {"a": "A &amp; B MF"}, {}, st(a=["1"]), None, None,
+                           {"a": {"name": "", "status": "ok", "reason": ""}}, {"1": "Nifty SDL Sep 2026 Fund &amp; Co"})
+        row = rep["funds"][0]
+        self.assertEqual(row["status"], "failed")
+        self.assertIn("likely matured", row["reason"])
+        self.assertEqual(row["fund"], "Nifty SDL Sep 2026 Fund & Co")
+        self.assertEqual(row["amc"], "A & B MF")
 
 
 if __name__ == "__main__":

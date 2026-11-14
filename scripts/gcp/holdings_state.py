@@ -6,6 +6,7 @@ Only scheme names, AMFI codes, AMC slugs and counts are handled here: never hold
 """
 from __future__ import annotations
 
+import html
 import io
 import re
 from typing import Dict, Iterable, List, Optional, Set
@@ -24,6 +25,31 @@ def prev_period(period: str) -> str:
     if m == 0:
         y, m = y - 1, 12
     return f"{y:04d}-{m:02d}"
+
+
+_MONTHS = {m: i for i, m in enumerate(
+    ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"], 1)}
+_MATURITY_RE = re.compile(r"(?i)\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*[\s\-]*(20\d\d)\b")
+
+
+def clean_name(text: Optional[str]) -> str:
+    """Decode HTML entities (&amp; -> &, &#39; -> ') left in scheme/AMC names; collapses repeated escapes."""
+    s = str(text or "")
+    for _ in range(3):
+        u = html.unescape(s)
+        if u == s:
+            break
+        s = u
+    return re.sub(r"\s+", " ", s).strip()
+
+
+def maturity_hint(name: str, period: str) -> str:
+    """'Sep 2026' when the fund name carries a month-year on or before the period end (likely matured), else ''."""
+    py, pm = int(period[:4]), int(period[5:7])
+    for mon, yr in _MATURITY_RE.findall(name or ""):
+        if (int(yr), _MONTHS[mon.lower()]) <= (py, pm):
+            return f"{mon.title()} {yr}"
+    return ""
 
 
 def sanitize_reason(text: Optional[str], limit: int = 160) -> str:
@@ -81,7 +107,7 @@ def read_parquet_field(blob, column: str) -> str:
 def fund_name(bucket, period: str, as_of: str, code: str) -> str:
     """Scheme (main fund) name from a parquet, for funds listed in the report."""
     blob = bucket.get_blob(f"{NORMALIZED_PREFIX}as_of={as_of}/{code}.parquet")
-    return (read_parquet_field(blob, "amfi_name") if blob else "") or f"AMFI {code}"
+    return clean_name(read_parquet_field(blob, "amfi_name") if blob else "") or f"AMFI {code}"
 
 
 def codes_by_amc(state: Dict[str, Dict[str, str]]) -> Dict[str, Set[str]]:

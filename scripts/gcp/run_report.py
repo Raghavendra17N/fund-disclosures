@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from holdings_state import fund_name, list_state, prev_period, sanitize_reason  # noqa: E402
+from holdings_state import clean_name, fund_name, list_state, maturity_hint, prev_period, sanitize_reason  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT_DIR = ROOT / "data" / "run_report"
@@ -64,12 +64,12 @@ def build_report(
     rows: List[Dict[str, str]] = []
 
     def amc_label(a: str) -> str:
-        return amc_names.get(a) or outcomes.get(a, {}).get("name") or a
+        return clean_name(amc_names.get(a) or outcomes.get(a, {}).get("name") or a)
 
     # Funds present in GCS after the run: success (written now) or skipped (already there, incl. manual uploads).
     for code, info in sorted(after.items(), key=lambda kv: (kv[1].get("amc_id", ""), kv[0])):
         amc = info.get("amc_id", "")
-        name = (uploaded.get(code) or exporter_skipped.get(code) or {}).get("scheme_name") or names.get(code) or f"AMFI {code}"
+        name = clean_name((uploaded.get(code) or exporter_skipped.get(code) or {}).get("scheme_name") or names.get(code) or f"AMFI {code}")
         if code in filled:
             status, why = "success", "filled from OpenFin API (third party; as_of verified; AMC file still missing)"
         elif code in uploaded:
@@ -92,7 +92,11 @@ def build_report(
             why = f"AMC fetch {oc['status']}" + (f": {oc['reason']}" if oc["reason"] else "")
         else:
             why = "AMC fetched, but this fund is missing from the disclosure or failed parse/mapping"
-        rows.append({"fund": names.get(code) or f"AMFI {code}", "amfi_code": code, "amc_id": amc, "amc": amc_label(amc), "status": "failed", "reason": why})
+        fname = clean_name(names.get(code) or f"AMFI {code}")
+        mat = maturity_hint(fname, period)
+        if mat:
+            why = f"likely matured (name says {mat}, on or before period end; verify with the AMC). " + why
+        rows.append({"fund": fname, "amfi_code": code, "amc_id": amc, "amc": amc_label(amc), "status": "failed", "reason": why})
 
     # AMCs with no fund row at all (nothing now, nothing last month): one AMC-level failure row.
     seen = {r["amc_id"] for r in rows}
