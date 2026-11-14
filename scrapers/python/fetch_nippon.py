@@ -61,6 +61,21 @@ def _ssl_context(insecure: bool) -> ssl.SSLContext:
         return ssl.create_default_context()
 
 
+def _os_trust_context() -> ssl.SSLContext | None:
+    """TLS context backed by the operating system trust store (verification stays ON).
+
+    mf.nipponindiaim.com does not send its full certificate chain. Browsers and Windows fetch the missing
+    intermediate on their own; Python with certifi does not and fails with "unable to get local issuer
+    certificate". truststore uses the OS store (and its AIA chasing). Returns None if unavailable.
+    """
+    try:
+        import truststore  # type: ignore
+
+        return truststore.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+    except Exception:
+        return None
+
+
 def normalize_label(s: str) -> str:
     s = re.sub(r"[\u200b\u200c\u200d\ufeff\u00a0]+", " ", s)
     return re.sub(r"\s+", " ", s).strip()
@@ -183,11 +198,17 @@ def main() -> None:
     try:
         html = fetch_listing_html(ctx=ctx)
     except urllib.error.URLError as e:
-        if not args.insecure_ssl and "CERTIFICATE_VERIFY_FAILED" in str(e).upper():
+        if args.insecure_ssl or "CERTIFICATE_VERIFY_FAILED" not in str(e).upper():
+            raise
+        os_ctx = _os_trust_context()
+        if os_ctx is None:
             raise SystemExit(
-                f"{e}\n\nRetry with:  python3 scripts/fetch_nippon.py ... --insecure-ssl"
+                f"{e}\n\nThe site does not send its full certificate chain. Fix: pip install truststore "
+                "(uses the OS certificate store, verification stays on). Last resort: --insecure-ssl"
             ) from e
-        raise
+        print("  TLS chain incomplete with the bundled CA list; retrying with the OS trust store …", flush=True)
+        ctx = os_ctx
+        html = fetch_listing_html(ctx=ctx)
     index = parse_portfolio_index(html, fortnightly=args.fortnightly)
     kind = "fortnightly" if args.fortnightly else "monthly portfolio"
     print(f"  Indexed {len(index)} distinct calendar month(s) ({kind} rows)", flush=True)
