@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # Run ONE AMC's monthly holdings ingestion from a home/office PC (for AMC sites that refuse GitHub-hosted runners).
 #
-# Usage:   scripts/pc/run_monthly_on_pc.sh <amc-slug> <YYYY-MM> [--write]
+# Usage:   scripts/pc/run_monthly_on_pc.sh <amc-slug|missing> <YYYY-MM> [--write]
+#          "missing" = every AMC that still lacks funds in GCS for the period (manual uploads count as done).
+#          Set FORCE_OVERWRITE=true to re-run AMCs that are already complete. A per-fund report is printed at the end.
 # Example: scripts/pc/run_monthly_on_pc.sh union-mutual-fund 2026-09          (listing only, writes nothing)
 #          scripts/pc/run_monthly_on_pc.sh union-mutual-fund 2026-09 --write  (fetch, parse, export to the bucket)
 #
@@ -22,8 +24,10 @@ if ! [[ "$PERIOD" =~ ^[0-9]{4}-(0[1-9]|1[0-2])$ ]]; then
   exit 2
 fi
 
+LIST_ARGS=(--type=monthly --period="$PERIOD")
+[ "$AMC_SLUG" != "missing" ] && LIST_ARGS+=(--amc="$AMC_SLUG")
 echo "== Listing $AMC_SLUG $PERIOD (read-only) =="
-node scrapers/node/fetch-period.js --type=monthly --period="$PERIOD" --amc="$AMC_SLUG" --list-only
+node scrapers/node/fetch-period.js "${LIST_ARGS[@]}" --list-only
 
 if [ "$MODE" != "--write" ]; then
   echo "Listing only. Re-run with --write to fetch, parse and export to the bucket."
@@ -31,8 +35,9 @@ if [ "$MODE" != "--write" ]; then
 fi
 
 export GCS_BUCKET="${GCS_BUCKET:-investmentflow-market-data}"
-export AMC="$AMC_SLUG" TYPE=monthly PERIOD="$PERIOD"
-export PARQUET_ONLY=true FORCE_OVERWRITE=false CLOUD_PROVIDER=gcp
+if [ "$AMC_SLUG" = "missing" ]; then export AMC=""; else export AMC="$AMC_SLUG"; fi
+export TYPE=monthly PERIOD="$PERIOD"
+export PARQUET_ONLY=true FORCE_OVERWRITE="${FORCE_OVERWRITE:-false}" CLOUD_PROVIDER=gcp
 export CONCURRENCY=5 AMC_TIMEOUT_MS=360000 FETCH_TIMEOUT_MS=180000 PYTHONUTF8=1
 
 echo "== Writing $AMC_SLUG $PERIOD to gs://$GCS_BUCKET (no overwrite, parquet only) =="
