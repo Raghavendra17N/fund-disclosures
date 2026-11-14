@@ -75,7 +75,7 @@ The report contains only scheme names, AMFI codes, AMC names and counts. Failure
 | Symptom | Fix |
 |---|---|
 | `curl_cffi required` (Navi) | `pip install -r requirements.txt` inside the venv you run the script from (curl_cffi is listed there), then re-run that AMC |
-| `CERTIFICATE_VERIFY_FAILED` (Nippon, Motilal Oswal) | Python can't find a CA bundle: `pip install --upgrade certifi`, and set `SSL_CERT_FILE` to `python -m certifi`'s path, or install the python.org build. Do not disable TLS verification |
+| `CERTIFICATE_VERIFY_FAILED` (Nippon; Motilal Oswal showed a urlopen error that may be the same) | Python can't find a CA bundle: `pip install --upgrade certifi`, and set `SSL_CERT_FILE` to `python -m certifi`'s path, or install the python.org build. Do not disable TLS verification |
 | `fetchText timeout` / `operation was aborted` (Axis, Capitalmind, DSP, Groww, HDFC, ICICI) | Too many parallel requests from home internet: run with `CONCURRENCY=2`, or run those AMCs one at a time (`run_monthly_on_pc.sh <slug> <YYYY-MM> --write`) |
 | `Set EDELWEISS_API_SECRET` (Edelweiss) | `export EDELWEISS_API_SECRET=...` in your shell before running (value from your own records; never commit or paste it) |
 | `python_exit_1` with a Windows path in the traceback | Run the script from Git Bash or WSL, not PowerShell, and use the venv's python (`PYTHONUTF8=1` is already set by the script) |
