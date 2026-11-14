@@ -19,6 +19,10 @@ MODE="${3:-}"
 
 cd "$(dirname "$0")/../.."
 
+# Use the Python you launched this from (your activated venv), not the system / Store "python3".
+if [ -z "${PYTHON_BIN:-}" ] && command -v python >/dev/null 2>&1; then PYTHON_BIN="$(command -v python)"; fi
+export PYTHON_BIN
+
 if ! [[ "$PERIOD" =~ ^[0-9]{4}-(0[1-9]|1[0-2])$ ]]; then
   echo "period must look like 2026-09" >&2
   exit 2

@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
+# Interpreter: PYTHON_BIN if set (the PC script sets it to the active venv), else python3.
+PY="${PYTHON_BIN:-python3}"
+
 # Auto-compute previous calendar month (e.g. 2026-08 when running in Sep 2026) if PERIOD is not explicitly set
 if [ -z "$PERIOD" ]; then
-  PERIOD=$(python3 -c "from datetime import datetime, timedelta; now = datetime.now(); print((now.replace(day=1) - timedelta(days=1)).strftime('%Y-%m'))")
+  PERIOD=$("$PY" -c "from datetime import datetime, timedelta; now = datetime.now(); print((now.replace(day=1) - timedelta(days=1)).strftime('%Y-%m'))")
 fi
 TYPE="${TYPE:-monthly}"
 AMC="${AMC:-}"
@@ -28,7 +31,7 @@ echo "================================================================="
 # If planning fails the job falls back to the full requested set; it never blocks ingestion.
 FETCH_AMC="$AMC"
 if [ -n "$GCS_BUCKET" ]; then
-  FETCH_AMC=$(python3 scripts/gcp/plan_run.py --period="$PERIOD" --bucket="$GCS_BUCKET" --cadence="$TYPE" --amc="$AMC" || echo "$AMC")
+  FETCH_AMC=$("$PY" scripts/gcp/plan_run.py --period="$PERIOD" --bucket="$GCS_BUCKET" --cadence="$TYPE" --amc="$AMC" || echo "$AMC")
   if [ -z "$FETCH_AMC" ]; then
     echo " Nothing to ingest: every requested AMC is already complete in GCS for $PERIOD (set force=true to re-run)."
   fi
@@ -46,23 +49,23 @@ else
 
   # 2. Parse (only what was fetched exists on disk)
   case "$FETCH_AMC" in
-    ""|*,*) python3 parsers/run_amc_parser.py --type="$TYPE" --period="$PERIOD" --all ;;
-    *)      python3 parsers/run_amc_parser.py --type="$TYPE" --period="$PERIOD" --amc="$FETCH_AMC" ;;
+    ""|*,*) "$PY" parsers/run_amc_parser.py --type="$TYPE" --period="$PERIOD" --all ;;
+    *)      "$PY" parsers/run_amc_parser.py --type="$TYPE" --period="$PERIOD" --amc="$FETCH_AMC" ;;
   esac
 
   # 3. Enrich
-  python3 scripts/enrich_holdings_identifiers.py --allow-incomplete
+  "$PY" scripts/enrich_holdings_identifiers.py --allow-incomplete
 
   # 4. GCS Export & Audit (exporter skips parquet files already in GCS unless force)
   if [ -n "$GCS_BUCKET" ]; then
-    python3 scripts/gcp/gcp_exporter.py --period="$PERIOD" --bucket="$GCS_BUCKET" --cadence="$TYPE" $PARQUET_FLAG
-    python3 scripts/gcp/validate_gcp_output.py --period="$PERIOD" --bucket="$GCS_BUCKET" ${AMC:+--amc="$AMC"}
+    "$PY" scripts/gcp/gcp_exporter.py --period="$PERIOD" --bucket="$GCS_BUCKET" --cadence="$TYPE" $PARQUET_FLAG
+    "$PY" scripts/gcp/validate_gcp_output.py --period="$PERIOD" --bucket="$GCS_BUCKET" ${AMC:+--amc="$AMC"}
   fi
 fi
 
 # 5. Per-fund run report (never fails the job)
 if [ -n "$GCS_BUCKET" ]; then
-  python3 scripts/gcp/run_report.py --period="$PERIOD" --bucket="$GCS_BUCKET" --cadence="$TYPE" || true
+  "$PY" scripts/gcp/run_report.py --period="$PERIOD" --bucket="$GCS_BUCKET" --cadence="$TYPE" || true
 fi
 
 echo "================================================================="
