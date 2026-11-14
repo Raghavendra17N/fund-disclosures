@@ -63,7 +63,12 @@ else
   fi
 fi
 
-# 5. Per-fund run report (never fails the job)
+# 5. Optional OpenFin fallback for funds still missing (off unless OPENFIN_FALLBACK=true; as_of must match)
+if [ -n "$GCS_BUCKET" ]; then
+  "$PY" scripts/gcp/openfin_fallback.py --period="$PERIOD" --bucket="$GCS_BUCKET" || true
+fi
+
+# 6. Per-fund run report (never fails the job)
 if [ -n "$GCS_BUCKET" ]; then
   "$PY" scripts/gcp/run_report.py --period="$PERIOD" --bucket="$GCS_BUCKET" --cadence="$TYPE" || true
 fi

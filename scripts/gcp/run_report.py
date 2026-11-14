@@ -54,10 +54,12 @@ def build_report(
     plan: Optional[dict],
     outcomes: Dict[str, Dict[str, str]],
     names: Dict[str, str],
+    openfin: Optional[dict] = None,
 ) -> Dict[str, Any]:
     """Pure: combine the inputs into rows. `names` maps AMFI code -> main fund name (best effort)."""
     uploaded = {u["amfi_code"]: u for u in (export or {}).get("uploaded", [])}
     exporter_skipped = {u["amfi_code"]: u for u in (export or {}).get("already_in_gcs", [])}
+    filled = {f["amfi_code"] for f in (openfin or {}).get("filled", [])}
     plan_by_amc = {p["amc_id"]: p for p in (plan or {}).get("plan", [])}
     rows: List[Dict[str, str]] = []
 
@@ -68,7 +70,9 @@ def build_report(
     for code, info in sorted(after.items(), key=lambda kv: (kv[1].get("amc_id", ""), kv[0])):
         amc = info.get("amc_id", "")
         name = (uploaded.get(code) or exporter_skipped.get(code) or {}).get("scheme_name") or names.get(code) or f"AMFI {code}"
-        if code in uploaded:
+        if code in filled:
+            status, why = "success", "filled from OpenFin API (third party; as_of verified; AMC file still missing)"
+        elif code in uploaded:
             status, why = "success", "ingested in this run"
         elif plan_by_amc.get(amc, {}).get("action") == "skip":
             status, why = "skipped", "AMC already complete in GCS, not re-fetched"
@@ -146,6 +150,8 @@ def main() -> int:
         reg = _load(ROOT / "registry" / "amcs.json") or {}
         amc_names = {a["id"]: a.get("name", a["id"]) for a in reg.get("amcs", [])}
         names: Dict[str, str] = {}
+        openfin = _load(OUT_DIR / "openfin_result.json")
+        filled_codes = {f["amfi_code"] for f in (openfin or {}).get("filled", [])}
         after: Dict[str, Dict[str, str]] = {}
         previous: Dict[str, Dict[str, str]] = {}
         if args.bucket:
@@ -155,12 +161,12 @@ def main() -> int:
             after = list_state(bucket, args.period)
             previous = list_state(bucket, prev_period(args.period), resolve_missing_amc=False)
             for code, info in previous.items():
-                if code not in after:  # only failed funds need a name looked up
+                if code not in after or code in filled_codes:  # failed or fallback-filled funds need a name
                     names[code] = fund_name(bucket, args.period, info["as_of"], code)
         report = build_report(
             args.period, list(amc_names), amc_names, after, previous,
             _load(OUT_DIR / "export_result.json"), _load(OUT_DIR / "plan.json"),
-            fetch_outcomes(args.cadence, args.period), names,
+            fetch_outcomes(args.cadence, args.period), names, openfin,
         )
         OUT_DIR.mkdir(parents=True, exist_ok=True)
         (OUT_DIR / "run_report.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
