@@ -51,6 +51,19 @@ function baseName(url) {
   }
 }
 
+const FULL_MONTHS = [
+  "january", "february", "march", "april", "may", "june",
+  "july", "august", "september", "october", "november", "december",
+];
+
+/** True when the name has "portfolio", exactly one full month name equal to `month`, and no digits-year. */
+function monthNameWithoutYearMatches(name, month) {
+  const n = String(name).toLowerCase();
+  if (!/portfolio/.test(n) || /(?:19|20)\d{2}/.test(n)) return false;
+  const hits = FULL_MONTHS.filter((m) => new RegExp(`(?<![a-z])${m}(?![a-z])`).test(n));
+  return hits.length === 1 && FULL_MONTHS.indexOf(hits[0]) === month - 1;
+}
+
 /**
  * @param {{ url?: string, filename?: string, text?: string }} file
  * @param {{ type?: string, period?: { year: number, month: number } | null, storageKey?: string | null }} opts
@@ -114,6 +127,12 @@ export function classifyDisclosureFile(file, opts = {}) {
     // Month+year in the name with no day → keep for that period's fetches.
     if (period && blobMatchesYearMonth(blob, period.year, period.month)) {
       return { keep: true, reason: "month_in_name" };
+    }
+    // Full month name (not "Oct") plus "portfolio" and no year, e.g.
+    // "Choice_Mutual_Fund_Monthly_Portfolio_Report_October_Nifty-Next-50.xlsx": the AMC dropped the year.
+    // Keep it only for the matching month; abbreviations and non-portfolio names stay rejected.
+    if (period && monthNameWithoutYearMatches(base, period.month)) {
+      return { keep: true, reason: "month_name_no_year" };
     }
     // Undated / unparseable names get stamped with the job as-of (caused
     // Sep-2026 false positives from 2019 half-yearlies and PRC matrices).

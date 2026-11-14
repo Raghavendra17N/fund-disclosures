@@ -89,3 +89,24 @@ test("LIC monthly path month beats upload timestamp in filename", () => {
   assert.equal(v.keep, true);
   assert.match(v.reason, /as_of_slice|month_in_name/);
 });
+
+test("keeps full month name without year when it matches the period (Choice)", () => {
+  const file = {
+    filename: "1794038260-Choice_Mutual_Fund_Monthly_Portfolio_Report_October_Nifty-Next-50.xlsx",
+    url: "https://example/1794038260-Choice_Mutual_Fund_Monthly_Portfolio_Report_October_Nifty-Next-50.xlsx",
+  };
+  const opts = { type: "monthly", period: { year: 2026, month: 10 }, storageKey: "2026-10-31" };
+  const v = classifyDisclosureFile(file, opts);
+  assert.equal(v.keep, true);
+  assert.equal(v.reason, "month_name_no_year");
+  const other = classifyDisclosureFile(file, { ...opts, period: { year: 2026, month: 9 }, storageKey: "2026-09-30" });
+  assert.equal(other.keep, false);
+});
+
+test("abbreviated or non-portfolio month-only names stay rejected", () => {
+  const opts = { type: "monthly", period: { year: 2026, month: 10 }, storageKey: "2026-10-31" };
+  for (const filename of ["Scheme_Performance_DAAF_Oct.xlsx", "Choice-Overnight-Fund.xlsx", "Portfolio_September_October_Fund.xlsx"]) {
+    const v = classifyDisclosureFile({ filename, url: `https://example/${filename}` }, opts);
+    assert.equal(v.keep, false, filename);
+  }
+});
