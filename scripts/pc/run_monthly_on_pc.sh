@@ -38,7 +38,7 @@ export GCS_BUCKET="${GCS_BUCKET:-investmentflow-market-data}"
 if [ "$AMC_SLUG" = "missing" ]; then export AMC=""; else export AMC="$AMC_SLUG"; fi
 export TYPE=monthly PERIOD="$PERIOD"
 export PARQUET_ONLY=true FORCE_OVERWRITE="${FORCE_OVERWRITE:-false}" CLOUD_PROVIDER=gcp
-export CONCURRENCY=5 AMC_TIMEOUT_MS=360000 FETCH_TIMEOUT_MS=180000 PYTHONUTF8=1
+export CONCURRENCY="${CONCURRENCY:-5}" AMC_TIMEOUT_MS=360000 FETCH_TIMEOUT_MS=180000 PYTHONUTF8=1
 
 echo "== Writing $AMC_SLUG $PERIOD to gs://$GCS_BUCKET (no overwrite, parquet only) =="
 bash scripts/gcp/cloud_run_job.sh
