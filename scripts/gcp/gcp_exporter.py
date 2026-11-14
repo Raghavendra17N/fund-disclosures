@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 import pandas as pd
 from google.cloud import storage
+from holdings_state import clean_name
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -306,12 +307,12 @@ def export_gcp(
                     blob_path = f"fund_holdings/normalized/as_of={as_of}/{amfi_code}.parquet"
                     if blob_path in existing_parquet_blobs:
                         norm_skipped += 1
-                        skipped_codes.append({"amfi_code": amfi_code, "amc_id": amc_dir.name, "scheme_name": meta.get("amfi_name") or meta.get("scheme_name") or "unknown"})
+                        skipped_codes.append({"amfi_code": amfi_code, "amc_id": amc_dir.name, "scheme_name": clean_name(meta.get("amfi_name") or meta.get("scheme_name")) or "unknown"})
                         continue
 
                     shaped_holdings = [shape_holding_row(h) for h in raw_holdings]
                     df = pd.DataFrame(shaped_holdings)
-                    scheme_name = meta.get("amfi_name") or meta.get("scheme_name") or "unknown"
+                    scheme_name = clean_name(meta.get("amfi_name") or meta.get("scheme_name")) or "unknown"
                     df["amfi_code"] = amfi_code
                     df["amfi_name"] = scheme_name
                     df["amc_id"] = meta.get("amc_id") or amc_dir.name
